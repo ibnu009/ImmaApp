@@ -10,4 +10,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="login">Login</string>
+    <string name="untuk_memulai">untuk memulai</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="lupa_password">Lupa Password ?</string>
 </resources>
