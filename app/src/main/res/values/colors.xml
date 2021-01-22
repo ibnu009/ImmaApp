@@ -8,12 +8,18 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="lightBlue">#3A94E5</color>
-    <color name="darkBlue">#1B3F95</color>
-    <color name="darkBlues">#898989</color>
-    <color name="blueBackground">#B1DEF8</color>
+    <color name="light_blue">#3A94E5</color>
+    <color name="dark_blue">#1B3F95</color>
+    <color name="dark_grey">#898989</color>
+    <color name="blue_background">#B1DEF8</color>
+    <color name="background">#DDDDDD</color>
 
+    <color name="light_red">#FF6060</color>
+    <color name="light_orange">#FF9D2B</color>
+    <color name="light_blue_2">#B1DEF8</color>
+    <color name="dark_blue_2">#2BA6EC</color>
 
-    <color name="greys">#CCCCCC</color>
-    <color name="grey">#9E9E9E</color>
+    <color name="grey">#CCCCCC</color>
+    <color name="grey_2">#9E9E9E</color>
+    <color name="grey_3">#6D6D6D</color>
 </resources>

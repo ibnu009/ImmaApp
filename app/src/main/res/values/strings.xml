@@ -21,4 +21,14 @@
     <string name="purchase_order">Purchase Order</string>
     <string name="stock_opname">Stock Opname</string>
     <string name="permintaan_barang">Permintaan Barang</string>
+    <string name="dummy_kode_permintaan">PB0000000001</string>
+    <string name="_14_oktober_2021">14 Oktober 2021</string>
+    <string name="tanggal_permohonan">Tanggal Permohonan</string>
+    <string name="tanggal_dibutuhkan">Tanggal Dibutuhkan</string>
+    <string name="_28_05_2021">28-05-2021</string>
+    <string name="judul_pekerjaan">Judul Pekerjaan</string>
+    <string name="nama_pemohon">Nama Pemohon</string>
+    <string name="dummy_judul_pekerjaan">Asesmen Unit</string>
+    <string name="dummy_nama_pemohon">Wisnu Dwi Yanto</string>
+    <string name="detail_usulan_npermintaan_barang">Detail Usulan <br/>Permintaan Barang</string>
 </resources>
