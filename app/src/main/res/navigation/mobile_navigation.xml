@@ -29,4 +29,10 @@
         android:label="@string/permintaan_barang"
         tools:layout="@layout/fragment_detail_usulan"/>
 
+    <fragment
+        android:id="@+id/nav_po"
+        android:name="com.pjb.immaapp.ui.purchaseorder.DetailPurchaseOrderFragment"
+        android:label="Purchase Order"
+        tools:layout="@layout/fragment_detail_po"/>
+
 </navigation>

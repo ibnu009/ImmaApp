@@ -20,5 +20,10 @@
         <item android:id="@+id/nav_usulan"
             android:icon="@drawable/ic_usulan"
             android:title="@string/permintaan_barang"/>
+
+        <item android:id="@+id/nav_po"
+            android:icon="@drawable/ic_purchase_order"
+            android:title="Purchase Order"/>
+
     </group>
 </menu>

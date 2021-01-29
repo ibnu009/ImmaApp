@@ -13,11 +13,11 @@
     <color name="dark_grey">#898989</color>
     <color name="blue_background">#B1DEF8</color>
     <color name="background">#DDDDDD</color>
-
     <color name="light_red">#FF6060</color>
     <color name="light_orange">#FF9D2B</color>
     <color name="light_blue_2">#B1DEF8</color>
     <color name="dark_blue_2">#2BA6EC</color>
+    <color name="light_green">#72EF7E</color>
 
     <color name="grey">#CCCCCC</color>
     <color name="grey_2">#9E9E9E</color>

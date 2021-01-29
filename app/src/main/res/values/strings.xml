@@ -31,4 +31,13 @@
     <string name="dummy_judul_pekerjaan">Asesmen Unit</string>
     <string name="dummy_nama_pemohon">Wisnu Dwi Yanto</string>
     <string name="detail_usulan_npermintaan_barang">Detail Usulan <br/>Permintaan Barang</string>
+    <string name="usulan_pengadaan">Usulan Pengadaan....</string>
+    <string name="total_anggaran">Total Anggaran</string>
+    <string name="rp_3_445_000">Rp.3.445.000</string>
+    <string name="tanggal_order">Tanggal Order</string>
+    <string name="nama_vendor">Nama Vendor</string>
+    <string name="koperasi_sejahtera_kaltim_teluk">Koperasi Sejahtera Kaltim Teluk</string>
+    <string name="usulan_pengadaan_tabung_oksigen_portabel">Usulan Pengadaan Tabung Oksigen Portabel</string>
+    <string name="nomor_po">Nomor PO</string>
+    <string name="dummy_no_po">169.SP/SOT/600/UJKT/2020</string>
 </resources>
