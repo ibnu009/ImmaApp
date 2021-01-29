@@ -9,12 +9,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.pjb.immaapp.R
 import com.pjb.immaapp.ui.home.HomeViewModel
+import kotlinx.android.synthetic.main.fragment_detail_usulan.*
 
 class DetailUsulanFragment : Fragment(){
 
     private lateinit var detailUsulanViewModel: DetailUsulanViewModel
-
-    private lateinit var mShimmerViewContainer: ShimmerFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,9 +24,7 @@ class DetailUsulanFragment : Fragment(){
             ViewModelProvider(this).get(DetailUsulanViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_detail_usulan, container, false)
 
-        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
-
-        mShimmerViewContainer.startShimmerAnimation()
+        shimmer_view_container.startShimmer()
 
         return root
     }
