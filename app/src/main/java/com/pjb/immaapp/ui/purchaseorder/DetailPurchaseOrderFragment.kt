@@ -16,8 +16,6 @@ class DetailPurchaseOrderFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_detail_po, container, false)
 
         mShimmerFrameLayout = root.findViewById(R.id.shimmer_view_container)
-        mShimmerFrameLayout.startShimmerAnimation()
-
         return root
     }
 }
