@@ -9,14 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.pjb.immaapp.R
+import kotlinx.android.synthetic.main.fragment_usulan.*
 
 
 class UsulanFragment : Fragment() {
 
     private lateinit var usulanViewModel: UsulanViewModel
-
-    private lateinit var mShimmerViewContainer: ShimmerFrameLayout
-    private lateinit var searchView : SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,11 +25,7 @@ class UsulanFragment : Fragment() {
             ViewModelProvider(this).get(UsulanViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_usulan, container, false)
 
-        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
-        searchView = root.findViewById(R.id.search_view)
-        searchView.queryHint = "Cari Data Usulan"
-
-        mShimmerViewContainer.startShimmerAnimation()
+        shimmer_view_container.startShimmer()
 
         return root
     }

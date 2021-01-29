@@ -1,5 +1,11 @@
 package com.pjb.immaapp.di
 
+import com.pjb.immaapp.data.repository.LoginRepository
+import io.reactivex.disposables.CompositeDisposable
+
 object Injection {
-//    TODO membuat injection untuk provide semua kebutuhan class dan viewmodel
+//    Bagian untuk menyediakan semua kebutuhan viewmodel
+    fun provideLoginRepository(): LoginRepository = LoginRepository.getInstance()
+    fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
 }
