@@ -78,13 +78,13 @@
 
     <TextView
         android:id="@+id/nama_pemohon"
-        android:text="@string/dummy_nama_pemohon"
         style="@style/TextSub"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tx_nama_pemohon"
-        android:layout_marginStart="16dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/dummy_nama_pemohon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tx_nama_pemohon" />
 
     <TextView
         android:id="@+id/tx_detail_usulan"

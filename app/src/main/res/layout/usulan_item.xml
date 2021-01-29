@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="16dp"
-    android:elevation="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="12dp"
     android:background="@drawable/bg_search_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -15,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@drawable/bg_icon_red"
-        android:padding="12dp"
+        android:padding="10dp"
         android:src="@drawable/ic_time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,5 +44,16 @@
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/img_icon"
         app:layout_constraintTop_toBottomOf="@+id/tx_kode_permintaan" />
+
+    <ImageView
+        android:id="@+id/ic_chevron"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_right_chevron"
+        app:tint="@color/grey"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
