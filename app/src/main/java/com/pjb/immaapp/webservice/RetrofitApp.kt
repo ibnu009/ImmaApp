@@ -12,7 +12,7 @@ class RetrofitApp {
     companion object {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
-        private const val BASE_URL = "http://2a70eae73b13.ngrok.io/"
+        private const val BASE_URL = "http://fbcf39800902.ngrok.io/"
 
 
         private val interceptor: HttpLoggingInterceptor =

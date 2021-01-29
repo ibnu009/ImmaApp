@@ -53,6 +53,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
 
+//    sharedPreference
+    implementation "androidx.preference:preference-ktx:1.1.1"
+
     // Shimer
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
 
