@@ -40,4 +40,7 @@
     <string name="usulan_pengadaan_tabung_oksigen_portabel">Usulan Pengadaan Tabung Oksigen Portabel</string>
     <string name="nomor_po">Nomor PO</string>
     <string name="dummy_no_po">169.SP/SOT/600/UJKT/2020</string>
+    <string name="login_button">Login Button</string>
+    <string name="dummy_po_gudang">FK0204.SP/OMG/600/UJKT/2020</string>
+    <string name="daftar_usulan_permintaan_barang">Daftar Usulan Permintaan Barang</string>
 </resources>

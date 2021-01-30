@@ -102,6 +102,7 @@
             tools:layout_editor_absoluteX="16dp">
 
             <LinearLayout
+                android:id="@+id/btn_usulan"
                 android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -135,6 +136,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btn_permintaan_barang"
                 android:orientation="vertical"
                 android:layout_marginStart="16dp"
                 android:layout_width="0dp"
@@ -169,6 +171,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btn_stock_opname"
                 android:orientation="vertical"
                 android:layout_marginStart="16dp"
                 android:layout_width="0dp"
@@ -203,6 +206,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/btn_po"
                 android:orientation="vertical"
                 android:layout_marginStart="16dp"
                 android:layout_width="0dp"

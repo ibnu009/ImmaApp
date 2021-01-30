@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.pjb.immaapp.R
-import com.pjb.immaapp.ui.home.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_detail_usulan.*
+import kotlinx.android.synthetic.main.fragment_detail_usulan.view.*
 
 class DetailUsulanFragment : Fragment(){
 
@@ -24,7 +22,7 @@ class DetailUsulanFragment : Fragment(){
             ViewModelProvider(this).get(DetailUsulanViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_detail_usulan, container, false)
 
-        shimmer_view_container.startShimmer()
+        root.shimmer_view_container.startShimmer()
 
         return root
     }

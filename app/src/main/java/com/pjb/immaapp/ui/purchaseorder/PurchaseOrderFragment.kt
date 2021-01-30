@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.pjb.immaapp.R
+import kotlinx.android.synthetic.main.fragment_po.view.*
 
 class PurchaseOrderFragment : Fragment() {
 
@@ -22,7 +23,7 @@ class PurchaseOrderFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_po, container, false)
 
-        mShimmerLayout = root.findViewById(R.id.shimmer_view_container)
+        root.shimmer_view_container.startShimmer()
 
         return root
     }

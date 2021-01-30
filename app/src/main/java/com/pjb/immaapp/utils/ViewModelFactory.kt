@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pjb.immaapp.data.repository.LoginRepository
 import com.pjb.immaapp.di.Injection
+import com.pjb.immaapp.ui.gudangpermintaanbarang.GudangViewModel
 import com.pjb.immaapp.ui.login.LoginViewModel
+import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import io.reactivex.disposables.CompositeDisposable
 
 class ViewModelFactory(
@@ -29,6 +31,12 @@ class ViewModelFactory(
         return when{
             modelClass.isAssignableFrom(LoginViewModel::class.java) ->{
                 LoginViewModel(loginRepository, compositeDisposable) as T
+            }
+            modelClass.isAssignableFrom(UsulanViewModel::class.java)->{
+                UsulanViewModel() as T
+            }
+            modelClass.isAssignableFrom(GudangViewModel::class.java)->{
+                GudangViewModel() as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

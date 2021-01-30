@@ -14,16 +14,16 @@
         android:id="@+id/img_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/bg_icon_red"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_icon_green"
         android:padding="10dp"
-        android:src="@drawable/ic_time"
+        android:src="@drawable/ic_check"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tx_kode_permintaan"
+        android:id="@+id/tx_no_permintaan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dummy_kode_permintaan"
@@ -43,7 +43,7 @@
         android:textColor="@color/grey_3"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/img_icon"
-        app:layout_constraintTop_toBottomOf="@+id/tx_kode_permintaan" />
+        app:layout_constraintTop_toBottomOf="@+id/tx_no_permintaan" />
 
     <ImageView
         android:id="@+id/ic_chevron"

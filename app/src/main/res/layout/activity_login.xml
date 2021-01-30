@@ -62,7 +62,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:drawableStart="@drawable/ic_lock"
-        android:drawableEnd="@drawable/ic_visibilty"
         android:drawablePadding="12dp"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -71,25 +70,17 @@
         app:layout_constraintTop_toBottomOf="@+id/edt_username"
         tools:layout_editor_absoluteX="16dp" />
 
-    <TextView
-        android:id="@+id/tx_lupa_password"
-        android:layout_margin="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/lupa_password"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_password" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_login"
         android:src="@drawable/ic_right_arrow"
-        android:backgroundTint="@color/grey"
+        android:backgroundTint="@color/dark_blue"
         app:tint="@color/white"
+        android:enabled="false"
         android:layout_margin="32dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/login_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
