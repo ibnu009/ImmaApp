@@ -3,18 +3,15 @@ package com.pjb.immaapp.ui.login
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.EditText
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.pjb.immaapp.MainActivity
+import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.R
+import com.pjb.immaapp.data.entity.User
 import com.pjb.immaapp.data.entity.request.Credential
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.ViewModelFactory
@@ -41,8 +38,8 @@ class LoginActivity : AppCompatActivity() {
 
         fab_login.setOnClickListener {
             viewModel.getLoginRequest(getCredential()).observe(this, Observer {
-                Timber.d("Have user ${it.username}")
-                insertIntoSharedPreference(getCredential())
+                Timber.d("Have user ${it.name}")
+                insertIntoSharedPreference(getCredential(), it)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             })
@@ -79,10 +76,12 @@ class LoginActivity : AppCompatActivity() {
         )
     }
 
-    private fun insertIntoSharedPreference(credential: Credential) {
+    private fun insertIntoSharedPreference(credential: Credential, user: User) {
         val editor : SharedPreferences.Editor = sharedPreferences.edit()
         with(editor){
-            putString(SharedPreferencesKey.KEY_USERNAME, credential.username)
+            putString(SharedPreferencesKey.KEY_USERNAME, user.username)
+            putString(SharedPreferencesKey.KEY_NAME, user.name)
+            putString(SharedPreferencesKey.KEY_TOKEN, user.token)
             putString(SharedPreferencesKey.KEY_PASSWORD, credential.password)
             putString(SharedPreferencesKey.KEY_API, credential.apiKey)
             putBoolean(SharedPreferencesKey.KEY_LOGIN, true)

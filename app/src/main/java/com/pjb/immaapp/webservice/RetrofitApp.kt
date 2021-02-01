@@ -1,6 +1,7 @@
 package com.pjb.immaapp.webservice
 
 import com.pjb.immaapp.webservice.login.LoginService
+import com.pjb.immaapp.webservice.po.PurchaseOrderService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,6 +13,7 @@ class RetrofitApp {
     companion object {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
+        const val API_KEY = 12345
         private const val BASE_URL = "http://fbcf39800902.ngrok.io/"
 
 
@@ -28,6 +30,10 @@ class RetrofitApp {
 
         fun getLoginService(): LoginService {
             return retrofit.create(LoginService::class.java)
+        }
+
+        fun getPurchaseOrderService(): PurchaseOrderService {
+            return retrofit.create(PurchaseOrderService::class.java)
         }
     }
 

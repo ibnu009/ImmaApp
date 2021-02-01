@@ -1,30 +1,44 @@
 package com.pjb.immaapp.ui.purchaseorder
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.pjb.immaapp.R
-import kotlinx.android.synthetic.main.fragment_po.view.*
+import com.pjb.immaapp.utils.SharedPreferencesKey
+import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_API
+import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
+import com.pjb.immaapp.utils.ViewModelFactory
+import kotlinx.android.synthetic.main.fragment_po.*
 
 class PurchaseOrderFragment : Fragment() {
 
+    private lateinit var sharedPreferences: SharedPreferences
 
-    private lateinit var purchaseOrderViewModel: PurchaseOrderViewModel
-    private lateinit var mShimmerLayout : ShimmerFrameLayout
+    private val purchaseOrderViewModel by lazy {
+        val factory = ViewModelFactory.getInstance()
+        ViewModelProvider(this, factory).get(PurchaseOrderViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        purchaseOrderViewModel = ViewModelProvider(this).get(PurchaseOrderViewModel::class.java)
+        return inflater.inflate(R.layout.fragment_po, container, false)
+    }
 
-        val root = inflater.inflate(R.layout.fragment_po, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        shimmer_view_container.startShimmer()
 
-        root.shimmer_view_container.startShimmer()
+        sharedPreferences = activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
+        val apiKey = sharedPreferences.getString(KEY_API, "12345") ?: "Shared Preference Not Found"
+        val token = sharedPreferences.getString(KEY_TOKEN,"Not Found") ?: "Shared Preference Not Found"
 
-        return root
+        purchaseOrderViewModel.getListDataPo(apiKey, token, null).observe(viewLifecycleOwner, Observer {
+
+        })
     }
 }

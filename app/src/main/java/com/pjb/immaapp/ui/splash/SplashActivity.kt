@@ -4,10 +4,9 @@ import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import com.pjb.immaapp.MainActivity
+import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.R
 import com.pjb.immaapp.ui.login.LoginActivity
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_LOGIN

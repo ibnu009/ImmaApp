@@ -4,6 +4,6 @@ data class PurchaseOrder(
     var ponum: String,
     var encodePonum: String,
     var jobTitle: String,
-    var orderData: String,
+    var orderDate: String,
     var anggaran: Int
 )

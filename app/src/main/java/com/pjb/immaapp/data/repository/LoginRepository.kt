@@ -1,11 +1,9 @@
 package com.pjb.immaapp.data.repository
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pjb.immaapp.data.entity.User
 import com.pjb.immaapp.data.entity.request.Credential
-import com.pjb.immaapp.data.remote.response.ResponseUser
 import com.pjb.immaapp.webservice.RetrofitApp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -29,7 +27,6 @@ class LoginRepository {
         compositeDisposable: CompositeDisposable
     ): LiveData<User> {
         val resultUser = MutableLiveData<User>()
-
         compositeDisposable.add(apiService.loginRequest(credential)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())

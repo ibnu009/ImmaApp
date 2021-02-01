@@ -43,4 +43,5 @@
     <string name="login_button">Login Button</string>
     <string name="dummy_po_gudang">FK0204.SP/OMG/600/UJKT/2020</string>
     <string name="daftar_usulan_permintaan_barang">Daftar Usulan Permintaan Barang</string>
+    <string name="usulan_permintaan_barang">Usulan Permintaan Barang</string>
 </resources>
