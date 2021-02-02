@@ -29,7 +29,7 @@ class DataPoPagedListAdapter() :
         getItem(position)?.let { movie ->
             holder.bind(movie)
 //            holder.itemView.setOnClickListener {
-//                onClickedAction.onClicked(movie.movieId)
+//                onClickedAction.onClicked()
 //            }
         }
     }
