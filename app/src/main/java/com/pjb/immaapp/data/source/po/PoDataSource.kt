@@ -1,7 +1,9 @@
 package com.pjb.immaapp.data.source.po
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.pjb.immaapp.data.entity.PurchaseOrder
+import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.API_KEY
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.FIRST_PAGE
 import com.pjb.immaapp.webservice.po.PurchaseOrderService
@@ -14,15 +16,18 @@ class PoDataSource(
     private val compositeDisposable: CompositeDisposable,
     private val token: String,
     private val keyword: String?
-): PageKeyedDataSource<Int, PurchaseOrder>() {
+) : PageKeyedDataSource<Int, PurchaseOrder>() {
     private val page = FIRST_PAGE
     private val apiKey = API_KEY.toString()
+
+    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
 
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, PurchaseOrder>
     ) {
+        networkState.postValue(NetworkState.LOADING)
         compositeDisposable.add(
             apiService.requestListPurchaseOrder(
                 apiKey = apiKey,
@@ -30,9 +35,12 @@ class PoDataSource(
                 keywords = keyword
             ).subscribeOn(Schedulers.io()).subscribe(
                 {
-                    callback.onResult(it.data, null, page+1)
-                },{
+                    callback.onResult(it.data, null, page + 1)
+                    networkState.postValue(NetworkState.LOADED)
+                }, {
                     Timber.e("Error $it")
+                    networkState.postValue(NetworkState.ERROR)
+
                 }
             )
         )
@@ -43,6 +51,8 @@ class PoDataSource(
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PurchaseOrder>) {
+        networkState.postValue(NetworkState.LOADING)
+
         compositeDisposable.add(
             apiService.requestListPurchaseOrder(
                 apiKey = apiKey,
@@ -52,11 +62,15 @@ class PoDataSource(
                 {
                     if (500 >= params.key) {
                         callback.onResult(it.data, params.key + 1)
-                    } else{
+                        networkState.postValue(NetworkState.LOADED)
+
+                    } else {
                         Timber.d("End Of the list")
                     }
                 }, {
                     Timber.e("Error $it")
+                    networkState.postValue(NetworkState.ERROR)
+
                 }
             )
         )
