@@ -14,7 +14,7 @@ class PurchaseOrderViewModel(
 
     fun getListDataPo(
         token: String,
-        keywords: String?
+        keywords: String?,
     ): LiveData<PagedList<PurchaseOrder>> {
         return dataPoRepository.requestDataListPo(compositeDisposable, token, keywords)
     }

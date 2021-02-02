@@ -36,7 +36,7 @@ class PurchaseOrderAdapter : RecyclerView.Adapter<PurchaseOrderAdapter.ViewHolde
         fun bind(purchaseOrder: PurchaseOrder){
             with(itemView){
                 tx_job_title.text = purchaseOrder.jobTitle
-                tx_tanggal_permintaan.text = purchaseOrder.orderData
+                tx_tanggal_permintaan.text = purchaseOrder.orderDate
                 tx_nomor_po.text = purchaseOrder.ponum
                 tx_total_anggaran.text = purchaseOrder.anggaran.toString()
             }

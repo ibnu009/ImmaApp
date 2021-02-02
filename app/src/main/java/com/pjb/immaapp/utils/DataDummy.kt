@@ -37,7 +37,7 @@ object DataDummy {
                 ponum = "169.SP/SOT/600/UJKT/2020",
                 encodePonum = "MTY5LlNQL1NPVC82MDAvVUpLVC8yMDIw",
                 jobTitle =  "USULAN PENGADAAN TABUNG OKSIGEN PORTABEL",
-                orderData = "2020-07-14",
+                orderDate = "2020-07-14",
                 anggaran = 3445000
             )
         )
@@ -47,7 +47,7 @@ object DataDummy {
                 ponum = "FK.0011.SP/SEK/600/UJKT/2020",
                 encodePonum = "RksuMDAxMS5TUC9TRUsvNjAwL1VKS1QvMjAyMA==",
                 jobTitle =  "DO KP EKTRAFOODING JANUARI 2020",
-                orderData = "2020-01-23",
+                orderDate = "2020-01-23",
                 anggaran = 34371800
             )
         )

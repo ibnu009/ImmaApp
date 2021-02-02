@@ -32,7 +32,7 @@ class DataPoPagedListAdapter() :
     inner class DataPoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(po: PurchaseOrder) {
             with(itemView) {
-                tx_kode_permintaan.text = po.jobTitle
+                tx_job_title.text = po.jobTitle
                 tx_tanggal_permintaan.text = po.orderDate
                 tx_nomor_po.text = po.ponum
                 tx_total_anggaran.text = po.anggaran.toString()
