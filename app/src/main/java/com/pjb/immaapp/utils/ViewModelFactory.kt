@@ -6,6 +6,7 @@ import com.pjb.immaapp.data.repository.LoginRepository
 import com.pjb.immaapp.di.Injection
 import com.pjb.immaapp.ui.gudangpermintaanbarang.GudangViewModel
 import com.pjb.immaapp.ui.login.LoginViewModel
+import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import io.reactivex.disposables.CompositeDisposable
 
@@ -37,6 +38,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(GudangViewModel::class.java)->{
                 GudangViewModel() as T
+            }
+            modelClass.isAssignableFrom(PurchaseOrderViewModel::class.java)->{
+                PurchaseOrderViewModel() as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

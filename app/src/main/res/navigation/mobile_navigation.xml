@@ -12,18 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.pjb.immaapp.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.pjb.immaapp.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-
-    <fragment
         android:id="@+id/nav_usulan"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanFragment"
         android:label="@string/permintaan_barang"
@@ -31,8 +19,20 @@
 
     <fragment
         android:id="@+id/nav_po"
-        android:name="com.pjb.immaapp.ui.purchaseorder.DetailPurchaseOrderFragment"
+        android:name="com.pjb.immaapp.ui.purchaseorder.PurchaseOrderFragment"
         android:label="Purchase Order"
-        tools:layout="@layout/fragment_detail_po"/>
+        tools:layout="@layout/fragment_po"/>
+
+    <fragment
+        android:id="@+id/nav_gudang"
+        android:name="com.pjb.immaapp.ui.gudangpermintaanbarang.GudangFragment"
+        android:label="Gudang Permintaan Barang"
+        tools:layout="@layout/fragment_gudang"/>
+
+    <fragment
+        android:id="@+id/nav_opname"
+        android:name="com.pjb.immaapp.ui.stokopname.StokOpnameFragment"
+        android:label="Stock Opname"
+        tools:layout="@layout/fragment_opname" />
 
 </navigation>

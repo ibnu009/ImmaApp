@@ -15,15 +15,29 @@
         <item name="fontFamily">@font/source_sans_pro</item>
     </style>
 
+    <style name="ButtonStyle">
+        <item name="android:background">@drawable/bg_btn</item>
+    </style>
+
     <style name="TextTitle">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">#AAAAAA</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextSub">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextSectionTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextResult">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Theme.ImmaApp.NoActionBar">

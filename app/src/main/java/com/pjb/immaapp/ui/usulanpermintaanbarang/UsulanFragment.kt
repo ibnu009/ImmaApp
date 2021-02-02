@@ -20,7 +20,6 @@ import timber.log.Timber
 
 class UsulanFragment : Fragment() {
 
-    private lateinit var usulanViewModel: UsulanViewModel
     private lateinit var usulanPermintaanAdapter: UsulanPermintaanAdapter
 
     private val viewModel by lazy{
@@ -33,8 +32,6 @@ class UsulanFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        usulanViewModel =
-            ViewModelProvider(this).get(UsulanViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_usulan, container, false)
 
         return root
@@ -44,13 +41,13 @@ class UsulanFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         usulanPermintaanAdapter = UsulanPermintaanAdapter()
-        val listUsulan = usulanViewModel.getUsulan()
+        val listUsulan = viewModel.getUsulan()
 
         shimmer_view_container.visibility = View.GONE
-        initRvCart(requireContext(), listUsulan)
+        initRv(requireContext(), listUsulan)
     }
 
-    fun initRvCart(context: Context, list: List<PermintaanBarang>){
+    fun initRv(context: Context, list: List<PermintaanBarang>){
         usulanPermintaanAdapter.setList(list)
         Timber.d(list.size.toString())
         rv_usulan.adapter = usulanPermintaanAdapter

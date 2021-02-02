@@ -6,7 +6,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -43,4 +42,25 @@
     <string name="login_button">Login Button</string>
     <string name="dummy_po_gudang">FK0204.SP/OMG/600/UJKT/2020</string>
     <string name="daftar_usulan_permintaan_barang">Daftar Usulan Permintaan Barang</string>
+    <string name="daftar_gudang">Daftar Permintaan Barang</string>
+    <string name="belum_ada_permintaan_barang">Belum ada permintaan barang</string>
+    <string name="ayo_tambah_permintaan_barang">Ayo tambah permintaan barang</string>
+    <string name="daftar_purchase_order">Daftar Purchase Order</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="arahkan_qr_code_ke_kamera_anda_nuntuk_data_terbaca_otomatis">Arahkan QR Code ke kamera anda untuk data terbaca otomatis</string>
+    <string name="scan_sekarang">Scan Sekarang</string>
+    <string name="klik_disini_jika_mengecek_data_secara_manual">Klik disini jika mengecek data secara manual</string>
+    <string name="stok_opname">Stok Opname</string>
+    <string name="data_opname">Data Opname</string>
+    <string name="stok_nyata">Stok Nyata</string>
+    <string name="kondisi_barang">Kondisi Barang</string>
+    <string name="keterangan">Keterangan</string>
+    <string name="keterangan_barang">Keterangan Barang</string>
+    <string name="nomor_barang_1000001101">Nomor Barang : 1000001101</string>
+    <string name="deskripsi_unit_mask_non_woven">Deskripsi Unit : MASK, NON WOVEN</string>
+    <string name="satuan_unit_6">Satuan Unit : 6</string>
+    <string name="contoh_stoknyata">Contoh : 1,2,3</string>
+    <string name="contoh_kondisibarang">Contoh : Baik, Buruk, Rusak</string>
+    <string name="nomor_barang">Nomor Barang</string>
+    <string name="dummy_po">PENGADAAN LAMPU PORTABLE BIDANG ELEKTRIK</string>
 </resources>

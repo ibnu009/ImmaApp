@@ -8,14 +8,6 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
 
         <item android:id="@+id/nav_usulan"
             android:icon="@drawable/ic_usulan"
@@ -23,7 +15,17 @@
 
         <item android:id="@+id/nav_po"
             android:icon="@drawable/ic_purchase_order"
-            android:title="Purchase Order"/>
+            android:title="@string/purchase_order"/>
+
+        <item
+            android:id="@+id/nav_gudang"
+            android:icon="@drawable/ic_permintaan"
+            android:title="@string/permintaan_barang"/>
+
+        <item
+            android:id="@+id/nav_opname"
+            android:icon="@drawable/ic_stock_opname"
+            android:title="@string/stok_opname"/>
 
     </group>
 </menu>
