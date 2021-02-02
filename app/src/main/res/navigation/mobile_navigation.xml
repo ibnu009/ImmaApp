@@ -5,11 +5,18 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
-    <fragment
+     <fragment
         android:id="@+id/nav_home"
         android:name="com.pjb.immaapp.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+         <action
+             android:id="@+id/action_nav_home_to_nav_po"
+             app:destination="@id/nav_po" />
+         <action
+             android:id="@+id/action_nav_home_to_nav_usulan"
+             app:destination="@id/nav_usulan" />
+     </fragment>
 
     <fragment
         android:id="@+id/nav_usulan"

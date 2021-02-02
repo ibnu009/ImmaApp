@@ -6,6 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -63,4 +64,5 @@
     <string name="contoh_kondisibarang">Contoh : Baik, Buruk, Rusak</string>
     <string name="nomor_barang">Nomor Barang</string>
     <string name="dummy_po">PENGADAAN LAMPU PORTABLE BIDANG ELEKTRIK</string>
+    <string name="usulan_permintaan_barang">Usulan Permintaan Barang</string>
 </resources>

@@ -57,11 +57,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/img_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_logout"
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="24dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_logout"
             app:layout_constraintBottom_toTopOf="@+id/hr_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -102,11 +102,14 @@
             tools:layout_editor_absoluteX="16dp">
 
             <LinearLayout
+                android:clickable="true"
                 android:id="@+id/btn_usulan"
+                android:focusable="true"
                 android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:focusableInTouchMode="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -126,7 +129,7 @@
 
                 <TextView
                     android:textAlignment="center"
-                    android:text="Usulan\nPermintaan Barang"
+                    android:text="@string/usulan_permintaan_barang"
                     android:textSize="12sp"
                     android:textColor="@color/black"
                     android:layout_marginTop="4dp"
@@ -136,11 +139,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:clickable="true"
                 android:id="@+id/btn_permintaan_barang"
                 android:orientation="vertical"
                 android:layout_marginStart="16dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_weight="1">
 
                 <LinearLayout
@@ -171,6 +177,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:focusable="true"
+                android:clickable="true"
                 android:id="@+id/btn_stock_opname"
                 android:orientation="vertical"
                 android:layout_marginStart="16dp"
@@ -206,6 +214,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/btn_po"
                 android:orientation="vertical"
                 android:layout_marginStart="16dp"

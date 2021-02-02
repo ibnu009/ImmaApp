@@ -6,4 +6,6 @@ object SharedPreferencesKey {
     const val KEY_PASSWORD = "key.password"
     const val KEY_API = "key.api"
     const val KEY_LOGIN = "key.login"
+    const val KEY_NAME = "key.name"
+    const val KEY_TOKEN = "key.token"
 }
