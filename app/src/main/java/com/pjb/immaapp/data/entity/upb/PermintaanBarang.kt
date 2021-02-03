@@ -1,4 +1,4 @@
-package com.pjb.immaapp.data.entity
+package com.pjb.immaapp.data.entity.upb
 
 import com.google.gson.annotations.SerializedName
 

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.pjb.immaapp.data.entity.PermintaanBarang
+import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSource
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState

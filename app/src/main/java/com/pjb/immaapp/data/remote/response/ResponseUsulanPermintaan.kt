@@ -1,6 +1,6 @@
 package com.pjb.immaapp.data.remote.response
 
-import com.pjb.immaapp.data.entity.PermintaanBarang
+import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 
 data class ResponseUsulanPermintaan (
     var status : Int,

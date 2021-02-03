@@ -1,7 +1,7 @@
 package com.pjb.immaapp.utils
 
 import com.pjb.immaapp.data.entity.GudangPermintaanBarang
-import com.pjb.immaapp.data.entity.PermintaanBarang
+import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.data.entity.po.PurchaseOrder
 
 object DataDummy {

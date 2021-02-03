@@ -1,4 +1,4 @@
-package com.pjb.immaapp.data.entity
+package com.pjb.immaapp.data.entity.upb
 
 data class ItemPermintaanBarang(
     var itemNum: Int,

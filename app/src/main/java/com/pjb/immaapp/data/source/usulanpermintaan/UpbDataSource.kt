@@ -2,7 +2,7 @@ package com.pjb.immaapp.data.source.usulanpermintaan
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.pjb.immaapp.data.entity.PermintaanBarang
+import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.API_KEY
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.FIRST_PAGE

@@ -3,9 +3,8 @@ package com.pjb.immaapp.ui.usulanpermintaanbarang
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
-import com.pjb.immaapp.data.entity.PermintaanBarang
+import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.data.repository.DataUpbRepository
-import com.pjb.immaapp.utils.DataDummy
 import com.pjb.immaapp.utils.NetworkState
 import io.reactivex.disposables.CompositeDisposable
 

@@ -2,7 +2,7 @@ package com.pjb.immaapp.data.source.usulanpermintaan
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import com.pjb.immaapp.data.entity.PermintaanBarang
+import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.webservice.usulan.UsulanPermintaanBarangService
 import io.reactivex.disposables.CompositeDisposable
 
