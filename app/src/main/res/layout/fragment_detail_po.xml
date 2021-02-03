@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/tx_tanggal_order"
+        android:id="@+id/tx_title_tanggal_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tanggal_order"
@@ -16,17 +16,17 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/tanggal_order"
+        android:id="@+id/tx_tanggal_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/_28_05_2021"
         style="@style/TextSub"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tx_tanggal_order" />
+        app:layout_constraintTop_toBottomOf="@+id/tx_title_tanggal_order" />
 
     <TextView
-        android:id="@+id/tx_total_anggaran"
+        android:id="@+id/tx_title_total_anggaran"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/total_anggaran"
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/total_anggaran"
+        android:id="@+id/tx_total_anggaran"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/rp_3_445_000"
@@ -45,10 +45,10 @@
         android:textStyle="bold"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tx_total_anggaran" />
+        app:layout_constraintTop_toBottomOf="@+id/tx_title_total_anggaran" />
 
     <TextView
-        android:id="@+id/tx_nomor_po"
+        android:id="@+id/tx_title_nomor_po"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nomor_po"
@@ -56,32 +56,32 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tanggal_order" />
+        app:layout_constraintTop_toBottomOf="@+id/tx_tanggal_order" />
 
     <TextView
-        android:id="@+id/nomor_po"
+        android:id="@+id/tx_nomor_po"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dummy_no_po"
         style="@style/TextSub"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tx_nomor_po"
+        app:layout_constraintTop_toBottomOf="@id/tx_title_nomor_po"
         />
 
     <TextView
-        android:id="@+id/tx_judul_pekerjaan"
+        android:id="@+id/tx_title_judul_pekerjaan"
         android:text="@string/judul_pekerjaan"
         style="@style/TextTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nomor_po"
+        app:layout_constraintTop_toBottomOf="@id/tx_nomor_po"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/judul_pekerjaan"
+        android:id="@+id/tx_judul_pekerjaan"
         style="@style/TextSub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,25 +90,88 @@
         android:text="@string/usulan_pengadaan_tabung_oksigen_portabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tx_judul_pekerjaan" />
+        app:layout_constraintTop_toBottomOf="@id/tx_title_judul_pekerjaan" />
 
     <TextView
-        android:id="@+id/tx_nama_pemohon"
+        android:id="@+id/tx_title_nama_vendor"
         android:text="@string/nama_vendor"
         style="@style/TextTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/judul_pekerjaan"
+        app:layout_constraintTop_toBottomOf="@id/tx_judul_pekerjaan"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/nama_pemohon"
+        android:id="@+id/tx_nama_vendor"
         android:text="@string/koperasi_sejahtera_kaltim_teluk"
         style="@style/TextSub"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tx_nama_pemohon"
+        app:layout_constraintTop_toBottomOf="@id/tx_title_nama_vendor"
+        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tx_title_levering"
+        android:text="@string/levering"
+        style="@style/TextTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tx_nama_vendor"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tx_levering"
+        android:text="@string/dummy_levering"
+        style="@style/TextSub"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tx_title_levering"
+        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tx_title_status_po"
+        android:text="@string/status_po"
+        style="@style/TextTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tx_levering"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tx_status_po"
+        android:text="@string/complete"
+        style="@style/TextSub"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tx_title_status_po"
+        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tx_title_keterlambatan"
+        android:text="@string/keterlambatan"
+        style="@style/TextTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tx_status_po"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tx_keterlambatan"
+        android:text="@string/dummy_keterlambatan"
+        style="@style/TextSub"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tx_title_keterlambatan"
         android:layout_marginStart="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -124,7 +187,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nama_pemohon" />
+        app:layout_constraintTop_toBottomOf="@+id/tx_keterlambatan" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"

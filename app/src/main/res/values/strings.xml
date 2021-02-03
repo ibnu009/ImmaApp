@@ -71,4 +71,10 @@
     <string name="nomor_barang">Nomor Barang</string>
     <string name="dummy_po">PENGADAAN LAMPU PORTABLE BIDANG ELEKTRIK</string>
     <string name="usulan_permintaan_barang">Usulan Permintaan Barang</string>
+    <string name="levering">Levering</string>
+    <string name="dummy_levering">2020-08-28</string>
+    <string name="status_po">Status PO</string>
+    <string name="complete">Complete</string>
+    <string name="keterlambatan">Keterlambatan</string>
+    <string name="dummy_keterlambatan">180 Hari</string>
 </resources>
