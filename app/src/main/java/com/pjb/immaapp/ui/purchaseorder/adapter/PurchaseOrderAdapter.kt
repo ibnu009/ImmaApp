@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
-import com.pjb.immaapp.data.entity.PurchaseOrder
+import com.pjb.immaapp.data.entity.po.PurchaseOrder
 import kotlinx.android.synthetic.main.po_item.view.*
 
 class PurchaseOrderAdapter : RecyclerView.Adapter<PurchaseOrderAdapter.ViewHolder>(){

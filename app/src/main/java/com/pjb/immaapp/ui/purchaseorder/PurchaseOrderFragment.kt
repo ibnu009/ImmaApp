@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
+import com.pjb.immaapp.handler.OnClickedActionDataPo
 import com.pjb.immaapp.ui.purchaseorder.adapter.DataPoPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
@@ -28,6 +30,13 @@ class PurchaseOrderFragment : Fragment() {
         ViewModelProvider(this, factory).get(PurchaseOrderViewModel::class.java)
     }
 
+    private val onItemClicked = object : OnClickedActionDataPo {
+        override fun onClicked(poEncode: String) {
+            val action = PurchaseOrderFragmentDirections.actionNavPoToDetailPurchaseOrderFragment(poEncode)
+            findNavController().navigate(action)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +47,7 @@ class PurchaseOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        poPagedListAdapter = DataPoPagedListAdapter()
+        poPagedListAdapter = DataPoPagedListAdapter(onItemClicked)
         with(rv_po) {
             adapter = poPagedListAdapter
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
@@ -50,11 +59,6 @@ class PurchaseOrderFragment : Fragment() {
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Preference Not Found"
 
         shimmer_view_container.visibility = View.VISIBLE
-
-//        purchaseOrderViewModel.getListDataPo(token, null).observe(viewLifecycleOwner, Observer {
-//            poPagedListAdapter.submitList(it)
-//
-//        })
 
         showData(token, null)
     }
@@ -89,4 +93,5 @@ class PurchaseOrderFragment : Fragment() {
         super.onPause()
         shimmer_view_container.stopShimmer()
     }
+
 }

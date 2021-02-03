@@ -5,41 +5,58 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
-     <fragment
+    <fragment
         android:id="@+id/nav_home"
         android:name="com.pjb.immaapp.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
-         <action
-             android:id="@+id/action_nav_home_to_nav_po"
-             app:destination="@id/nav_po" />
-         <action
-             android:id="@+id/action_nav_home_to_nav_usulan"
-             app:destination="@id/nav_usulan" />
-     </fragment>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_nav_po"
+            app:destination="@id/nav_po" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_usulan"
+            app:destination="@id/nav_usulan" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_opname"
+            app:destination="@id/nav_opname" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_usulan"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanFragment"
         android:label="@string/permintaan_barang"
-        tools:layout="@layout/fragment_usulan"/>
+        tools:layout="@layout/fragment_usulan" />
 
     <fragment
         android:id="@+id/nav_po"
         android:name="com.pjb.immaapp.ui.purchaseorder.PurchaseOrderFragment"
         android:label="Purchase Order"
-        tools:layout="@layout/fragment_po"/>
+        tools:layout="@layout/fragment_po">
+        <action
+            android:id="@+id/action_nav_po_to_detailPurchaseOrderFragment"
+            app:destination="@id/detailPurchaseOrderFragment" >
+            <argument
+                android:name="passEncodePo"
+                android:defaultValue="k"
+                app:argType="string" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gudang"
         android:name="com.pjb.immaapp.ui.gudangpermintaanbarang.GudangFragment"
         android:label="Gudang Permintaan Barang"
-        tools:layout="@layout/fragment_gudang"/>
+        tools:layout="@layout/fragment_gudang" />
 
     <fragment
         android:id="@+id/nav_opname"
         android:name="com.pjb.immaapp.ui.stokopname.StokOpnameFragment"
         android:label="Stock Opname"
         tools:layout="@layout/fragment_opname" />
+
+    <fragment
+        android:id="@+id/detailPurchaseOrderFragment"
+        android:name="com.pjb.immaapp.ui.purchaseorder.DetailPurchaseOrderFragment"
+        android:label="DetailPurchaseOrderFragment" />
 
 </navigation>

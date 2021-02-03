@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Imma App</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!--  Khusus untuk valued String  -->
+    <string name="anggaran_po">Rp. %1$s</string>
+    <!--  End of valued String  -->
+
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="login">Login</string>
+    <string name="untuk_memulai">untuk memulai</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="lupa_password">Lupa Password ?</string>
+    <string name="dummy_nama">Halo, Ahmad Toni</string>
+    <string name="dummy_role">Inventory</string>
+    <string name="layanan">Layanan</string>
+    <string name="purchase_order">Purchase Order</string>
+    <string name="stock_opname">Stock Opname</string>
+    <string name="permintaan_barang">Permintaan Barang</string>
+    <string name="dummy_kode_permintaan">PB0000000001</string>
+    <string name="_14_oktober_2021">14 Oktober 2021</string>
+    <string name="tanggal_permohonan">Tanggal Permohonan</string>
+    <string name="tanggal_dibutuhkan">Tanggal Dibutuhkan</string>
+    <string name="_28_05_2021">28-05-2021</string>
+    <string name="judul_pekerjaan">Judul Pekerjaan</string>
+    <string name="nama_pemohon">Nama Pemohon</string>
+    <string name="dummy_judul_pekerjaan">Asesmen Unit</string>
+    <string name="dummy_nama_pemohon">Wisnu Dwi Yanto</string>
+    <string name="detail_usulan_npermintaan_barang">Detail Usulan <br/>Permintaan Barang</string>
+    <string name="usulan_pengadaan">Usulan Pengadaan....</string>
+    <string name="total_anggaran">Total Anggaran</string>
+    <string name="rp_3_445_000">Rp.3.445.000</string>
+    <string name="tanggal_order">Tanggal Order</string>
+    <string name="nama_vendor">Nama Vendor</string>
+    <string name="koperasi_sejahtera_kaltim_teluk">Koperasi Sejahtera Kaltim Teluk</string>
+    <string name="usulan_pengadaan_tabung_oksigen_portabel">Usulan Pengadaan Tabung Oksigen Portabel</string>
+    <string name="nomor_po">Nomor PO</string>
+    <string name="dummy_no_po">169.SP/SOT/600/UJKT/2020</string>
+    <string name="login_button">Login Button</string>
+    <string name="dummy_po_gudang">FK0204.SP/OMG/600/UJKT/2020</string>
+    <string name="daftar_usulan_permintaan_barang">Daftar Usulan Permintaan Barang</string>
+    <string name="daftar_gudang">Daftar Permintaan Barang</string>
+    <string name="belum_ada_permintaan_barang">Belum ada permintaan barang</string>
+    <string name="ayo_tambah_permintaan_barang">Ayo tambah permintaan barang</string>
+    <string name="daftar_purchase_order">Daftar Purchase Order</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="arahkan_qr_code_ke_kamera_anda_nuntuk_data_terbaca_otomatis">Arahkan QR Code ke kamera anda untuk data terbaca otomatis</string>
+    <string name="scan_sekarang">Scan Sekarang</string>
+    <string name="klik_disini_jika_mengecek_data_secara_manual">Klik disini jika mengecek data secara manual</string>
+    <string name="stok_opname">Stok Opname</string>
+    <string name="data_opname">Data Opname</string>
+    <string name="stok_nyata">Stok Nyata</string>
+    <string name="kondisi_barang">Kondisi Barang</string>
+    <string name="keterangan">Keterangan</string>
+    <string name="keterangan_barang">Keterangan Barang</string>
+    <string name="nomor_barang_1000001101">Nomor Barang : 1000001101</string>
+    <string name="deskripsi_unit_mask_non_woven">Deskripsi Unit : MASK, NON WOVEN</string>
+    <string name="satuan_unit_6">Satuan Unit : 6</string>
+    <string name="contoh_stoknyata">Contoh : 1,2,3</string>
+    <string name="contoh_kondisibarang">Contoh : Baik, Buruk, Rusak</string>
+    <string name="nomor_barang">Nomor Barang</string>
+    <string name="dummy_po">PENGADAAN LAMPU PORTABLE BIDANG ELEKTRIK</string>
+    <string name="usulan_permintaan_barang">Usulan Permintaan Barang</string>
+</resources>

@@ -27,12 +27,22 @@ class LoginRepository {
         compositeDisposable: CompositeDisposable
     ): LiveData<User> {
         val resultUser = MutableLiveData<User>()
-        compositeDisposable.add(apiService.loginRequest(credential)
+
+        compositeDisposable.add(
+//            obsersable
+            apiService.loginRequest(credential)
+//            Operator
             .observeOn(AndroidSchedulers.mainThread())
+//            observe on itu "data ini itu mau dipake ke thread apa"
             .subscribeOn(Schedulers.io())
-            .map { it.data }
+//             Main, IO, Default
+//             subscribe on ini, "data ini mau di proses di thread apa"
+                .map {
+                    it.data
+                }
             .subscribe({
                 Timber.d("Get User")
+//                Observer
                 resultUser.postValue(it)
             }, {
                 Timber.e("Error is $it")

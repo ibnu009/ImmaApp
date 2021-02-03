@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.pjb.immaapp.data.entity.PurchaseOrder
+import com.pjb.immaapp.data.entity.po.HeaderPurchaseOrder
+import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
+import com.pjb.immaapp.data.entity.po.PurchaseOrder
 import com.pjb.immaapp.data.source.po.PoDataSource
 import com.pjb.immaapp.data.source.po.PoDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
@@ -19,6 +21,7 @@ import timber.log.Timber
 class DataPoRepository {
     private val apiService = RetrofitApp.getPurchaseOrderService()
     private lateinit var poDataSourceFactory: PoDataSourceFactory
+
     companion object {
         @Volatile
         private var instance: DataPoRepository? = null
@@ -33,7 +36,9 @@ class DataPoRepository {
         token: String,
         keywords: String?
     ): LiveData<PagedList<PurchaseOrder>> {
-        lateinit var resultDataPo : LiveData<PagedList<PurchaseOrder>>
+
+        lateinit var resultDataPo: LiveData<PagedList<PurchaseOrder>>
+
         poDataSourceFactory = PoDataSourceFactory(apiService, compositeDisposable, token, keywords)
 
         val config = PagedList.Config.Builder()
@@ -43,6 +48,51 @@ class DataPoRepository {
 
         resultDataPo = LivePagedListBuilder(poDataSourceFactory, config).build()
         return resultDataPo
+    }
+
+    fun requestDetailDataPo(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String,
+        ponum: String
+    ): LiveData<HeaderPurchaseOrder> {
+        val resultDetailPo = MutableLiveData<HeaderPurchaseOrder>()
+        compositeDisposable.add(apiService.requestDetailPurchaseOrder(apiKey, token, ponum)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .map {
+                it.header
+            }.subscribe(
+                {
+                    resultDetailPo.postValue(it)
+                }, {
+                    Timber.e(it)
+                }
+            ))
+
+        return resultDetailPo
+    }
+
+    fun requestItemInDetailDataPo(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String,
+        ponum: String
+    ): LiveData<List<ItemPurchaseOrder>> {
+        val resultItemPo = MutableLiveData<List<ItemPurchaseOrder>>()
+        compositeDisposable.add(apiService.requestDetailPurchaseOrder(apiKey, token, ponum)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .map {
+                it.data
+            }.subscribe(
+                {
+                    resultItemPo.postValue(it)
+                }, {
+                    Timber.e(it)
+                }
+            ))
+        return resultItemPo
     }
 
     fun getNetWorkState(): LiveData<NetworkState> {
