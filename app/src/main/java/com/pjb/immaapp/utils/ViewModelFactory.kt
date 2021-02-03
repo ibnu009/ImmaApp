@@ -3,6 +3,7 @@ package com.pjb.immaapp.utils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pjb.immaapp.data.repository.DataPoRepository
+import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.data.repository.LoginRepository
 import com.pjb.immaapp.di.Injection
 import com.pjb.immaapp.ui.gudangpermintaanbarang.GudangViewModel
@@ -14,6 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
 class ViewModelFactory(
     private val loginRepository: LoginRepository,
     private val dataPoRepository: DataPoRepository,
+    private val dataUpbRepository: DataUpbRepository,
     private val compositeDisposable: CompositeDisposable
 ) : ViewModelProvider.NewInstanceFactory() {
 
@@ -25,6 +27,7 @@ class ViewModelFactory(
                 instance ?: ViewModelFactory(
                     Injection.provideLoginRepository(),
                     Injection.provideDataPoRepository(),
+                    Injection.provideDataUpbRepository(),
                     Injection.provideCompositeDisposable()
                 )
             }
@@ -37,7 +40,7 @@ class ViewModelFactory(
                 LoginViewModel(loginRepository, compositeDisposable) as T
             }
             modelClass.isAssignableFrom(UsulanViewModel::class.java) -> {
-                UsulanViewModel() as T
+                UsulanViewModel(dataUpbRepository, compositeDisposable ) as T
             }
             modelClass.isAssignableFrom(GudangViewModel::class.java) -> {
                 GudangViewModel() as T

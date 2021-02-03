@@ -7,23 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.pjb.immaapp.R
+import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataUpbPagedListAdapter
 import kotlinx.android.synthetic.main.fragment_detail_usulan.view.*
 
 class DetailUsulanFragment : Fragment(){
-
-    private lateinit var detailUsulanViewModel: DetailUsulanViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        detailUsulanViewModel =
-            ViewModelProvider(this).get(DetailUsulanViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_detail_usulan, container, false)
-
-        root.shimmer_view_container.startShimmer()
-
-        return root
+        return inflater.inflate(R.layout.fragment_detail_usulan, container, false)
     }
+
 }

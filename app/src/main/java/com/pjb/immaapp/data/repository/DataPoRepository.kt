@@ -28,7 +28,6 @@ class DataPoRepository {
             }
     }
 
-
     fun requestDataListPo(
         compositeDisposable: CompositeDisposable,
         token: String,

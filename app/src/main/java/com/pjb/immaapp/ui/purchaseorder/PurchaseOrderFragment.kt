@@ -14,7 +14,6 @@ import com.pjb.immaapp.R
 import com.pjb.immaapp.ui.purchaseorder.adapter.DataPoPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
-import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_API
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_po.*
@@ -49,6 +48,8 @@ class PurchaseOrderFragment : Fragment() {
             activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
         val token =
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Preference Not Found"
+
+        shimmer_view_container.visibility = View.VISIBLE
 
 //        purchaseOrderViewModel.getListDataPo(token, null).observe(viewLifecycleOwner, Observer {
 //            poPagedListAdapter.submitList(it)
