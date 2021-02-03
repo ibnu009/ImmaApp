@@ -16,6 +16,7 @@ import com.pjb.immaapp.handler.OnClickedActionDataPo
 import com.pjb.immaapp.ui.purchaseorder.adapter.DataPoPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
+import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_API
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_po.*
@@ -58,6 +59,11 @@ class PurchaseOrderFragment : Fragment() {
         val token =
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Preference Not Found"
 
+//        purchaseOrderViewModel.getListDataPo(token, null).observe(viewLifecycleOwner, Observer {
+//            poPagedListAdapter.submitList(it)
+//
+//        })
+
         shimmer_view_container.visibility = View.VISIBLE
 
         showData(token, null)
@@ -66,11 +72,11 @@ class PurchaseOrderFragment : Fragment() {
     private fun showData(token: String, keywords: String?) {
 
         purchaseOrderViewModel.getListDataPo(token, keywords)
-            .observe(viewLifecycleOwner, Observer { dataPo ->
+            .observe(viewLifecycleOwner, { dataPo ->
                 poPagedListAdapter.submitList(dataPo)
             })
 
-        purchaseOrderViewModel.networkState.observe(viewLifecycleOwner, Observer { network ->
+        purchaseOrderViewModel.networkState.observe(viewLifecycleOwner, { network ->
             if (purchaseOrderViewModel.listIsEmpty(
                     token,
                     keywords
@@ -93,5 +99,4 @@ class PurchaseOrderFragment : Fragment() {
         super.onPause()
         shimmer_view_container.stopShimmer()
     }
-
 }

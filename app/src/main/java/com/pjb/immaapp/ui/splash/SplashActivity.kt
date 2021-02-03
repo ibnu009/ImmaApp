@@ -43,7 +43,6 @@ class SplashActivity : AppCompatActivity() {
                 val activity = activityReference.get()
                 if (activity == null || activity.isFinishing) return
                 Timber.d("Berhasil")
-                val intent = Intent(activity, LoginActivity::class.java)
                 if (activity.isFinished()){
                     activity.startActivity(Intent(activity, MainActivity::class.java))
                     activity.finish()

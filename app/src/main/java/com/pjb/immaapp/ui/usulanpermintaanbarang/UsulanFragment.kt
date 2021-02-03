@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
+import com.pjb.immaapp.handler.OnClickedActionDataUpb
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataUpbPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
@@ -23,9 +25,16 @@ class UsulanFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var upbPagedListAdapter : DataUpbPagedListAdapter
 
-    private val viewModel by lazy{
+    private val upbViewModel by lazy{
         val factory = ViewModelFactory.getInstance()
         ViewModelProvider(this, factory).get(UsulanViewModel::class.java)
+    }
+
+    private val onItemClicked = object: OnClickedActionDataUpb{
+        override fun onClicked(idPermintaan: Int) {
+            val action = UsulanFragmentDirections.actionNavUsulanToDetailUsulanPermintaanBarangFragment(idPermintaan)
+            findNavController().navigate(action)
+        }
     }
 
     override fun onCreateView(
@@ -37,15 +46,15 @@ class UsulanFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        upbPagedListAdapter = DataUpbPagedListAdapter()
-
+        super.onViewCreated(view, savedInstanceState)
+        upbPagedListAdapter = DataUpbPagedListAdapter(onItemClicked)
         with(rv_usulan){
             adapter = upbPagedListAdapter
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
         }
+
         sharedPreferences =
             activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
-
         val token =
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Prefences Not Found"
 
@@ -56,13 +65,13 @@ class UsulanFragment : Fragment() {
     }
 
     private fun showData(token: String, keywords: String?) {
-        viewModel.getListDataUpb(token, keywords)
+        upbViewModel.getListDataUpb(token, keywords)
             .observe(viewLifecycleOwner, { dataUpb ->
                 upbPagedListAdapter.submitList(dataUpb)
             })
 
-        viewModel.networkState.observe(viewLifecycleOwner, { network ->
-            if (viewModel.listIsEmpty(
+        upbViewModel.networkState.observe(viewLifecycleOwner, { network ->
+            if (upbViewModel.listIsEmpty(
                     token, keywords
                 ) && network == NetworkState.LOADING
             ) {
@@ -81,7 +90,6 @@ class UsulanFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        shimmer_view_container.startShimmer()
+        shimmer_view_container.stopShimmer()
     }
-
 }

@@ -12,12 +12,24 @@ import kotlinx.android.synthetic.main.fragment_detail_usulan.view.*
 
 class DetailUsulanFragment : Fragment(){
 
+    companion object{
+        const val EXTRA_ID_PERMINTAAN = "EXTRA_ID_UPB"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_detail_usulan, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val bundle: Bundle ? = this.arguments
+        if (bundle != null){
+            val code = bundle.getInt(EXTRA_ID_PERMINTAAN, 1)
+        }
     }
 
 }

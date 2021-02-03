@@ -16,7 +16,7 @@ class UpbDataSource(
     private val compositeDisposable: CompositeDisposable,
     private val token: String,
     private val keyword : String?
-    ) : PageKeyedDataSource<Int, PermintaanBarang>() {
+    ): PageKeyedDataSource<Int, PermintaanBarang>() {
     private val page = FIRST_PAGE
     private val apiKey = API_KEY.toString()
 
@@ -50,20 +50,24 @@ class UpbDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PermintaanBarang>) {
         networkState.postValue(NetworkState.LOADING)
+
         compositeDisposable.add(
             apiService.requestListUsulanPermintaanBarang(
                 apiKey = apiKey,
                 token = token,
-                keywords = keyword
-            ).subscribeOn(Schedulers.io()).subscribe(
+                keywords = keyword)
+                .subscribeOn(
+                    Schedulers.io())
+                .subscribe(
                 {
-                    if(500 >= params.key){
+                    if (500 >= params.key){
                         callback.onResult(it.data, params.key + 1)
                         networkState.postValue(NetworkState.LOADED)
                     } else {
                         Timber.d("End of the list")
+                        networkState.postValue(NetworkState.ENDOFLIST)
                     }
-                },{
+                }, {
                     Timber.e("Error $it")
                     networkState.postValue(NetworkState.ERROR)
                 }

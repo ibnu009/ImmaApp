@@ -8,25 +8,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.upb.PermintaanBarang
+import com.pjb.immaapp.handler.OnClickedActionDataPo
+import com.pjb.immaapp.handler.OnClickedActionDataUpb
 import kotlinx.android.synthetic.main.usulan_item.view.*
 
-class DataUpbPagedListAdapter() :
-    PagedListAdapter<PermintaanBarang, DataUpbPagedListAdapter.DataUpbViewHolder>(DIFF_CALLBACK){
+class DataUpbPagedListAdapter(private val onClickedAction : OnClickedActionDataUpb) :
+    PagedListAdapter<PermintaanBarang, DataUpbPagedListAdapter.DataUpbViewHolder>(DIFF_CALLBACK) {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): DataUpbPagedListAdapter.DataUpbViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.usulan_item, parent, false)
-
         return DataUpbViewHolder(view)
     }
 
-    override fun onBindViewHolder(
-        holder: DataUpbPagedListAdapter.DataUpbViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: DataUpbViewHolder, position: Int) {
         getItem(position)?.let { upb ->
             holder.bind(upb)
+            holder.itemView.setOnClickListener{
+                onClickedAction.onClicked(upb.idPermintaan)
+            }
         }
     }
 
@@ -41,11 +43,8 @@ class DataUpbPagedListAdapter() :
 
     companion object {
         private val DIFF_CALLBACK : DiffUtil.ItemCallback<PermintaanBarang> = object :
-        DiffUtil.ItemCallback<PermintaanBarang>(){
-            override fun areItemsTheSame(
-                oldItem: PermintaanBarang,
-                newItem: PermintaanBarang
-            ): Boolean {
+            DiffUtil.ItemCallback<PermintaanBarang>() {
+            override fun areItemsTheSame(oldItem: PermintaanBarang, newItem: PermintaanBarang): Boolean {
                 return oldItem.no == newItem.no && oldItem.no == newItem.no
             }
 

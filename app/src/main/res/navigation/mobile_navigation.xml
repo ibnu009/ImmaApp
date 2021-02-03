@@ -25,7 +25,16 @@
         android:id="@+id/nav_usulan"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanFragment"
         android:label="@string/permintaan_barang"
-        tools:layout="@layout/fragment_usulan" />
+        tools:layout="@layout/fragment_usulan">
+        <action
+            android:id="@+id/action_nav_usulan_to_detailUsulanPermintaanBarangFragment"
+            app:destination="@id/detailUsulanPermintaanBarangFragment">
+            <argument
+                android:name="passIdPermintaan"
+                android:defaultValue= "1"
+                app:argType="integer"/>
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_po"
@@ -58,5 +67,10 @@
         android:id="@+id/detailPurchaseOrderFragment"
         android:name="com.pjb.immaapp.ui.purchaseorder.DetailPurchaseOrderFragment"
         android:label="DetailPurchaseOrderFragment" />
+
+    <fragment
+        android:id="@+id/detailUsulanPermintaanBarangFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.DetailUsulanFragment"
+        android:label="DetailUsulanPermintaanBarangFragment" />
 
 </navigation>

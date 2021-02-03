@@ -1,9 +1,6 @@
 package com.pjb.immaapp.main
 
 import android.os.Bundle
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.pjb.immaapp.R
