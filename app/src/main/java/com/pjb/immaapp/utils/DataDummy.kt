@@ -2,7 +2,7 @@ package com.pjb.immaapp.utils
 
 import com.pjb.immaapp.data.entity.GudangPermintaanBarang
 import com.pjb.immaapp.data.entity.PermintaanBarang
-import com.pjb.immaapp.data.entity.PurchaseOrder
+import com.pjb.immaapp.data.entity.po.PurchaseOrder
 
 object DataDummy {
     fun getPermintaanBarang(): ArrayList<PermintaanBarang>{

@@ -51,10 +51,10 @@ class HomeFragment : Fragment() {
         btn_po.setOnClickListener {
             it.findNavController().navigate(R.id.action_nav_home_to_nav_po)
         }
+
         btn_usulan.setOnClickListener{
             it.findNavController().navigate(R.id.action_nav_home_to_nav_usulan)
         }
-
     }
 
     private fun openLogoutDialog() {

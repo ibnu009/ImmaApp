@@ -9,15 +9,15 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
-import com.pjb.immaapp.data.entity.PurchaseOrder
+import com.pjb.immaapp.data.entity.po.PurchaseOrder
+import com.pjb.immaapp.handler.OnClickedActionDataPo
 import kotlinx.android.synthetic.main.po_item.view.*
-import timber.log.Timber
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DataPoPagedListAdapter() :
+class DataPoPagedListAdapter(private val onClickedAction: OnClickedActionDataPo) :
     PagedListAdapter<PurchaseOrder, DataPoPagedListAdapter.DataPoViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataPoViewHolder {
@@ -26,11 +26,11 @@ class DataPoPagedListAdapter() :
     }
 
     override fun onBindViewHolder(holder: DataPoViewHolder, position: Int) {
-        getItem(position)?.let { movie ->
-            holder.bind(movie)
-//            holder.itemView.setOnClickListener {
-//                onClickedAction.onClicked()
-//            }
+        getItem(position)?.let { po ->
+            holder.bind(po)
+            holder.itemView.setOnClickListener {
+                onClickedAction.onClicked(po.encodePonum)
+            }
         }
     }
 

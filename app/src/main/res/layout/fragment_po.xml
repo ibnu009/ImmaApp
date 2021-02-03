@@ -25,20 +25,12 @@
 
     </LinearLayout>
 
-    <TextView
-        android:text="@string/daftar_purchase_order"
-        style="@style/TextSectionTitle"
-        android:layout_margin="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/layout_search">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,6 +49,16 @@
         </LinearLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    <TextView
+        android:text="@string/daftar_purchase_order"
+        style="@style/TextSectionTitle"
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_po"

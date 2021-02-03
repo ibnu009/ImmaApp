@@ -2,7 +2,7 @@ package com.pjb.immaapp.data.source.po
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import com.pjb.immaapp.data.entity.PurchaseOrder
+import com.pjb.immaapp.data.entity.po.PurchaseOrder
 import com.pjb.immaapp.webservice.po.PurchaseOrderService
 import io.reactivex.disposables.CompositeDisposable
 
