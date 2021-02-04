@@ -39,11 +39,11 @@
         android:id="@+id/tx_total_anggaran"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:text="@string/rp_3_445_000"
         android:textColor="@color/light_blue"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tx_title_total_anggaran" />
 
@@ -180,19 +180,20 @@
         android:id="@+id/tx_detail_usulan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/detail_usulan_npermintaan_barang"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/detail_usulan_npermintaan_barang"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tx_keterlambatan" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container"
+        android:id="@+id/shimmer_view_container_detail_po_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/tx_detail_usulan">
 
         <LinearLayout
@@ -200,16 +201,38 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/shimmer_placeholder"/>
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder"/>
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder"/>
+            <include layout="@layout/shimmer_placeholder" />
 
-            <include layout="@layout/shimmer_placeholder"/>
+            <include layout="@layout/shimmer_placeholder" />
 
         </LinearLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container_detail_po"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toTopOf="@+id/shimmer_view_container_detail_po_rv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/shimmer_detail_po_placeholder" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_item_data_po"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tx_detail_usulan" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

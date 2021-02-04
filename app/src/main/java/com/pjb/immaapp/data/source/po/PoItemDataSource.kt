@@ -2,42 +2,40 @@ package com.pjb.immaapp.data.source.po
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.pjb.immaapp.data.entity.po.PurchaseOrder
+import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.API_KEY
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.FIRST_PAGE
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import com.pjb.immaapp.webservice.po.PurchaseOrderService
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-class PoDataSource(
+class PoItemDataSource(
     private val apiService: PurchaseOrderService,
     private val compositeDisposable: CompositeDisposable,
     private val token: String,
-    private val keyword: String?
-): PageKeyedDataSource<Int, PurchaseOrder>() {
+    private val ponum: String
+) : PageKeyedDataSource<Int, ItemPurchaseOrder>() {
 
-    private val page = FIRST_PAGE
-    private val apiKey = API_KEY.toString()
+    private val page = RetrofitApp.FIRST_PAGE
+    private val apiKey = RetrofitApp.API_KEY.toString()
 
     val networkState: MutableLiveData<NetworkState> = MutableLiveData()
 
     override fun loadInitial(
-        params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, PurchaseOrder>
+        params: PageKeyedDataSource.LoadInitialParams<Int>,
+        callback: PageKeyedDataSource.LoadInitialCallback<Int, ItemPurchaseOrder>
     ) {
         networkState.postValue(NetworkState.LOADING)
         compositeDisposable.add(
-            apiService.requestListPurchaseOrder(
+            apiService.requestDetailPurchaseOrder(
                 apiKey = apiKey,
                 token = token,
-                keywords = keyword
+                ponum = ponum
             ).subscribeOn(Schedulers.io()).subscribe(
                 {
-                    if (it.data.size < RetrofitApp.ITEM_PER_PAGE) {
+                    if (it.data.size < ITEM_PER_PAGE) {
                         callback.onResult(it.data, null, null)
                         networkState.postValue(NetworkState.LOADED)
                     }else{
@@ -52,34 +50,39 @@ class PoDataSource(
         )
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, PurchaseOrder>) {
+    override fun loadBefore(
+        params: PageKeyedDataSource.LoadParams<Int>,
+        callback: PageKeyedDataSource.LoadCallback<Int, ItemPurchaseOrder>
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, PurchaseOrder>) {
+    override fun loadAfter(
+        params: PageKeyedDataSource.LoadParams<Int>,
+        callback: PageKeyedDataSource.LoadCallback<Int, ItemPurchaseOrder>
+    ) {
         networkState.postValue(NetworkState.LOADING)
 
         compositeDisposable.add(
-            apiService.requestListPurchaseOrder(
+            apiService.requestDetailPurchaseOrder(
                 apiKey = apiKey,
                 token = token,
-                keywords = keyword)
-                .subscribeOn(
-                Schedulers.io())
+                ponum = ponum)
+                .subscribeOn(Schedulers.io())
                 .subscribe(
-                {
-                    if (it.data.size < ITEM_PER_PAGE) {
-                        callback.onResult(it.data, null)
-                        networkState.postValue(NetworkState.LOADED)
-                    } else{
-                        callback.onResult(it.data, params.key + 1)
-                        networkState.postValue(NetworkState.LOADED)
+                    {
+                        if (it.data.size < ITEM_PER_PAGE) {
+                            callback.onResult(it.data, null)
+                            networkState.postValue(NetworkState.LOADED)
+                        } else{
+                            callback.onResult(it.data, params.key + 1)
+                            networkState.postValue(NetworkState.LOADED)
+                        }
+                    }, {
+                        Timber.e("Error $it")
+                        networkState.postValue(NetworkState.ERROR)
                     }
-                }, {
-                    Timber.e("Error $it")
-                    networkState.postValue(NetworkState.ERROR)
-                }
-            )
+                )
         )
     }
 }

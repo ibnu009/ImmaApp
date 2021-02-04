@@ -6,6 +6,7 @@ import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.API_KEY
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.FIRST_PAGE
+import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import com.pjb.immaapp.webservice.usulan.UsulanPermintaanBarangService
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -34,8 +35,14 @@ class UpbDataSource(
                 keywords = keyword
             ).subscribeOn(Schedulers.io()).subscribe(
                 {
-                    callback.onResult(it.data, null, page +1)
-                    networkState.postValue(NetworkState.LOADED)
+                    if (it.data.size < ITEM_PER_PAGE) {
+                        callback.onResult(it.data, null, null)
+                        Timber.d("Check data UPB : ${it.data}")
+                        networkState.postValue(NetworkState.LOADED)
+                    }else{
+                        callback.onResult(it.data, null, page + 1)
+                        networkState.postValue(NetworkState.LOADED)
+                    }
                 }, {
                     Timber.e("Error $it")
                     networkState.postValue(NetworkState.ERROR)
@@ -55,23 +62,25 @@ class UpbDataSource(
             apiService.requestListUsulanPermintaanBarang(
                 apiKey = apiKey,
                 token = token,
-                keywords = keyword)
-                .subscribeOn(
-                    Schedulers.io())
-                .subscribe(
-                {
-                    if (500 >= params.key){
-                        callback.onResult(it.data, params.key + 1)
-                        networkState.postValue(NetworkState.LOADED)
-                    } else {
-                        Timber.d("End of the list")
-                        networkState.postValue(NetworkState.ENDOFLIST)
-                    }
-                }, {
-                    Timber.e("Error $it")
-                    networkState.postValue(NetworkState.ERROR)
-                }
+                keywords = keyword
             )
+                .subscribeOn(
+                    Schedulers.io()
+                )
+                .subscribe(
+                    {
+                        if (it.data.size < ITEM_PER_PAGE) {
+                            callback.onResult(it.data, null)
+                            networkState.postValue(NetworkState.LOADED)
+                        } else{
+                            callback.onResult(it.data, params.key + 1)
+                            networkState.postValue(NetworkState.LOADED)
+                        }
+                    }, {
+                        Timber.e("Error $it")
+                        networkState.postValue(NetworkState.ERROR)
+                    }
+                )
         )
     }
 }

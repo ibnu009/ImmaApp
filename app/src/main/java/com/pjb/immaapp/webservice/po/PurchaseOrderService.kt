@@ -17,7 +17,7 @@ interface PurchaseOrderService {
         @Field("keywords") keywords: String?
     ): Observable<ResponsePo>
 
-    @POST("/api/po/list")
+    @POST("/api/po/detail")
     @FormUrlEncoded
     fun requestDetailPurchaseOrder(
         @Field("api_key") apiKey: String,

@@ -43,12 +43,7 @@
         tools:layout="@layout/fragment_po">
         <action
             android:id="@+id/action_nav_po_to_detailPurchaseOrderFragment"
-            app:destination="@id/detailPurchaseOrderFragment" >
-            <argument
-                android:name="passEncodePo"
-                android:defaultValue="k"
-                app:argType="string" />
-        </action>
+            app:destination="@id/detailPurchaseOrderFragment"/>
     </fragment>
 
     <fragment
@@ -65,8 +60,13 @@
 
     <fragment
         android:id="@+id/detailPurchaseOrderFragment"
-        android:name="com.pjb.immaapp.ui.purchaseorder.DetailPurchaseOrderFragment"
-        android:label="DetailPurchaseOrderFragment" />
+        android:name="com.pjb.immaapp.ui.purchaseorder.detail.DetailPurchaseOrderFragment"
+        android:label="DetailPurchaseOrderFragment" >
+        <argument
+            android:name="passEncodePo"
+            android:defaultValue="null"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/detailUsulanPermintaanBarangFragment"

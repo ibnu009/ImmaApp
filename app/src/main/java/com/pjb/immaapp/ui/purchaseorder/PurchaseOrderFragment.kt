@@ -77,11 +77,7 @@ class PurchaseOrderFragment : Fragment() {
             })
 
         purchaseOrderViewModel.networkState.observe(viewLifecycleOwner, { network ->
-            if (purchaseOrderViewModel.listIsEmpty(
-                    token,
-                    keywords
-                ) && network == NetworkState.LOADING
-            ) {
+            if (purchaseOrderViewModel.listIsEmpty(token, keywords) && network == NetworkState.LOADING) {
                 shimmer_view_container.startShimmer()
             } else {
                 shimmer_view_container.stopShimmer()

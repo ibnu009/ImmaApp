@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.po.PurchaseOrder
 import com.pjb.immaapp.handler.OnClickedActionDataPo
+import com.pjb.immaapp.utils.ConverterHelper
 import kotlinx.android.synthetic.main.po_item.view.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -41,9 +42,8 @@ class DataPoPagedListAdapter(private val onClickedAction: OnClickedActionDataPo)
                 tx_tanggal_permintaan.text = po.orderDate
                 tx_nomor_po.text = po.ponum
 
-                val decimalFormat: DecimalFormat = NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
-                decimalFormat.applyPattern("#,###,###,###")
-                val anggaranFix = decimalFormat.format(po.anggaran)
+
+                val anggaranFix = ConverterHelper().convertAnggaranFormat(po.anggaran)
 
                 tx_total_anggaran.text = context.getString(R.string.anggaran_po, anggaranFix)
 

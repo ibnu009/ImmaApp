@@ -31,11 +31,10 @@ class PurchaseOrderViewModel(
     }
 
     fun getListItemPo(
-        apiKey: String,
         token: String,
         ponum: String
-    ): LiveData<List<ItemPurchaseOrder>> {
-        return dataPoRepository.requestItemInDetailDataPo(compositeDisposable, apiKey, token, ponum)
+    ): LiveData<PagedList<ItemPurchaseOrder>> {
+        return dataPoRepository.requestItemInDetailDataPo(compositeDisposable, token, ponum)
     }
 
     fun listIsEmpty(
@@ -45,8 +44,20 @@ class PurchaseOrderViewModel(
         return getListDataPo(token, keywords).value?.isEmpty() ?: true
     }
 
+    fun listItemIsEmty(token: String, ponum: String): Boolean {
+        return getListItemPo(token, ponum).value?.isEmpty() ?: true
+    }
+
     val networkState: LiveData<NetworkState> by lazy {
         dataPoRepository.getNetWorkState()
+    }
+
+    val networkStateDetail: LiveData<NetworkState> by lazy {
+        dataPoRepository.networkState
+    }
+
+    val netWorkItemPo: LiveData<NetworkState> by lazy {
+        dataPoRepository.getPoItemNetworkSate()
     }
 
     override fun onCleared() {

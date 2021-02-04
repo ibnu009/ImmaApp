@@ -10,6 +10,8 @@ import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
 import com.pjb.immaapp.data.entity.po.PurchaseOrder
 import com.pjb.immaapp.data.source.po.PoDataSource
 import com.pjb.immaapp.data.source.po.PoDataSourceFactory
+import com.pjb.immaapp.data.source.po.PoItemDataSource
+import com.pjb.immaapp.data.source.po.PoItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
@@ -21,6 +23,8 @@ import timber.log.Timber
 class DataPoRepository {
     private val apiService = RetrofitApp.getPurchaseOrderService()
     private lateinit var poDataSourceFactory: PoDataSourceFactory
+    private lateinit var poItemDataSourceFactory: PoItemDataSourceFactory
+    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
 
     companion object {
         @Volatile
@@ -36,9 +40,7 @@ class DataPoRepository {
         token: String,
         keywords: String?
     ): LiveData<PagedList<PurchaseOrder>> {
-
         lateinit var resultDataPo: LiveData<PagedList<PurchaseOrder>>
-
         poDataSourceFactory = PoDataSourceFactory(apiService, compositeDisposable, token, keywords)
 
         val config = PagedList.Config.Builder()
@@ -60,13 +62,18 @@ class DataPoRepository {
         compositeDisposable.add(apiService.requestDetailPurchaseOrder(apiKey, token, ponum)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .map {
-                it.header
-            }.subscribe(
+            .subscribe(
                 {
-                    resultDetailPo.postValue(it)
+                    if (it.status == 200) {
+                        resultDetailPo.postValue(it.header)
+                        networkState.postValue(NetworkState.LOADED)
+                        Timber.d("Complete data Header Po with PoNum: $ponum, data is ${it.header.vendor}")
+                    } else {
+                        networkState.postValue(NetworkState.ERROR)
+                        Timber.e("Error 400")
+                    }
                 }, {
-                    Timber.e(it)
+                    Timber.e("Error : $it")
                 }
             ))
 
@@ -75,23 +82,19 @@ class DataPoRepository {
 
     fun requestItemInDetailDataPo(
         compositeDisposable: CompositeDisposable,
-        apiKey: String,
         token: String,
         ponum: String
-    ): LiveData<List<ItemPurchaseOrder>> {
-        val resultItemPo = MutableLiveData<List<ItemPurchaseOrder>>()
-        compositeDisposable.add(apiService.requestDetailPurchaseOrder(apiKey, token, ponum)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .map {
-                it.data
-            }.subscribe(
-                {
-                    resultItemPo.postValue(it)
-                }, {
-                    Timber.e(it)
-                }
-            ))
+    ): LiveData<PagedList<ItemPurchaseOrder>> {
+        lateinit var resultItemPo: LiveData<PagedList<ItemPurchaseOrder>>
+        poItemDataSourceFactory =
+            PoItemDataSourceFactory(apiService, compositeDisposable, token, ponum)
+
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPageSize(ITEM_PER_PAGE)
+            .build()
+
+        resultItemPo = LivePagedListBuilder(poItemDataSourceFactory, config).build()
         return resultItemPo
     }
 
@@ -99,6 +102,13 @@ class DataPoRepository {
         return Transformations.switchMap(
             poDataSourceFactory.poLiveDataSource,
             PoDataSource::networkState
+        )
+    }
+
+    fun getPoItemNetworkSate(): LiveData<NetworkState> {
+        return Transformations.switchMap(
+            poItemDataSourceFactory.poLiveDataSource,
+            PoItemDataSource::networkState
         )
     }
 }
