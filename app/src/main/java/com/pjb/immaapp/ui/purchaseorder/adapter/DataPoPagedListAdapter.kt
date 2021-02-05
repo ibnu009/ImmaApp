@@ -42,7 +42,6 @@ class DataPoPagedListAdapter(private val onClickedAction: OnClickedActionDataPo)
                 tx_tanggal_permintaan.text = po.orderDate
                 tx_nomor_po.text = po.ponum
 
-
                 val anggaranFix = ConverterHelper().convertAnggaranFormat(po.anggaran)
 
                 tx_total_anggaran.text = context.getString(R.string.anggaran_po, anggaranFix)

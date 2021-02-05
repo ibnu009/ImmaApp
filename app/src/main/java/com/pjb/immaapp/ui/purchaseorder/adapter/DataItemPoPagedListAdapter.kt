@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.detail_item.view.*
 import kotlinx.android.synthetic.main.po_item.view.*
 import kotlinx.android.synthetic.main.po_item.view.tx_job_title
 
-class DataItemPoPagedListAdapter() :
+class DataItemPoPagedListAdapter :
     PagedListAdapter<ItemPurchaseOrder, DataItemPoPagedListAdapter.DataItemPoViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataItemPoViewHolder {
@@ -23,16 +23,17 @@ class DataItemPoPagedListAdapter() :
 
     override fun onBindViewHolder(holder: DataItemPoViewHolder, position: Int) {
         getItem(position)?.let { po ->
-            holder.bind(po)
+            holder.bind(po, position)
         }
     }
 
     inner class DataItemPoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(po: ItemPurchaseOrder) {
+        fun bind(po: ItemPurchaseOrder, index: Int) {
             with(itemView) {
                 tx_job_title.text = po.namaMaterial
                 val quantity = po.quantity.toString()
-                tx_qty.text = context.getString(R.string.x1, quantity)
+//                tx_qty.text = context.getString(R.string.x1, quantity)
+                tx_qty.text = ((index + 1).toString())
 
                 tx_total_anggaran_detai_item.text = po.unitCost
             }

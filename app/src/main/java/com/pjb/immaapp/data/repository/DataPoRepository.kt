@@ -45,6 +45,7 @@ class DataPoRepository {
 
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(ITEM_PER_PAGE)
             .setPageSize(ITEM_PER_PAGE)
             .build()
 

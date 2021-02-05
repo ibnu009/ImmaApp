@@ -25,6 +25,7 @@ class PurchaseOrderFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var poPagedListAdapter: DataPoPagedListAdapter
+    private lateinit var token: String
 
     private val purchaseOrderViewModel by lazy {
         val factory = ViewModelFactory.getInstance()
@@ -56,7 +57,7 @@ class PurchaseOrderFragment : Fragment() {
 
         sharedPreferences =
             activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
-        val token =
+        token =
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Preference Not Found"
 
 //        purchaseOrderViewModel.getListDataPo(token, null).observe(viewLifecycleOwner, Observer {
@@ -89,6 +90,10 @@ class PurchaseOrderFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         shimmer_view_container.startShimmer()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
     }
 
     override fun onPause() {

@@ -3,6 +3,7 @@ package com.pjb.immaapp.data.source.po
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
+import com.pjb.immaapp.data.entity.po.PurchaseOrder
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
@@ -10,6 +11,7 @@ import com.pjb.immaapp.webservice.po.PurchaseOrderService
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.*
 
 class PoItemDataSource(
     private val apiService: PurchaseOrderService,
@@ -18,7 +20,6 @@ class PoItemDataSource(
     private val ponum: String
 ) : PageKeyedDataSource<Int, ItemPurchaseOrder>() {
 
-    private val page = RetrofitApp.FIRST_PAGE
     private val apiKey = RetrofitApp.API_KEY.toString()
 
     val networkState: MutableLiveData<NetworkState> = MutableLiveData()
@@ -36,10 +37,12 @@ class PoItemDataSource(
             ).subscribeOn(Schedulers.io()).subscribe(
                 {
                     if (it.data.size < ITEM_PER_PAGE) {
+                        Timber.d("DataSizeO ${it.data.size}")
                         callback.onResult(it.data, null, null)
                         networkState.postValue(NetworkState.LOADED)
-                    }else{
-                        callback.onResult(it.data, null, page + 1)
+                    } else {
+                        Timber.d("DataSizeO ${it.data.size}")
+                        callback.onResult(it.data, null,  null)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }, {
@@ -67,15 +70,19 @@ class PoItemDataSource(
             apiService.requestDetailPurchaseOrder(
                 apiKey = apiKey,
                 token = token,
-                ponum = ponum)
+                ponum = ponum
+            )
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     {
                         if (it.data.size < ITEM_PER_PAGE) {
+                            Timber.d("DataSizeL ${it.data.size}")
                             callback.onResult(it.data, null)
                             networkState.postValue(NetworkState.LOADED)
-                        } else{
-                            callback.onResult(it.data, params.key + 1)
+                        } else {
+                            Timber.d("DataSizeL ${it.data.size}")
+                            val emptyList = Collections.emptyList<ItemPurchaseOrder>()
+                            callback.onResult(emptyList, null)
                             networkState.postValue(NetworkState.LOADED)
                         }
                     }, {

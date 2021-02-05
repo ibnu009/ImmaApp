@@ -2,6 +2,7 @@ package com.pjb.immaapp.data.source.po
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
 import com.pjb.immaapp.data.entity.po.PurchaseOrder
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp
@@ -12,6 +13,7 @@ import com.pjb.immaapp.webservice.po.PurchaseOrderService
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.*
 
 class PoDataSource(
     private val apiService: PurchaseOrderService,
@@ -43,6 +45,8 @@ class PoDataSource(
                     }else{
                         callback.onResult(it.data, null, page + 1)
                         networkState.postValue(NetworkState.LOADED)
+                        Timber.d("Data Size adalah : ${it.data.size}")
+
                     }
                 }, {
                     Timber.e("Error $it")
@@ -69,10 +73,13 @@ class PoDataSource(
                 .subscribe(
                 {
                     if (it.data.size < ITEM_PER_PAGE) {
+                        Timber.d("Data Size adalah : ${it.data.size}")
                         callback.onResult(it.data, null)
                         networkState.postValue(NetworkState.LOADED)
                     } else{
-                        callback.onResult(it.data, params.key + 1)
+                        Timber.d("Data Size adalah : ${it.data.size}")
+                        val emptyList = Collections.emptyList<PurchaseOrder>()
+                        callback.onResult(emptyList, params.key + 1)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }, {

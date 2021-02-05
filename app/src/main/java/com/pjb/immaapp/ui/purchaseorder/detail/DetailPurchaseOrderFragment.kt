@@ -68,7 +68,7 @@ class DetailPurchaseOrderFragment : Fragment() {
 
     private fun initiateDetail(token: String, codePo: String) {
         viewModel.getDetailDataPo("12345", token, codePo).observe(viewLifecycleOwner, Observer {
-            Timber.d("check vendor name ${it.vendor}")
+            Timber.d("check Data $it")
             tx_tanggal_order.text = it.tanggalOrder
             tx_judul_pekerjaan.text = it.jobTitle
             tx_nama_vendor.text = it.vendor
@@ -91,6 +91,7 @@ class DetailPurchaseOrderFragment : Fragment() {
     private fun initiateItemPo(token: String, codePo: String) {
         viewModel.getListItemPo(token, codePo).observe(viewLifecycleOwner, Observer {
             itemPagedListAdapter.submitList(it)
+            Timber.d("Received data is $it")
         })
 
         viewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
@@ -102,13 +103,5 @@ class DetailPurchaseOrderFragment : Fragment() {
                 shimmer_view_container_detail_po_rv.stopShimmer()
             }
         })
-    }
-
-    private fun viewStateCheck(status: Boolean) {
-        if (status) {
-            tx_title_tanggal_order.visibility = View.GONE
-        }else {
-
-        }
     }
 }
