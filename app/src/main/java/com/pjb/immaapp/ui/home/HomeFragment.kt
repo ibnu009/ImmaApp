@@ -2,7 +2,6 @@ package com.pjb.immaapp.ui.home
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -11,13 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.pjb.immaapp.R
+import com.pjb.immaapp.databinding.FragmentHomeBinding
 import com.pjb.immaapp.ui.login.LoginActivity
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_NAME
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
 
 class HomeFragment : Fragment() {
@@ -28,12 +26,15 @@ class HomeFragment : Fragment() {
     }
 
     private lateinit var sharedPreferences: SharedPreferences
+    private var _bindingHomeFragment: FragmentHomeBinding? = null
+    private val binding get() = _bindingHomeFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _bindingHomeFragment = FragmentHomeBinding.inflate(inflater, container, false)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -72,5 +73,10 @@ class HomeFragment : Fragment() {
         editor.clear().apply()
         val intent = Intent(this.context, LoginActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingHomeFragment = null
     }
 }

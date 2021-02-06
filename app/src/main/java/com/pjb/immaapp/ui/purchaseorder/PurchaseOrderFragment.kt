@@ -7,19 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pjb.immaapp.R
+import com.pjb.immaapp.databinding.FragmentPoBinding
 import com.pjb.immaapp.handler.OnClickedActionDataPo
 import com.pjb.immaapp.ui.purchaseorder.adapter.DataPoPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
-import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_API
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_po.*
 
 class PurchaseOrderFragment : Fragment() {
 
@@ -34,25 +31,31 @@ class PurchaseOrderFragment : Fragment() {
 
     private val onItemClicked = object : OnClickedActionDataPo {
         override fun onClicked(poEncode: String) {
-            val action = PurchaseOrderFragmentDirections.actionNavPoToDetailPurchaseOrderFragment(poEncode)
+            val action =
+                PurchaseOrderFragmentDirections.actionNavPoToDetailPurchaseOrderFragment(poEncode)
             findNavController().navigate(action)
         }
     }
+
+    private var _bindingFragmentPo: FragmentPoBinding? = null
+    private val binding get() = _bindingFragmentPo
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_po, container, false)
+//        return inflater.inflate(R.layout.fragment_po, container, false)
+        _bindingFragmentPo = FragmentPoBinding.inflate(inflater, container, false)
+        return _bindingFragmentPo?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         poPagedListAdapter = DataPoPagedListAdapter(onItemClicked)
-        with(rv_po) {
-            adapter = poPagedListAdapter
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+        with(binding?.rvPo) {
+            this?.adapter = poPagedListAdapter
+            this?.layoutManager = LinearLayoutManager(this?.context, LinearLayoutManager.VERTICAL, false)
         }
 
         sharedPreferences =
@@ -60,12 +63,7 @@ class PurchaseOrderFragment : Fragment() {
         token =
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Preference Not Found"
 
-//        purchaseOrderViewModel.getListDataPo(token, null).observe(viewLifecycleOwner, Observer {
-//            poPagedListAdapter.submitList(it)
-//
-//        })
-
-        shimmer_view_container.visibility = View.VISIBLE
+        binding?.shimmerViewContainer?.visibility = View.VISIBLE
 
         showData(token, null)
     }
@@ -78,18 +76,22 @@ class PurchaseOrderFragment : Fragment() {
             })
 
         purchaseOrderViewModel.networkState.observe(viewLifecycleOwner, { network ->
-            if (purchaseOrderViewModel.listIsEmpty(token, keywords) && network == NetworkState.LOADING) {
-                shimmer_view_container.startShimmer()
+            if (purchaseOrderViewModel.listIsEmpty(
+                    token,
+                    keywords
+                ) && network == NetworkState.LOADING
+            ) {
+                binding?.shimmerViewContainer?.startShimmer()
             } else {
-                shimmer_view_container.stopShimmer()
-                shimmer_view_container.visibility = View.GONE
+                binding?.shimmerViewContainer?.stopShimmer()
+                binding?.shimmerViewContainer?.visibility = View.GONE
             }
         })
     }
 
     override fun onResume() {
         super.onResume()
-        shimmer_view_container.startShimmer()
+        binding?.shimmerViewContainer?.startShimmer()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -98,6 +100,11 @@ class PurchaseOrderFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        shimmer_view_container.stopShimmer()
+        binding?.shimmerViewContainer?.stopShimmer()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingFragmentPo = null
     }
 }

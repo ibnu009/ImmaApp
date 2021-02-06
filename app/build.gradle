@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -36,6 +36,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
+        viewBinding true
         dataBinding true
     }
 }
@@ -47,6 +48,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+//    databind
+    kapt "com.android.databinding:compiler:3.1.4"
 
 //    MVVM
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
@@ -68,7 +72,8 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
 //    Pagingation
-    implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
+    implementation 'androidx.paging:paging-runtime-ktx:3.0.0-alpha13'
+    implementation "androidx.paging:paging-rxjava2-ktx:3.0.0-alpha13"
 
 //    Data Binding
     kapt "com.android.databinding:compiler:3.1.4"
