@@ -8,8 +8,6 @@ import com.pjb.immaapp.data.entity.local.po.PurchaseOrders
 import com.pjb.immaapp.data.local.db.ImmaDatabase
 import com.pjb.immaapp.webservice.po.PurchaseOrderService
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
-import java.io.InvalidObjectException
 
 @ExperimentalPagingApi
 class DataPoMediator(

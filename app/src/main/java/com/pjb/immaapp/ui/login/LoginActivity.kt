@@ -10,12 +10,11 @@ import android.text.TextWatcher
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.pjb.immaapp.main.MainActivity
-import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.User
 import com.pjb.immaapp.data.entity.request.Credential
+import com.pjb.immaapp.databinding.ActivityLoginBinding
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.ViewModelFactory
-import kotlinx.android.synthetic.main.activity_login.*
 import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
@@ -27,16 +26,20 @@ class LoginActivity : AppCompatActivity() {
         ViewModelProvider(this, factory).get(LoginViewModel::class.java)
     }
 
+    private var _activtyLoginBinding: ActivityLoginBinding? = null
+    val binding get() = _activtyLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        _activtyLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
-        edt_username.addTextChangedListener(textWatcher)
-        edt_password.addTextChangedListener(textWatcher)
+        binding?.edtUsername?.addTextChangedListener(textWatcher)
+        binding?.edtPassword?.addTextChangedListener(textWatcher)
 
         sharedPreferences = this.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)
 
-        fab_login.setOnClickListener {
+        binding?.fabLogin?.setOnClickListener {
             viewModel.getLoginRequest(getCredential()).observe(this, Observer {
                 Timber.d("Have user ${it.name}")
                 insertIntoSharedPreference(getCredential(), it)
@@ -52,10 +55,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            val username = edt_username.text.toString().trim()
-            val password = edt_password.text.toString().trim()
+            val username = binding?.edtUsername?.text.toString().trim()
+            val password = binding?.edtPassword?.text.toString().trim()
 
-            fab_login.isEnabled = !username.isEmpty() && !password.isEmpty()
+            binding?.fabLogin?.isEnabled = username.isNotEmpty() && password.isNotEmpty()
         }
 
         override fun afterTextChanged(p0: Editable?) {
@@ -65,8 +68,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getCredential(): Credential {
-        val username = edt_username.text.toString().trim()
-        val password = edt_password.text.toString().trim()
+        val username = binding?.edtUsername?.text.toString().trim()
+        val password = binding?.edtPassword?.text.toString().trim()
         val apiKey = 12345
 
         return Credential(

@@ -2,23 +2,20 @@ package com.pjb.immaapp.ui.purchaseorder.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
-import kotlinx.android.synthetic.main.detail_item.view.*
-import kotlinx.android.synthetic.main.po_item.view.*
-import kotlinx.android.synthetic.main.po_item.view.tx_job_title
+import com.pjb.immaapp.databinding.DetailItemBinding
 
 class DataItemPoPagedListAdapter :
-    PagedListAdapter<ItemPurchaseOrder, DataItemPoPagedListAdapter.DataItemPoViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<ItemPurchaseOrder, DataItemPoPagedListAdapter.DataItemPoViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataItemPoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.detail_item, parent, false)
-        return DataItemPoViewHolder(view)
+        val binding = DetailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DataItemPoViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: DataItemPoViewHolder, position: Int) {
@@ -27,15 +24,13 @@ class DataItemPoPagedListAdapter :
         }
     }
 
-    inner class DataItemPoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DataItemPoViewHolder(private val binding: DetailItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(po: ItemPurchaseOrder, index: Int) {
-            with(itemView) {
-                tx_job_title.text = po.namaMaterial
+            with(binding) {
+                binding.txJobTitle.text = po.namaMaterial
                 val quantity = po.quantity.toString()
-//                tx_qty.text = context.getString(R.string.x1, quantity)
-                tx_qty.text = ((index + 1).toString())
-
-                tx_total_anggaran_detai_item.text = po.unitCost
+                binding.txQty.text = binding.root.context.getString(R.string.x1, quantity)
+                binding.txTotalAnggaranDetaiItem.text = po.unitCost
             }
         }
     }

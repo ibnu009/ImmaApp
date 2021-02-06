@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentHomeBinding
 import com.pjb.immaapp.ui.login.LoginActivity
@@ -43,17 +44,17 @@ class HomeFragment : Fragment() {
         sharedPreferences = activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
         val userName: String = sharedPreferences.getString(KEY_NAME, "Not Found") ?: "Shared Preference Not Found"
         Timber.d("User is $userName")
-        tx_nama.text = userName
+        binding?.txNama?.text = userName
 
-        btn_logout.setOnClickListener {
+        binding?.btnLogout?.setOnClickListener {
             openLogoutDialog()
         }
 
-        btn_po.setOnClickListener {
+        binding?.btnPo?.setOnClickListener {
             it.findNavController().navigate(R.id.action_nav_home_to_nav_po)
         }
 
-        btn_usulan.setOnClickListener{
+        binding?.btnUsulan?.setOnClickListener{
             it.findNavController().navigate(R.id.action_nav_home_to_nav_usulan)
         }
     }

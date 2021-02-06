@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
@@ -14,6 +14,7 @@ data class PurchaseOrders(
     val data: List<PurchaseOrderEntity>
 ) : Parcelable{
 
+    @Parcelize
     @Entity
     data class PurchaseOrderEntity(
         @PrimaryKey(autoGenerate = true)
@@ -29,7 +30,7 @@ data class PurchaseOrders(
         var orderDate: String,
         @ColumnInfo(name = "anggaran")
         var anggaran: Int
-    )
+    ): Parcelable
 
     @Parcelize
     @Entity(tableName = "po_remote_keys")

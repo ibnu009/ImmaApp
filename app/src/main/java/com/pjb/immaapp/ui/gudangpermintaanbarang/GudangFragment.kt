@@ -10,28 +10,30 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.GudangPermintaanBarang
+import com.pjb.immaapp.databinding.FragmentGudangBinding
 import com.pjb.immaapp.ui.gudangpermintaanbarang.adapter.GudangPermintaanAdapter
 import com.pjb.immaapp.utils.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_gudang.*
 import timber.log.Timber
 
 class GudangFragment : Fragment() {
 
     private lateinit var gudangPermintaanAdapter: GudangPermintaanAdapter
 
-    private val gudangViewModel by lazy{
+    private val gudangViewModel by lazy {
         val factory = ViewModelFactory.getInstance()
         ViewModelProvider(this, factory).get(GudangViewModel::class.java)
     }
+
+    private var _gudangFragmentBinding: FragmentGudangBinding? = null
+    val binding get() = _gudangFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_gudang, container, false)
-
-        return root
+        _gudangFragmentBinding = FragmentGudangBinding.inflate(inflater, container, false)
+        return inflater.inflate(R.layout.fragment_gudang, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,9 +49,9 @@ class GudangFragment : Fragment() {
     private fun initRv(context: Context, list: List<GudangPermintaanBarang>) {
         gudangPermintaanAdapter.setList(list)
         Timber.d(list.size.toString())
-        with(rv_gudang_item){
-            adapter = gudangPermintaanAdapter
-            layoutManager = LinearLayoutManager(context)
+        with(binding?.rvGudangItem) {
+            this?.adapter = gudangPermintaanAdapter
+            this?.layoutManager = LinearLayoutManager(context)
         }
 
     }

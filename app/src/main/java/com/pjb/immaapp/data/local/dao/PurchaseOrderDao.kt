@@ -5,16 +5,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.pjb.immaapp.data.entity.local.po.PurchaseOrderEntity
+import com.pjb.immaapp.data.entity.local.po.PurchaseOrders
 
 @Dao
 interface PurchaseOrderDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertPurchaseOrder(listPo: List<PurchaseOrderEntity>)
+    fun insertPurchaseOrder(listPo: List<PurchaseOrders.PurchaseOrderEntity>)
 
     @Query("SELECT * FROM purchaseorderentity")
-    fun getAllDataPo(): DataSource.Factory<Int, PurchaseOrderEntity>
+    fun getAllDataPo(): DataSource.Factory<Int, PurchaseOrders.PurchaseOrderEntity>
 
     @Query("DELETE FROM purchaseorderentity")
     fun clearDataPo()
