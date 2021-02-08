@@ -10,14 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pjb.immaapp.R
+import com.pjb.immaapp.databinding.FragmentUsulanBinding
 import com.pjb.immaapp.handler.OnClickedActionDataUpb
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataUpbPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_usulan.*
 
 
 class UsulanFragment : Fragment() {
@@ -37,20 +36,25 @@ class UsulanFragment : Fragment() {
         }
     }
 
+    private var _bindingFragmentUpb : FragmentUsulanBinding? = null
+    private val binding get() = _bindingFragmentUpb
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_usulan, container, false)
+        _bindingFragmentUpb = FragmentUsulanBinding.inflate(inflater, container, false)
+
+        return _bindingFragmentUpb?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         upbPagedListAdapter = DataUpbPagedListAdapter(onItemClicked)
-        with(rv_usulan){
-            adapter = upbPagedListAdapter
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+        with(binding?.rvUsulan){
+            this?.adapter = upbPagedListAdapter
+            this?.layoutManager = LinearLayoutManager(this?.context, LinearLayoutManager.VERTICAL, false)
         }
 
         sharedPreferences =
@@ -58,7 +62,7 @@ class UsulanFragment : Fragment() {
         val token =
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Prefences Not Found"
 
-        shimmer_view_container.visibility = View.VISIBLE
+        binding?.shimmerViewContainer?.visibility = View.VISIBLE
 
         showData(token, null)
 
@@ -75,21 +79,26 @@ class UsulanFragment : Fragment() {
                     token, keywords
                 ) && network == NetworkState.LOADING
             ) {
-                shimmer_view_container.startShimmer()
+                binding?.shimmerViewContainer?.startShimmer()
             } else {
-                shimmer_view_container.stopShimmer()
-                shimmer_view_container.visibility = View.GONE
+                binding?.shimmerViewContainer?.stopShimmer()
+                binding?.shimmerViewContainer?.visibility = View.GONE
             }
         })
     }
 
     override fun onResume() {
         super.onResume()
-        shimmer_view_container.startShimmer()
+        binding?.shimmerViewContainer?.startShimmer()
     }
 
     override fun onPause() {
         super.onPause()
-        shimmer_view_container.stopShimmer()
+        binding?.shimmerViewContainer?.stopShimmer()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingFragmentUpb = null
     }
 }

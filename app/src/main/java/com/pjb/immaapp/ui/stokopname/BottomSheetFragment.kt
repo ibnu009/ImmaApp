@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pjb.immaapp.R
+import com.pjb.immaapp.databinding.BottomSheetFragmentBinding
 
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -15,14 +16,18 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private var _bindingFragmentBottomSheetFragment: BottomSheetFragmentBinding? = null
+    private val binding = _bindingFragmentBottomSheetFragment
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.bottom_sheet_fragment, container, false)
+        _bindingFragmentBottomSheetFragment = BottomSheetFragmentBinding.inflate(
+            inflater, container, false)
 
-        return view
+        return _bindingFragmentBottomSheetFragment?.root
     }
 
 }

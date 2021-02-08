@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.pjb.immaapp.R
-import kotlinx.android.synthetic.main.fragment_opname.*
+import com.pjb.immaapp.databinding.FragmentOpnameBinding
 
 class StokOpnameFragment : Fragment() {
     override fun onCreateView(
@@ -14,15 +14,18 @@ class StokOpnameFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_opname, container, false)
+        _bindingFragmentStokOpname = FragmentOpnameBinding.inflate(inflater, container, false)
 
-        return root
+        return _bindingFragmentStokOpname?.root
     }
+
+    private var _bindingFragmentStokOpname : FragmentOpnameBinding? = null
+    private val binding get() = _bindingFragmentStokOpname
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tx_manual.setOnClickListener(object: View.OnClickListener{
+        binding?.txManual?.setOnClickListener(object: View.OnClickListener{
             override fun onClick(p0: View?) {
                 val bottomSheetFragment = BottomSheetFragment.newInstance()
                 activity?.supportFragmentManager?.let { bottomSheetFragment.show(it,"bottom_sheet") }

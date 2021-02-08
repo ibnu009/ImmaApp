@@ -84,6 +84,8 @@ class DetailPurchaseOrderFragment : Fragment() {
             } else{
                 shimmer_view_container_detail_po.stopShimmer()
                 shimmer_view_container_detail_po.visibility = View.GONE
+                layout_keterangan.visibility = View.VISIBLE
+                tx_detail_po.visibility = View.VISIBLE
             }
         })
     }
