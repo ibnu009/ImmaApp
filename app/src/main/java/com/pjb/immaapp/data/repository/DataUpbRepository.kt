@@ -12,6 +12,8 @@ import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSourceFactory
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSource
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
+import com.pjb.immaapp.utils.NetworkState.Companion.ERROR
+import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import io.reactivex.Scheduler
@@ -62,6 +64,8 @@ class DataUpbRepository {
         token: String,
         idPermintaan: Int
     ): LiveData<HeaderUsulanPermintaanBarang> {
+        networkState.postValue(NetworkState.LOADING)
+
         val resultDetailUpb = MutableLiveData<HeaderUsulanPermintaanBarang>()
         compositeDisposable.add(apiService.requestDetailUpb(apiKey, token, idPermintaan)
             .observeOn(AndroidSchedulers.mainThread())
@@ -72,8 +76,10 @@ class DataUpbRepository {
             .subscribe(
                 {
                     resultDetailUpb.postValue(it)
+                    networkState.postValue(LOADED)
                 }, {
                     Timber.e(it)
+                    networkState.postValue(ERROR)
                 }
             ))
         return resultDetailUpb
@@ -94,7 +100,6 @@ class DataUpbRepository {
             .build()
 
         resultItemUpb = LivePagedListBuilder(upbItemDataSourceFactory, config).build()
-
         return resultItemUpb
     }
 

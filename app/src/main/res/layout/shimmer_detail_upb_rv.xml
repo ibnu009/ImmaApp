@@ -93,26 +93,6 @@
         app:layout_constraintTop_toBottomOf="@id/tx_title_judul_pekerjaan" />
 
     <View
-        android:id="@+id/tx_title_nama_vendor"
-        android:layout_width="100dp"
-        android:layout_height="12dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tx_judul_pekerjaan" />
-
-    <View
-        android:id="@+id/tx_nama_vendor"
-        android:layout_width="150dp"
-        android:layout_height="14dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="3dp"
-        android:background="@color/background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tx_title_nama_vendor" />
-
-    <View
         android:id="@+id/tx_detail_usulan"
         android:layout_height="14dp"
         android:layout_width="100dp"
@@ -120,7 +100,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tx_nama_vendor"/>
+        app:layout_constraintTop_toBottomOf="@id/tx_judul_pekerjaan"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

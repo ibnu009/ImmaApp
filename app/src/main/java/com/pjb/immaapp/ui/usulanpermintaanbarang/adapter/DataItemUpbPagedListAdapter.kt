@@ -31,9 +31,9 @@ class DataItemUpbPagedListAdapter:
 
     inner class DataItemUpbViewHolder(private val binding: DetailItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(upb : ItemPermintaanBarang){
-            with(itemView){
+            with(binding){
                 binding.txJobTitle.text = upb.barang
-                binding.txQty.text = context.getString(R.string.x1, upb.quantity.toString())
+                binding.txQty.text = binding.root.context.getString(R.string.x1, upb.quantity.toString())
             }
         }
     }

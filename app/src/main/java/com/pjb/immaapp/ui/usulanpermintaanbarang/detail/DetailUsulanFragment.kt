@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataItemUpbPagedListAdapter
-import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
-import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.ViewModelFactory
 import timber.log.Timber
 
@@ -76,15 +74,16 @@ class DetailUsulanFragment : Fragment() {
         upbViewModel.getDetailDataUpb("12345", token, idPermintaan)
             .observe(viewLifecycleOwner, Observer {
                 Timber.d("Check data $it")
+
                 binding?.txNamaPemohon?.text = it.pemohon
                 binding?.txJudulPekerjaan?.text = it.jobTitle
                 binding?.txTanggalDibutuhkan?.text = it.tanggalDibutuhkan
                 binding?.txTanggalPermohonan?.text = it.tanggalPermohonan
-
             })
 
         upbViewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
-            if (upbViewModel.listItemIsEmpty(token, idPermintaan) && it == NetworkState.LOADING) {
+            Timber.d("Network : $it")
+            if (it == NetworkState.LOADING) {
                 binding?.shimmerViewContainerDetailUpb?.startShimmer()
             } else {
                 binding?.shimmerViewContainerDetailUpb?.stopShimmer()
@@ -101,10 +100,12 @@ class DetailUsulanFragment : Fragment() {
             Timber.d("Receive data $it")
         })
 
-        upbViewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
-            if (upbViewModel.listItemIsEmpty(token, idPermintaan) && it == NetworkState.LOADING){
+        upbViewModel.netWorkItemUpb.observe(viewLifecycleOwner, Observer {
+            if (upbViewModel.listItemIsEmpty(token, idPermintaan) && it == NetworkState.LOADING) {
+                Timber.d("Network : ${it}")
                 binding?.shimmerViewContainerDetailUpbRv?.startShimmer()
             } else {
+                Timber.d("Network : ${it}")
                 binding?.shimmerViewContainerDetailUpbRv?.stopShimmer()
                 binding?.shimmerViewContainerDetailUpbRv?.visibility = View.GONE
             }

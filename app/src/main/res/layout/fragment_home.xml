@@ -67,7 +67,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/hr_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black" />
+                app:backgroundTint="@color/light_blue" />
 
             <TextView
                 android:id="@+id/tx_role"
@@ -104,14 +104,11 @@
                 tools:layout_editor_absoluteX="16dp">
 
                 <LinearLayout
-                    android:clickable="true"
                     android:id="@+id/btn_usulan"
-                    android:focusable="true"
                     android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusableInTouchMode="true">
+                    android:layout_weight="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"

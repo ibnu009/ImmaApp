@@ -36,13 +36,14 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _bindingHomeFragment = FragmentHomeBinding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return _bindingHomeFragment?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPreferences = activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
-        val userName: String = sharedPreferences.getString(KEY_NAME, "Not Found") ?: "Shared Preference Not Found"
+        val userName: String =
+            sharedPreferences.getString(KEY_NAME, "Not Found") ?: "Shared Preference Not Found"
         Timber.d("User is $userName")
         binding?.txNama?.text = userName
 
@@ -54,7 +55,7 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(R.id.action_nav_home_to_nav_po)
         }
 
-        binding?.btnUsulan?.setOnClickListener{
+        binding?.btnUsulan?.setOnClickListener {
             it.findNavController().navigate(R.id.action_nav_home_to_nav_usulan)
         }
     }
@@ -62,7 +63,8 @@ class HomeFragment : Fragment() {
     private fun openLogoutDialog() {
         val alertDialog = AlertDialog.Builder(this.context)
         alertDialog.setTitle("Logout?")
-            .setPositiveButton("Logout"
+            .setPositiveButton(
+                "Logout"
             ) { _, _ -> logout() }
             .setNegativeButton("Cancel", null)
         val alert = alertDialog.create()
@@ -70,7 +72,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun logout() {
-        val editor : SharedPreferences.Editor = sharedPreferences.edit()
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.clear().apply()
         val intent = Intent(this.context, LoginActivity::class.java)
         startActivity(intent)

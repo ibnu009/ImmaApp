@@ -63,6 +63,10 @@ class UsulanViewModel(
         dataUpbRepository.getNetworkState()
     }
 
+    val netWorkItemUpb: LiveData<NetworkState> by lazy {
+        dataUpbRepository.getUpbItemNetworkState()
+    }
+
     val networkStateDetail: LiveData<NetworkState> by lazy {
         dataUpbRepository.networkState
     }
