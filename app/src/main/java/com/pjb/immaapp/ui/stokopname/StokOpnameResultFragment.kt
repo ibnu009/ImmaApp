@@ -8,7 +8,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentOpnameResultBinding
-import kotlinx.android.synthetic.main.fragment_opname_result.*
 
 class StokOpnameResultFragment : Fragment() {
 
@@ -27,8 +26,8 @@ class StokOpnameResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        img_collapse.setOnClickListener {
-            if (layout_data_opname.visibility == View.GONE) {
+        binding?.imgCollapse?.setOnClickListener {
+            if (binding?.layoutDataOpname?.visibility == View.GONE) {
                 binding?.imgCollapse?.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources,

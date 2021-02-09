@@ -3,6 +3,7 @@ package com.pjb.immaapp.ui.purchaseorder.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,7 @@ import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
 import com.pjb.immaapp.databinding.DetailItemBinding
 
 class DataItemPoPagedListAdapter :
-    PagingDataAdapter<ItemPurchaseOrder, DataItemPoPagedListAdapter.DataItemPoViewHolder>(DIFF_CALLBACK) {
+    PagedListAdapter<ItemPurchaseOrder, DataItemPoPagedListAdapter.DataItemPoViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataItemPoViewHolder {
         val binding = DetailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

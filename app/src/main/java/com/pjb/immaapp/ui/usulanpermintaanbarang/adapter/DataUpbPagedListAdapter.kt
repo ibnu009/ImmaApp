@@ -1,26 +1,26 @@
 package com.pjb.immaapp.ui.usulanpermintaanbarang.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.upb.PermintaanBarang
-import com.pjb.immaapp.handler.OnClickedActionDataPo
+import com.pjb.immaapp.databinding.UsulanItemBinding
 import com.pjb.immaapp.handler.OnClickedActionDataUpb
-import kotlinx.android.synthetic.main.usulan_item.view.*
 
-class DataUpbPagedListAdapter(private val onClickedAction : OnClickedActionDataUpb) :
+class   DataUpbPagedListAdapter(private val onClickedAction : OnClickedActionDataUpb) :
     PagedListAdapter<PermintaanBarang, DataUpbPagedListAdapter.DataUpbViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): DataUpbPagedListAdapter.DataUpbViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.usulan_item, parent, false)
-        return DataUpbViewHolder(view)
+        val binding = UsulanItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DataUpbViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: DataUpbViewHolder, position: Int) {
@@ -32,11 +32,11 @@ class DataUpbPagedListAdapter(private val onClickedAction : OnClickedActionDataU
         }
     }
 
-    inner class DataUpbViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class DataUpbViewHolder(private val binding: UsulanItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(upb : PermintaanBarang){
-            with(itemView){
-                tx_no_permintaan.text = upb.noPermintaan
-                tx_tanggal_permintaan.text = upb.tanggalPermohonan
+            with(binding){
+                binding.txTanggalPermintaan.text = upb.tanggalPermohonan
+                binding.txNoPermintaan.text = upb.noPermintaan
             }
         }
     }

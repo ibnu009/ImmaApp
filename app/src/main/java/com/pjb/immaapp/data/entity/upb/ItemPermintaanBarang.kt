@@ -3,7 +3,7 @@ package com.pjb.immaapp.data.entity.upb
 import com.google.gson.annotations.SerializedName
 
 data class ItemPermintaanBarang(
-    @field:SerializedName("itemnun")
+    @field:SerializedName("itemnum")
     var itemNum: Int,
     @field:SerializedName("barang")
     var barang: String,

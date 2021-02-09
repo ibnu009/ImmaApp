@@ -12,12 +12,12 @@ class UpbDataSourceFactory(
     private val token: String,
     private val keyword: String?
 ) : DataSource.Factory<Int, PermintaanBarang>() {
-    val usulanPermintaanLiveDataSource = MutableLiveData<UpbDataSource>()
+    val upbLiveDataSource = MutableLiveData<UpbDataSource>()
 
     override fun create(): DataSource<Int, PermintaanBarang> {
         val usulanDataSource = UpbDataSource(apiService, compositeDisposable, token, keyword)
 
-        usulanPermintaanLiveDataSource.postValue(usulanDataSource)
+        upbLiveDataSource.postValue(usulanDataSource)
         return usulanDataSource
     }
 }

@@ -1,7 +1,5 @@
 package com.pjb.immaapp.utils
 
-import com.pjb.immaapp.R
-import kotlinx.android.synthetic.main.po_item.view.*
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*

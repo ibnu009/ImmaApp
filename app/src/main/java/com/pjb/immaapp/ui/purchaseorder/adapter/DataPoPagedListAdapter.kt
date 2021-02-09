@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.paging.PagedListAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DataPoPagedListAdapter(private val onClickedAction: OnClickedActionDataPo) :
-    PagingDataAdapter<PurchaseOrder, DataPoPagedListAdapter.DataPoViewHolder>(DIFF_CALLBACK) {
+    PagedListAdapter<PurchaseOrder, DataPoPagedListAdapter.DataPoViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataPoViewHolder {
         val binding = PoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

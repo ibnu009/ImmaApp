@@ -11,14 +11,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
+import com.pjb.immaapp.databinding.FragmentDetailPoBinding
 import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderViewModel
 import com.pjb.immaapp.ui.purchaseorder.adapter.DataItemPoPagedListAdapter
-import com.pjb.immaapp.ui.purchaseorder.adapter.DataPoPagedListAdapter
 import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_detail_po.*
 import timber.log.Timber
 
 class DetailPurchaseOrderFragment : Fragment() {
@@ -36,22 +35,30 @@ class DetailPurchaseOrderFragment : Fragment() {
         ViewModelProvider(this, factory)[PurchaseOrderViewModel::class.java]
     }
 
+    private var _bindingFragmentDetailPo : FragmentDetailPoBinding? = null
+    private val binding get() = _bindingFragmentDetailPo
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_detail_po, container, false)
+        _bindingFragmentDetailPo = FragmentDetailPoBinding.inflate(inflater, container, false)
+
+        return _bindingFragmentDetailPo?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         itemPagedListAdapter = DataItemPoPagedListAdapter()
-        with(rv_item_data_po) {
-            adapter = itemPagedListAdapter
-            layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+        with(binding?.rvItemDataPo) {
+            this?.adapter = itemPagedListAdapter
+            this?.layoutManager = LinearLayoutManager(this?.context, LinearLayoutManager.VERTICAL, false)
         }
+
+        binding?.shimmerViewContainerDetailPo?.visibility = View.VISIBLE
+        binding?.shimmerViewContainerDetailPoRv?.visibility = View.VISIBLE
 
         val safeArgs = arguments?.let { DetailPurchaseOrderFragmentArgs.fromBundle(it) }
         val codePo = safeArgs?.passEncodePo
@@ -69,23 +76,23 @@ class DetailPurchaseOrderFragment : Fragment() {
     private fun initiateDetail(token: String, codePo: String) {
         viewModel.getDetailDataPo("12345", token, codePo).observe(viewLifecycleOwner, Observer {
             Timber.d("check Data $it")
-            tx_tanggal_order.text = it.tanggalOrder
-            tx_judul_pekerjaan.text = it.jobTitle
-            tx_nama_vendor.text = it.vendor
-            tx_levering.text = it.levering
+            binding?.txTanggalOrder?.text = it.tanggalOrder
+            binding?.txJudulPekerjaan?.text = it.jobTitle
+            binding?.txNamaVendor?.text = it.vendor
+            binding?.txLevering?.text = it.levering
 
             val anggaranFix = ConverterHelper().convertAnggaranFormat(it.anggaran)
-            tx_total_anggaran.text = context?.getString(R.string.anggaran_po, anggaranFix)
+            binding?.txTotalAnggaran?.text = context?.getString(R.string.anggaran_po, anggaranFix)
         })
 
         viewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
             if (viewModel.listItemIsEmty(token, codePo) && it == NetworkState.LOADING) {
-                shimmer_view_container_detail_po.startShimmer()
+                binding?.shimmerViewContainerDetailPo?.startShimmer()
             } else{
-                shimmer_view_container_detail_po.stopShimmer()
-                shimmer_view_container_detail_po.visibility = View.GONE
-                layout_keterangan.visibility = View.VISIBLE
-                tx_detail_po.visibility = View.VISIBLE
+                binding?.shimmerViewContainerDetailPo?.stopShimmer()
+                binding?.shimmerViewContainerDetailPo?.visibility = View.GONE
+                binding?.layoutKeterangan?.visibility = View.VISIBLE
+                binding?.txDetailPo?.visibility = View.VISIBLE
             }
         })
     }
@@ -98,11 +105,11 @@ class DetailPurchaseOrderFragment : Fragment() {
 
         viewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
             if (viewModel.listItemIsEmty(token, codePo) && it == NetworkState.LOADING) {
-                shimmer_view_container_detail_po_rv.visibility = View.VISIBLE
-                shimmer_view_container_detail_po_rv.startShimmer()
+                binding?.shimmerViewContainerDetailPoRv?.visibility = View.VISIBLE
+                binding?.shimmerViewContainerDetailPoRv?.startShimmer()
             } else {
-                shimmer_view_container_detail_po_rv.visibility = View.GONE
-                shimmer_view_container_detail_po_rv.stopShimmer()
+                binding?.shimmerViewContainerDetailPoRv?.visibility = View.GONE
+                binding?.shimmerViewContainerDetailPoRv?.stopShimmer()
             }
         })
     }

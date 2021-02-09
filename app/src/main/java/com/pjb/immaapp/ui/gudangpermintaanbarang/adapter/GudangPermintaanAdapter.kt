@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.GudangPermintaanBarang
-import kotlinx.android.synthetic.main.gudang_item.view.*
+import com.pjb.immaapp.databinding.GudangItemBinding
 
 class GudangPermintaanAdapter : RecyclerView.Adapter<GudangPermintaanAdapter.ViewHolder>() {
 
@@ -20,9 +20,8 @@ class GudangPermintaanAdapter : RecyclerView.Adapter<GudangPermintaanAdapter.Vie
         parent: ViewGroup,
         viewType: Int
     ): GudangPermintaanAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.gudang_item, parent, false)
-
-        return ViewHolder(view)
+        val binding = GudangItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GudangPermintaanAdapter.ViewHolder, position: Int) {
@@ -32,10 +31,10 @@ class GudangPermintaanAdapter : RecyclerView.Adapter<GudangPermintaanAdapter.Vie
 
     override fun getItemCount(): Int = listPermintaanBarang.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(private val binding: GudangItemBinding) : RecyclerView.ViewHolder(binding?.root){
         fun bind(gudangPermintaanBarang: GudangPermintaanBarang){
             with(itemView){
-                tx_no_gudang.text = gudangPermintaanBarang.nomorPO
+                binding.txNoGudang.text = gudangPermintaanBarang.nomorPO
             }
         }
     }

@@ -3,13 +3,14 @@ package com.pjb.immaapp.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.*
 import com.pjb.immaapp.data.entity.upb.HeaderUsulanPermintaanBarang
 import com.pjb.immaapp.data.entity.upb.ItemPermintaanBarang
 import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSource
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSourceFactory
+import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSource
+import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
@@ -21,12 +22,14 @@ import timber.log.Timber
 
 class DataUpbRepository {
     private val apiService = RetrofitApp.getUpbService()
-    private lateinit var upbDataSourceFactory : UpbDataSourceFactory
+    private lateinit var upbDataSourceFactory: UpbDataSourceFactory
+    private lateinit var upbItemDataSourceFactory: UpbItemDataSourceFactory
+    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
 
     companion object {
         @Volatile
-        private var instance : DataUpbRepository? = null
-        fun getInstance() : DataUpbRepository =
+        private var instance: DataUpbRepository? = null
+        fun getInstance(): DataUpbRepository =
             instance ?: synchronized(this) {
                 instance ?: DataUpbRepository()
             }
@@ -38,9 +41,10 @@ class DataUpbRepository {
         keywords: String?
     ): LiveData<PagedList<PermintaanBarang>> {
 
-        lateinit var resultDataUpb : LiveData<PagedList<PermintaanBarang>>
+        lateinit var resultDataUpb: LiveData<PagedList<PermintaanBarang>>
 
-        upbDataSourceFactory = UpbDataSourceFactory(apiService, compositeDisposable, token, keywords)
+        upbDataSourceFactory =
+            UpbDataSourceFactory(apiService, compositeDisposable, token, keywords)
 
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -48,17 +52,18 @@ class DataUpbRepository {
             .build()
 
         resultDataUpb = LivePagedListBuilder(upbDataSourceFactory, config).build()
+
         return resultDataUpb
     }
 
-    fun requestDataDetailUpb(
+    fun requestDataDetailDataUpb(
         compositeDisposable: CompositeDisposable,
         apiKey: String,
         token: String,
         idPermintaan: Int
-    ): LiveData<HeaderUsulanPermintaanBarang>{
+    ): LiveData<HeaderUsulanPermintaanBarang> {
         val resultDetailUpb = MutableLiveData<HeaderUsulanPermintaanBarang>()
-        compositeDisposable.add(apiService.requestDetailUpb(apiKey,token,idPermintaan)
+        compositeDisposable.add(apiService.requestDetailUpb(apiKey, token, idPermintaan)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .map {
@@ -74,32 +79,37 @@ class DataUpbRepository {
         return resultDetailUpb
     }
 
-    fun requestItemInDetailUpb(
+    fun requestItemInDetailDataUpb(
         compositeDisposable: CompositeDisposable,
-        apiKey: String,
         token: String,
         idPermintaan: Int
-    ): LiveData<List<ItemPermintaanBarang>>{
-        val resultItemUpb = MutableLiveData<List<ItemPermintaanBarang>>()
-        compositeDisposable.add(apiService.requestDetailUpb(apiKey, token, idPermintaan)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .map {
-                it.data
-            }.subscribe(
-                {
-                    resultItemUpb.postValue(it)
-                }, {
-                    Timber.e(it)
-                }
-            ))
+    ): LiveData<PagedList<ItemPermintaanBarang>> {
+        lateinit var resultItemUpb : LiveData<PagedList<ItemPermintaanBarang>>
+        upbItemDataSourceFactory =
+            UpbItemDataSourceFactory(apiService, compositeDisposable, token, idPermintaan)
+
+        val config = PagedList.Config.Builder()
+            .setPageSize(ITEM_PER_PAGE)
+            .setEnablePlaceholders(false)
+            .build()
+
+        resultItemUpb = LivePagedListBuilder(upbItemDataSourceFactory, config).build()
+
         return resultItemUpb
     }
 
-    fun getNetworkState() : LiveData<NetworkState>{
+    fun getNetworkState(): LiveData<NetworkState> {
         return Transformations.switchMap(
-            upbDataSourceFactory.usulanPermintaanLiveDataSource,
+            upbDataSourceFactory.upbLiveDataSource,
             UpbDataSource::networkState
         )
     }
+
+    fun getUpbItemNetworkState(): LiveData<NetworkState> {
+        return Transformations.switchMap(
+            upbItemDataSourceFactory.upbLiveDataSource,
+            UpbItemDataSource::networkState
+        )
+    }
+
 }
