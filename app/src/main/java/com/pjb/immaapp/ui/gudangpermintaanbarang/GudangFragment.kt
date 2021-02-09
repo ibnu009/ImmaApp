@@ -20,7 +20,7 @@ class GudangFragment : Fragment() {
     private lateinit var gudangPermintaanAdapter: GudangPermintaanAdapter
 
     private val gudangViewModel by lazy {
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(requireContext(), null, null)
         ViewModelProvider(this, factory).get(GudangViewModel::class.java)
     }
 

@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
 
     private val viewModel by lazy {
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(this, null, null)
         ViewModelProvider(this, factory).get(LoginViewModel::class.java)
     }
 

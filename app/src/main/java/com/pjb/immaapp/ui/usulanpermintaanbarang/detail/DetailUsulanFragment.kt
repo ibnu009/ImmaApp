@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataItemUpbPagedListAdapter
-import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
-import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.ViewModelFactory
 import timber.log.Timber
 
@@ -28,9 +26,11 @@ class DetailUsulanFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var itemPagedListAdapter: DataItemUpbPagedListAdapter
+    private lateinit var token: String
+
 
     private val upbViewModel by lazy {
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(requireContext(), token, null)
         ViewModelProvider(this, factory)[UsulanViewModel::class.java]
     }
 
@@ -65,7 +65,7 @@ class DetailUsulanFragment : Fragment() {
 
         sharedPreferences =
             activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
-        val token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
+        token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
             ?: "Shared Preferences Not Found"
 
         initiateDetail(token, idPermintaan!!)

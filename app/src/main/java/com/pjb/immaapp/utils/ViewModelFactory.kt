@@ -1,5 +1,6 @@
 package com.pjb.immaapp.utils
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pjb.immaapp.data.repository.DataPoRepository
@@ -22,15 +23,17 @@ class ViewModelFactory(
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null
-        fun getInstance(): ViewModelFactory =
-            instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(
-                    Injection.provideLoginRepository(),
-                    Injection.provideDataPoRepository(),
-                    Injection.provideDataUpbRepository(),
-                    Injection.provideCompositeDisposable()
-                )
-            }
+        fun getInstance(context: Context, token: String?, keyword: String?): ViewModelFactory =
+            (instance ?: synchronized(this) {
+                instance ?: Injection.provideDataPoRepository(context, token, keyword)?.let {
+                    ViewModelFactory(
+                        Injection.provideLoginRepository(),
+                        it,
+                        Injection.provideDataUpbRepository(),
+                        Injection.provideCompositeDisposable()
+                    )
+                }
+            }) as ViewModelFactory
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -40,7 +43,7 @@ class ViewModelFactory(
                 LoginViewModel(loginRepository, compositeDisposable) as T
             }
             modelClass.isAssignableFrom(UsulanViewModel::class.java) -> {
-                UsulanViewModel(dataUpbRepository, compositeDisposable ) as T
+                UsulanViewModel(dataUpbRepository, compositeDisposable) as T
             }
             modelClass.isAssignableFrom(GudangViewModel::class.java) -> {
                 GudangViewModel() as T

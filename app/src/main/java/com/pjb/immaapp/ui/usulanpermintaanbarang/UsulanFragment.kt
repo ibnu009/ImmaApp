@@ -23,9 +23,10 @@ class UsulanFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var upbPagedListAdapter : DataUpbPagedListAdapter
+    private lateinit var token: String
 
     private val upbViewModel by lazy{
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(requireContext(), token, null)
         ViewModelProvider(this, factory).get(UsulanViewModel::class.java)
     }
 
@@ -59,7 +60,7 @@ class UsulanFragment : Fragment() {
 
         sharedPreferences =
             activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
-        val token =
+        token =
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Prefences Not Found"
 
         binding?.shimmerViewContainer?.visibility = View.VISIBLE

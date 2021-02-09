@@ -22,7 +22,7 @@ import timber.log.Timber
 class HomeFragment : Fragment() {
 
     private val viewModel by lazy {
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(requireContext(), null, null)
         ViewModelProvider(this, factory).get(HomeViewModel::class.java)
     }
 
@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _bindingHomeFragment = FragmentHomeBinding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return _bindingHomeFragment?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

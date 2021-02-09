@@ -3,11 +3,14 @@ package com.pjb.immaapp.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.*
+import androidx.paging.rxjava2.flowable
+import com.pjb.immaapp.data.entity.local.po.PurchaseOrders
 import com.pjb.immaapp.data.entity.po.HeaderPurchaseOrder
 import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
 import com.pjb.immaapp.data.entity.po.PurchaseOrder
+import com.pjb.immaapp.data.local.db.ImmaDatabase
+import com.pjb.immaapp.data.mediator.DataPoMediator
 import com.pjb.immaapp.data.source.po.PoDataSource
 import com.pjb.immaapp.data.source.po.PoDataSourceFactory
 import com.pjb.immaapp.data.source.po.PoItemDataSource
@@ -15,12 +18,16 @@ import com.pjb.immaapp.data.source.po.PoItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-class DataPoRepository {
+class DataPoRepository(
+    private val database: ImmaDatabase,
+    private val mediator: DataPoMediator
+) {
     private val apiService = RetrofitApp.getPurchaseOrderService()
     private lateinit var poDataSourceFactory: PoDataSourceFactory
     private lateinit var poItemDataSourceFactory: PoItemDataSourceFactory
@@ -29,9 +36,9 @@ class DataPoRepository {
     companion object {
         @Volatile
         private var instance: DataPoRepository? = null
-        fun getInstance(): DataPoRepository =
+        fun getInstance(database: ImmaDatabase, mediator: DataPoMediator): DataPoRepository =
             instance ?: synchronized(this) {
-                instance ?: DataPoRepository()
+                instance ?: DataPoRepository(database, mediator)
             }
     }
 
@@ -97,6 +104,18 @@ class DataPoRepository {
 
         resultItemPo = LivePagedListBuilder(poItemDataSourceFactory, config).build()
         return resultItemPo
+    }
+
+    @ExperimentalPagingApi
+    fun requestDataPo(): Flowable<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = true,
+            ),
+            remoteMediator = mediator,
+            pagingSourceFactory = { database.getDataPoDao().getAllDataPo()}
+        ).flowable
     }
 
     fun getNetWorkState(): LiveData<NetworkState> {

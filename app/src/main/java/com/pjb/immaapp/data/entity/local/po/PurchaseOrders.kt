@@ -9,11 +9,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PurchaseOrders(
-    val total: Int = 0,
-    val page: Int = 0,
     val data: List<PurchaseOrderEntity>
 ) : Parcelable{
-
     @Parcelize
     @Entity
     data class PurchaseOrderEntity(

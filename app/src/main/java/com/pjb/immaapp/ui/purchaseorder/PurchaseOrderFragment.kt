@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.databinding.FragmentPoBinding
 import com.pjb.immaapp.handler.OnClickedActionDataPo
@@ -17,7 +19,9 @@ import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.ViewModelFactory
+import timber.log.Timber
 
+@ExperimentalPagingApi
 class PurchaseOrderFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -25,7 +29,7 @@ class PurchaseOrderFragment : Fragment() {
     private lateinit var token: String
 
     private val purchaseOrderViewModel by lazy {
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(requireContext(), token, null)
         ViewModelProvider(this, factory).get(PurchaseOrderViewModel::class.java)
     }
 
@@ -45,7 +49,6 @@ class PurchaseOrderFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        return inflater.inflate(R.layout.fragment_po, container, false)
         _bindingFragmentPo = FragmentPoBinding.inflate(inflater, container, false)
         return _bindingFragmentPo?.root
     }
@@ -55,7 +58,8 @@ class PurchaseOrderFragment : Fragment() {
         poPagedListAdapter = DataPoPagedListAdapter(onItemClicked)
         with(binding?.rvPo) {
             this?.adapter = poPagedListAdapter
-            this?.layoutManager = LinearLayoutManager(this?.context, LinearLayoutManager.VERTICAL, false)
+            this?.layoutManager =
+                LinearLayoutManager(this?.context, LinearLayoutManager.VERTICAL, false)
         }
 
         sharedPreferences =
@@ -70,23 +74,30 @@ class PurchaseOrderFragment : Fragment() {
 
     private fun showData(token: String, keywords: String?) {
 
-        purchaseOrderViewModel.getListDataPo(token, keywords)
-            .observe(viewLifecycleOwner, { dataPo ->
-                poPagedListAdapter.submitList(dataPo)
-            })
+//        purchaseOrderViewModel.getListDataPo(token, keywords)
+//            .observe(viewLifecycleOwner, { dataPo ->
+//                poPagedListAdapter.submitList(dataPo)
+//            })
 
-        purchaseOrderViewModel.networkState.observe(viewLifecycleOwner, { network ->
-            if (purchaseOrderViewModel.listIsEmpty(
-                    token,
-                    keywords
-                ) && network == NetworkState.LOADING
-            ) {
-                binding?.shimmerViewContainer?.startShimmer()
-            } else {
-                binding?.shimmerViewContainer?.stopShimmer()
-                binding?.shimmerViewContainer?.visibility = View.GONE
-            }
+        purchaseOrderViewModel.getListDataPoPaging().observe(viewLifecycleOwner, Observer {
+            poPagedListAdapter.submitData(lifecycle, it)
+            binding?.shimmerViewContainer?.stopShimmer()
+            binding?.shimmerViewContainer?.visibility = View.GONE
+            Timber.d("ReceivedFragment $it")
         })
+
+//        purchaseOrderViewModel.networkState.observe(viewLifecycleOwner, { network ->
+//            if (purchaseOrderViewModel.listIsEmpty(
+//                    token,
+//                    keywords
+//                ) && network == NetworkState.LOADING
+//            ) {
+//                binding?.shimmerViewContainer?.startShimmer()
+//            } else {
+//                binding?.shimmerViewContainer?.stopShimmer()
+//                binding?.shimmerViewContainer?.visibility = View.GONE
+//            }
+//        })
     }
 
     override fun onResume() {

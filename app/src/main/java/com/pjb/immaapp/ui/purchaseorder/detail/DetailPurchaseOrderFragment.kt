@@ -25,13 +25,14 @@ class DetailPurchaseOrderFragment : Fragment() {
     companion object {
         const val EXTRA_PO_ENCODE = "EXTRA_PO"
     }
+    private lateinit var token: String
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var itemPagedListAdapter: DataItemPoPagedListAdapter
 
 
     private val viewModel by lazy {
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(requireContext(), token, null)
         ViewModelProvider(this, factory)[PurchaseOrderViewModel::class.java]
     }
 
@@ -44,7 +45,6 @@ class DetailPurchaseOrderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _bindingFragmentDetailPo = FragmentDetailPoBinding.inflate(inflater, container, false)
-
         return _bindingFragmentDetailPo?.root
     }
 
@@ -65,7 +65,7 @@ class DetailPurchaseOrderFragment : Fragment() {
 
         sharedPreferences =
             activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
-        val token =
+        token =
             sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
                 ?: "Shared Preference Not Found"
 
@@ -86,7 +86,7 @@ class DetailPurchaseOrderFragment : Fragment() {
         })
 
         viewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
-            if (viewModel.listItemIsEmty(token, codePo) && it == NetworkState.LOADING) {
+            if (it == NetworkState.LOADING) {
                 binding?.shimmerViewContainerDetailPo?.startShimmer()
             } else{
                 binding?.shimmerViewContainerDetailPo?.stopShimmer()
