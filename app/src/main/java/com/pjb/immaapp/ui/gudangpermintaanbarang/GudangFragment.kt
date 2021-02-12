@@ -42,7 +42,7 @@ class GudangFragment : Fragment() {
         gudangPermintaanAdapter = GudangPermintaanAdapter()
         val listPermintaanGudang = gudangViewModel.getGudang()
 
-        initRv(requireContext(), listPermintaanGudang)
+        initRv(requireContext().applicationContext, listPermintaanGudang)
 
     }
 

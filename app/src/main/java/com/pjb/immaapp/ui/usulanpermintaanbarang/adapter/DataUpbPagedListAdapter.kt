@@ -4,10 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.databinding.UsulanItemBinding
 import com.pjb.immaapp.handler.OnClickedActionDataUpb
@@ -19,7 +17,7 @@ class   DataUpbPagedListAdapter(private val onClickedAction : OnClickedActionDat
         parent: ViewGroup,
         viewType: Int
     ): DataUpbPagedListAdapter.DataUpbViewHolder {
-        val binding = UsulanItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = UsulanItemBinding.inflate(LayoutInflater.from(parent.context.applicationContext), parent, false)
         return DataUpbViewHolder(binding)
     }
 

@@ -52,7 +52,7 @@ class DetailUsulanFragment : Fragment() {
         with(binding?.rvItemDataUpb) {
             this?.adapter = itemPagedListAdapter
             this?.layoutManager =
-                LinearLayoutManager(this?.context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(this?.context?.applicationContext, LinearLayoutManager.VERTICAL, false)
         }
 
         binding?.shimmerViewContainerDetailUpb?.visibility = View.VISIBLE

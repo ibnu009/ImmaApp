@@ -16,7 +16,7 @@ class DataItemUpbPagedListAdapter:
         parent: ViewGroup,
         viewType: Int
     ): DataItemUpbPagedListAdapter.DataItemUpbViewHolder {
-        val binding = DetailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = DetailItemBinding.inflate(LayoutInflater.from(parent.context.applicationContext), parent, false)
         return DataItemUpbViewHolder(binding)
     }
 
