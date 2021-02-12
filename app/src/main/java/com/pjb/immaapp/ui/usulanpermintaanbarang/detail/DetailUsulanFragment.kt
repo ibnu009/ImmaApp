@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataItemUpbPagedListAdapter
+import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
+import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.ViewModelFactory
 import timber.log.Timber
 
@@ -26,10 +28,12 @@ class DetailUsulanFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var itemPagedListAdapter: DataItemUpbPagedListAdapter
+    private lateinit var token: String
+
 
     private val upbViewModel by lazy {
-        val factory = ViewModelFactory.getInstance()
-        ViewModelProvider(this, factory)[UsulanViewModel::class.java]
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it) }?.get(UsulanViewModel::class.java)
     }
 
     private var _bindingFragmentDetailUsulan: FragmentDetailUsulanBinding? = null
@@ -63,7 +67,7 @@ class DetailUsulanFragment : Fragment() {
 
         sharedPreferences =
             activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
-        val token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
+        token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
             ?: "Shared Preferences Not Found"
 
         initiateDetail(token, idPermintaan!!)
@@ -71,19 +75,19 @@ class DetailUsulanFragment : Fragment() {
     }
 
     private fun initiateDetail(token: String, idPermintaan: Int) {
-        upbViewModel.getDetailDataUpb("12345", token, idPermintaan)
-            .observe(viewLifecycleOwner, Observer {
+        upbViewModel?.getDetailDataUpb("12345", token, idPermintaan)
+            ?.observe(viewLifecycleOwner, Observer {
                 Timber.d("Check data $it")
 
                 binding?.txNamaPemohon?.text = it.pemohon
                 binding?.txJudulPekerjaan?.text = it.jobTitle
                 binding?.txTanggalDibutuhkan?.text = it.tanggalDibutuhkan
                 binding?.txTanggalPermohonan?.text = it.tanggalPermohonan
+
             })
 
-        upbViewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
-            Timber.d("Network : $it")
-            if (it == NetworkState.LOADING) {
+        upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
+            if (upbViewModel?.listItemIsEmpty(token, idPermintaan) == true && it == NetworkState.LOADING) {
                 binding?.shimmerViewContainerDetailUpb?.startShimmer()
             } else {
                 binding?.shimmerViewContainerDetailUpb?.stopShimmer()
@@ -95,14 +99,13 @@ class DetailUsulanFragment : Fragment() {
     }
 
     private fun initiateItemUpb(token: String, idPermintaan: Int) {
-        upbViewModel.getListItemUpb(token, idPermintaan).observe(viewLifecycleOwner, Observer {
+        upbViewModel?.getListItemUpb(token, idPermintaan)?.observe(viewLifecycleOwner, Observer {
             itemPagedListAdapter.submitList(it)
             Timber.d("Receive data $it")
         })
 
-        upbViewModel.netWorkItemUpb.observe(viewLifecycleOwner, Observer {
-            if (upbViewModel.listItemIsEmpty(token, idPermintaan) && it == NetworkState.LOADING) {
-                Timber.d("Network : ${it}")
+        upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
+            if (upbViewModel?.listItemIsEmpty(token, idPermintaan) == true && it == NetworkState.LOADING){
                 binding?.shimmerViewContainerDetailUpbRv?.startShimmer()
             } else {
                 Timber.d("Network : ${it}")

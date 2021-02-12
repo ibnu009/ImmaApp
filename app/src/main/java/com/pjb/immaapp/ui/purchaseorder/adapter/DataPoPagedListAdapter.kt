@@ -9,6 +9,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
+import com.pjb.immaapp.data.entity.local.po.PurchaseOrders
 import com.pjb.immaapp.data.entity.po.PurchaseOrder
 import com.pjb.immaapp.databinding.PoItemBinding
 import com.pjb.immaapp.handler.OnClickedActionDataPo
@@ -17,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DataPoPagedListAdapter(private val onClickedAction: OnClickedActionDataPo) :
-    PagedListAdapter<PurchaseOrder, DataPoPagedListAdapter.DataPoViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<PurchaseOrders.PurchaseOrderEntity, DataPoPagedListAdapter.DataPoViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataPoViewHolder {
         val binding = PoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -34,7 +35,7 @@ class DataPoPagedListAdapter(private val onClickedAction: OnClickedActionDataPo)
     }
 
     inner class DataPoViewHolder(private val binding: PoItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(po: PurchaseOrder) {
+        fun bind(po: PurchaseOrders.PurchaseOrderEntity) {
             with(binding) {
                 binding.txJobTitle.text = po.jobTitle
                 binding.txTanggalPermintaan.text = po.orderDate
@@ -65,16 +66,16 @@ class DataPoPagedListAdapter(private val onClickedAction: OnClickedActionDataPo)
 
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<PurchaseOrder> = object :
-            DiffUtil.ItemCallback<PurchaseOrder>() {
-            override fun areItemsTheSame(oldItem: PurchaseOrder, newItem: PurchaseOrder): Boolean {
-                return oldItem.ponum == newItem.ponum && oldItem.ponum == newItem.ponum
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<PurchaseOrders.PurchaseOrderEntity> = object :
+            DiffUtil.ItemCallback<PurchaseOrders.PurchaseOrderEntity>() {
+            override fun areItemsTheSame(oldItem: PurchaseOrders.PurchaseOrderEntity, newItem: PurchaseOrders.PurchaseOrderEntity): Boolean {
+                return oldItem.idPo == newItem.idPo && oldItem.idPo == newItem.idPo
             }
 
             @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(
-                oldItem: PurchaseOrder,
-                newItem: PurchaseOrder
+                oldItem: PurchaseOrders.PurchaseOrderEntity,
+                newItem: PurchaseOrders.PurchaseOrderEntity
             ): Boolean {
                 return oldItem == newItem
             }

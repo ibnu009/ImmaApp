@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -23,11 +22,12 @@ import com.pjb.immaapp.utils.ViewModelFactory
 class UsulanFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var upbPagedListAdapter: DataUpbPagedListAdapter
+    private lateinit var upbPagedListAdapter : DataUpbPagedListAdapter
+    private lateinit var token: String
 
-    private val upbViewModel by lazy {
-        val factory = ViewModelFactory.getInstance()
-        ViewModelProvider(this, factory).get(UsulanViewModel::class.java)
+    private val upbViewModel by lazy{
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it).get(UsulanViewModel::class.java) }
     }
 
     private val onItemClicked = object : OnClickedActionDataUpb {
@@ -64,7 +64,7 @@ class UsulanFragment : Fragment() {
 
         sharedPreferences =
             activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
-        val token =
+        token =
             sharedPreferences.getString(KEY_TOKEN, "Not Found") ?: "Shared Prefences Not Found"
 
         binding?.shimmerViewContainer?.visibility = View.VISIBLE
@@ -98,13 +98,13 @@ class UsulanFragment : Fragment() {
     }
 
     private fun showData(token: String, keywords: String?) {
-        upbViewModel.getListDataUpb(token, keywords)
-            .observe(viewLifecycleOwner, { dataUpb ->
+        upbViewModel?.getListDataUpb(token, keywords)
+            ?.observe(viewLifecycleOwner, { dataUpb ->
                 upbPagedListAdapter.submitList(dataUpb)
             })
 
-        upbViewModel.networkState.observe(viewLifecycleOwner, { network ->
-            if (upbViewModel.listIsEmpty(
+        upbViewModel?.networkState?.observe(viewLifecycleOwner, { network ->
+            if (upbViewModel!!.listIsEmpty(
                     token, keywords
                 ) && network == NetworkState.LOADING
             ) {

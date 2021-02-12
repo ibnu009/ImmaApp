@@ -3,14 +3,13 @@ package com.pjb.immaapp.data.entity.local.po
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Fts4
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
 data class PurchaseOrders(
-    val total: Int = 0,
-    val page: Int = 0,
     val data: List<PurchaseOrderEntity>
 ) : Parcelable{
 
