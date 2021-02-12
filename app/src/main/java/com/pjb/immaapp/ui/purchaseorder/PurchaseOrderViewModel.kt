@@ -30,12 +30,17 @@ class PurchaseOrderViewModel(
     }
 
     @ExperimentalPagingApi
-    fun getListDataPoPaging(token: String, keywords: String?): LiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
+    fun getListDataPoPaging(
+        token: String,
+        keywords: String?
+    ): LiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
         val resultDataPo = MutableLiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>>()
-        compositeDisposable.add(dataPoRepository.requestDataPo(token, keywords).subscribe{
-            resultDataPo.postValue(it)
-            Timber.d("ReceivedVM $it")
-        })
+        compositeDisposable.add(
+            dataPoRepository.requestDataPo(token, keywords)
+                .subscribe {
+                    resultDataPo.postValue(it)
+                    Timber.d("ReceivedVM $it")
+                })
         return resultDataPo
     }
 
@@ -54,7 +59,10 @@ class PurchaseOrderViewModel(
         return dataPoRepository.requestItemInDetailDataPo(compositeDisposable, token, ponum)
     }
 
-    fun getSearchPo(token: String, keywords: String?): LiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
+    fun getSearchPo(
+        token: String,
+        keywords: String?
+    ): LiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
         val resultDataPoSearch = MutableLiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>>()
         compositeDisposable.add(dataPoRepository.getSearchedData(token, keywords).subscribe {
             resultDataPoSearch.postValue(it)

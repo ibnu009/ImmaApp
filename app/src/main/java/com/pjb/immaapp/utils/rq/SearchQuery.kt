@@ -7,7 +7,8 @@ object SearchQuery {
 
     fun getSearchQueryResult(keyword: String): SimpleSQLiteQuery {
         val simpleSQLiteQuery = StringBuilder().append("SELECT * FROM purchaseorderentity ")
-        simpleSQLiteQuery.append("WHERE job_title LIKE $keyword")
+        simpleSQLiteQuery.append("JOIN data_po_fts ON purchaseorderentity.job_title = data_po_fts.job_title")
+        simpleSQLiteQuery.append(" WHERE data_po_fts MATCH $keyword")
 
         return SimpleSQLiteQuery(simpleSQLiteQuery.toString())
     }

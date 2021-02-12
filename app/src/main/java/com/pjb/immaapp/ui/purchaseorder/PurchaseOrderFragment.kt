@@ -71,9 +71,9 @@ class PurchaseOrderFragment : Fragment() {
 
         showData(token, null)
 
-        binding?.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding?.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                showSearchedData(token, query)
+                showSearchedData(token, "\"$query\"")
                 Timber.d("searched $query")
                 return false
             }
