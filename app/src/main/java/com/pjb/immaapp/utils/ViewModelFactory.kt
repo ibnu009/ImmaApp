@@ -17,23 +17,21 @@ class ViewModelFactory(
     private val loginRepository: LoginRepository,
     private val dataPoRepository: DataPoRepository,
     private val dataUpbRepository: DataUpbRepository,
-    private val compositeDisposable: CompositeDisposable
+    private val compositeDisposable: CompositeDisposable,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null
-        fun getInstance(context: Context, token: String?, keyword: String?): ViewModelFactory =
+        fun getInstance(context: Context): ViewModelFactory =
             (instance ?: synchronized(this) {
-                instance ?: Injection.provideDataPoRepository(context, token, keyword)?.let {
-                    ViewModelFactory(
-                        Injection.provideLoginRepository(),
-                        it,
-                        Injection.provideDataUpbRepository(),
-                        Injection.provideCompositeDisposable()
-                    )
-                }
-            }) as ViewModelFactory
+                instance ?: ViewModelFactory(
+                    Injection.provideLoginRepository(),
+                    Injection.provideDataPoRepository(context),
+                    Injection.provideDataUpbRepository(),
+                    Injection.provideCompositeDisposable()
+                )
+            })
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -22,8 +22,8 @@ import timber.log.Timber
 class HomeFragment : Fragment() {
 
     private val viewModel by lazy {
-        val factory = ViewModelFactory.getInstance(requireContext(), null, null)
-        ViewModelProvider(this, factory).get(HomeViewModel::class.java)
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it).get(HomeViewModel::class.java) }
     }
 
     private lateinit var sharedPreferences: SharedPreferences

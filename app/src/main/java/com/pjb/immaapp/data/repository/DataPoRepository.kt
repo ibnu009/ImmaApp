@@ -16,6 +16,8 @@ import com.pjb.immaapp.data.source.po.PoDataSourceFactory
 import com.pjb.immaapp.data.source.po.PoItemDataSource
 import com.pjb.immaapp.data.source.po.PoItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
+import com.pjb.immaapp.utils.PoMapper
+import com.pjb.immaapp.utils.rq.SearchQuery
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import io.reactivex.Flowable
@@ -26,19 +28,21 @@ import timber.log.Timber
 
 class DataPoRepository(
     private val database: ImmaDatabase,
-    private val mediator: DataPoMediator
 ) {
     private val apiService = RetrofitApp.getPurchaseOrderService()
     private lateinit var poDataSourceFactory: PoDataSourceFactory
     private lateinit var poItemDataSourceFactory: PoItemDataSourceFactory
+
     val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+
+    private lateinit var mediator: DataPoMediator
 
     companion object {
         @Volatile
         private var instance: DataPoRepository? = null
-        fun getInstance(database: ImmaDatabase, mediator: DataPoMediator): DataPoRepository =
+        fun getInstance(database: ImmaDatabase): DataPoRepository =
             instance ?: synchronized(this) {
-                instance ?: DataPoRepository(database, mediator)
+                instance ?: DataPoRepository(database)
             }
     }
 
@@ -107,14 +111,30 @@ class DataPoRepository(
     }
 
     @ExperimentalPagingApi
-    fun requestDataPo(): Flowable<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
+    fun requestDataPo(
+        token: String,
+        keywords: String?
+    ): Flowable<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
+        mediator = DataPoMediator(database, apiService, PoMapper(), "12345", token, keywords)
+
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = true,
             ),
             remoteMediator = mediator,
-            pagingSourceFactory = { database.getDataPoDao().getAllDataPo()}
+            pagingSourceFactory = { database.getDataPoDao().getAllDataPo() }
+        ).flowable
+    }
+
+    fun getSearchedData(
+        token: String,
+        keywords: String?
+    ): Flowable<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
+        val query = keywords?.let { SearchQuery.getSearchQueryResult(it) }
+        return Pager(
+            config = PagingConfig(20, enablePlaceholders = true),
+            pagingSourceFactory = { database.getDataPoDao().getAllDataPoQuery(query!!)}
         ).flowable
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.databinding.FragmentPoBinding
 import com.pjb.immaapp.handler.OnClickedActionDataPo
 import com.pjb.immaapp.ui.purchaseorder.adapter.DataPoPagedListAdapter
-import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.ViewModelFactory
@@ -29,8 +29,8 @@ class PurchaseOrderFragment : Fragment() {
     private lateinit var token: String
 
     private val purchaseOrderViewModel by lazy {
-        val factory = ViewModelFactory.getInstance(requireContext(), token, null)
-        ViewModelProvider(this, factory).get(PurchaseOrderViewModel::class.java)
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it).get(PurchaseOrderViewModel::class.java) }
     }
 
     private val onItemClicked = object : OnClickedActionDataPo {
@@ -59,7 +59,7 @@ class PurchaseOrderFragment : Fragment() {
         with(binding?.rvPo) {
             this?.adapter = poPagedListAdapter
             this?.layoutManager =
-                LinearLayoutManager(this?.context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(this?.context?.applicationContext, LinearLayoutManager.VERTICAL, false)
         }
 
         sharedPreferences =
@@ -70,6 +70,18 @@ class PurchaseOrderFragment : Fragment() {
         binding?.shimmerViewContainer?.visibility = View.VISIBLE
 
         showData(token, null)
+
+        binding?.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                showSearchedData(token, query)
+                Timber.d("searched $query")
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 
     private fun showData(token: String, keywords: String?) {
@@ -79,7 +91,7 @@ class PurchaseOrderFragment : Fragment() {
 //                poPagedListAdapter.submitList(dataPo)
 //            })
 
-        purchaseOrderViewModel.getListDataPoPaging().observe(viewLifecycleOwner, Observer {
+        purchaseOrderViewModel?.getListDataPoPaging(token, keywords)?.observe(viewLifecycleOwner, Observer {
             poPagedListAdapter.submitData(lifecycle, it)
             binding?.shimmerViewContainer?.stopShimmer()
             binding?.shimmerViewContainer?.visibility = View.GONE
@@ -100,13 +112,15 @@ class PurchaseOrderFragment : Fragment() {
 //        })
     }
 
+    private fun showSearchedData(token: String, keywords: String?) {
+        purchaseOrderViewModel?.getSearchPo(token, keywords)?.observe(viewLifecycleOwner, Observer {
+            poPagedListAdapter.submitData(lifecycle, it)
+        })
+    }
+
     override fun onResume() {
         super.onResume()
         binding?.shimmerViewContainer?.startShimmer()
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
     }
 
     override fun onPause() {

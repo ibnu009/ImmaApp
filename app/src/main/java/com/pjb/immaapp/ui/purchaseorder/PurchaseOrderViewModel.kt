@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.PagedList
-import androidx.paging.PagingData
+import androidx.paging.*
 import androidx.paging.rxjava2.cachedIn
+import androidx.paging.rxjava2.flowable
 import com.pjb.immaapp.data.entity.local.po.PurchaseOrders
 import com.pjb.immaapp.data.entity.po.HeaderPurchaseOrder
 import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
@@ -31,9 +30,9 @@ class PurchaseOrderViewModel(
     }
 
     @ExperimentalPagingApi
-    fun getListDataPoPaging(): LiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
+    fun getListDataPoPaging(token: String, keywords: String?): LiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
         val resultDataPo = MutableLiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>>()
-        compositeDisposable.add(dataPoRepository.requestDataPo().subscribe{
+        compositeDisposable.add(dataPoRepository.requestDataPo(token, keywords).subscribe{
             resultDataPo.postValue(it)
             Timber.d("ReceivedVM $it")
         })
@@ -53,6 +52,14 @@ class PurchaseOrderViewModel(
         ponum: String
     ): LiveData<PagedList<ItemPurchaseOrder>> {
         return dataPoRepository.requestItemInDetailDataPo(compositeDisposable, token, ponum)
+    }
+
+    fun getSearchPo(token: String, keywords: String?): LiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>> {
+        val resultDataPoSearch = MutableLiveData<PagingData<PurchaseOrders.PurchaseOrderEntity>>()
+        compositeDisposable.add(dataPoRepository.getSearchedData(token, keywords).subscribe {
+            resultDataPoSearch.postValue(it)
+        })
+        return resultDataPoSearch
     }
 
     fun listIsEmpty(

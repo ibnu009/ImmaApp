@@ -20,8 +20,8 @@ class GudangFragment : Fragment() {
     private lateinit var gudangPermintaanAdapter: GudangPermintaanAdapter
 
     private val gudangViewModel by lazy {
-        val factory = ViewModelFactory.getInstance(requireContext(), null, null)
-        ViewModelProvider(this, factory).get(GudangViewModel::class.java)
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it).get(GudangViewModel::class.java) }
     }
 
     private var _gudangFragmentBinding: FragmentGudangBinding? = null
@@ -40,9 +40,9 @@ class GudangFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         gudangPermintaanAdapter = GudangPermintaanAdapter()
-        val listPermintaanGudang = gudangViewModel.getGudang()
+        val listPermintaanGudang = gudangViewModel?.getGudang()
 
-        initRv(requireContext(), listPermintaanGudang)
+        listPermintaanGudang?.let { initRv(requireContext(), it) }
 
     }
 

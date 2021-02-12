@@ -30,8 +30,8 @@ class DetailUsulanFragment : Fragment() {
 
 
     private val upbViewModel by lazy {
-        val factory = ViewModelFactory.getInstance(requireContext(), token, null)
-        ViewModelProvider(this, factory)[UsulanViewModel::class.java]
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it) }?.get(UsulanViewModel::class.java)
     }
 
     private var _bindingFragmentDetailUsulan: FragmentDetailUsulanBinding? = null
@@ -73,8 +73,8 @@ class DetailUsulanFragment : Fragment() {
     }
 
     private fun initiateDetail(token: String, idPermintaan: Int) {
-        upbViewModel.getDetailDataUpb("12345", token, idPermintaan)
-            .observe(viewLifecycleOwner, Observer {
+        upbViewModel?.getDetailDataUpb("12345", token, idPermintaan)
+            ?.observe(viewLifecycleOwner, Observer {
                 Timber.d("Check data $it")
                 binding?.txNamaPemohon?.text = it.pemohon
                 binding?.txJudulPekerjaan?.text = it.jobTitle
@@ -83,8 +83,8 @@ class DetailUsulanFragment : Fragment() {
 
             })
 
-        upbViewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
-            if (upbViewModel.listItemIsEmpty(token, idPermintaan) && it == NetworkState.LOADING) {
+        upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
+            if (upbViewModel?.listItemIsEmpty(token, idPermintaan) == true && it == NetworkState.LOADING) {
                 binding?.shimmerViewContainerDetailUpb?.startShimmer()
             } else {
                 binding?.shimmerViewContainerDetailUpb?.stopShimmer()
@@ -96,13 +96,13 @@ class DetailUsulanFragment : Fragment() {
     }
 
     private fun initiateItemUpb(token: String, idPermintaan: Int) {
-        upbViewModel.getListItemUpb(token, idPermintaan).observe(viewLifecycleOwner, Observer {
+        upbViewModel?.getListItemUpb(token, idPermintaan)?.observe(viewLifecycleOwner, Observer {
             itemPagedListAdapter.submitList(it)
             Timber.d("Receive data $it")
         })
 
-        upbViewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
-            if (upbViewModel.listItemIsEmpty(token, idPermintaan) && it == NetworkState.LOADING){
+        upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
+            if (upbViewModel?.listItemIsEmpty(token, idPermintaan) == true && it == NetworkState.LOADING){
                 binding?.shimmerViewContainerDetailUpbRv?.startShimmer()
             } else {
                 binding?.shimmerViewContainerDetailUpbRv?.stopShimmer()

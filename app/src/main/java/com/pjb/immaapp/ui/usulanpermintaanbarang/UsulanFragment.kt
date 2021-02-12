@@ -26,8 +26,8 @@ class UsulanFragment : Fragment() {
     private lateinit var token: String
 
     private val upbViewModel by lazy{
-        val factory = ViewModelFactory.getInstance(requireContext(), token, null)
-        ViewModelProvider(this, factory).get(UsulanViewModel::class.java)
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it).get(UsulanViewModel::class.java) }
     }
 
     private val onItemClicked = object: OnClickedActionDataUpb{
@@ -70,13 +70,13 @@ class UsulanFragment : Fragment() {
     }
 
     private fun showData(token: String, keywords: String?) {
-        upbViewModel.getListDataUpb(token, keywords)
-            .observe(viewLifecycleOwner, { dataUpb ->
+        upbViewModel?.getListDataUpb(token, keywords)
+            ?.observe(viewLifecycleOwner, { dataUpb ->
                 upbPagedListAdapter.submitList(dataUpb)
             })
 
-        upbViewModel.networkState.observe(viewLifecycleOwner, { network ->
-            if (upbViewModel.listIsEmpty(
+        upbViewModel?.networkState?.observe(viewLifecycleOwner, { network ->
+            if (upbViewModel!!.listIsEmpty(
                     token, keywords
                 ) && network == NetworkState.LOADING
             ) {

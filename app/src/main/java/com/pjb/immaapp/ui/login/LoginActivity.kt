@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.data.entity.User
 import com.pjb.immaapp.data.entity.request.Credential
 import com.pjb.immaapp.databinding.ActivityLoginBinding
+import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.ViewModelFactory
 import timber.log.Timber
@@ -22,16 +24,16 @@ class LoginActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
 
     private val viewModel by lazy {
-        val factory = ViewModelFactory.getInstance(this, null, null)
+        val factory = ViewModelFactory.getInstance(this.applicationContext)
         ViewModelProvider(this, factory).get(LoginViewModel::class.java)
     }
 
-    private var _activtyLoginBinding: ActivityLoginBinding? = null
-    val binding get() = _activtyLoginBinding
+    private var _activityLoginBinding: ActivityLoginBinding? = null
+    val binding get() = _activityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _activtyLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
+        _activityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         binding?.edtUsername?.addTextChangedListener(textWatcher)
@@ -40,11 +42,20 @@ class LoginActivity : AppCompatActivity() {
         sharedPreferences = this.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)
 
         binding?.fabLogin?.setOnClickListener {
+
             viewModel.getLoginRequest(getCredential()).observe(this, Observer {
                 Timber.d("Have user ${it.name}")
                 insertIntoSharedPreference(getCredential(), it)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                finish()
+            })
+
+            viewModel.networkState.observe(this, Observer {
+                if (it == NetworkState.USERNOTFOUND) {
+                    Toast.makeText(this, "User Not Found", Toast.LENGTH_SHORT).show()
+                    Timber.d("UserNotFound")
+                }
             })
         }
     }

@@ -32,8 +32,8 @@ class DetailPurchaseOrderFragment : Fragment() {
 
 
     private val viewModel by lazy {
-        val factory = ViewModelFactory.getInstance(requireContext(), token, null)
-        ViewModelProvider(this, factory)[PurchaseOrderViewModel::class.java]
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it) }?.get(PurchaseOrderViewModel::class.java)
     }
 
     private var _bindingFragmentDetailPo : FragmentDetailPoBinding? = null
@@ -74,7 +74,7 @@ class DetailPurchaseOrderFragment : Fragment() {
     }
 
     private fun initiateDetail(token: String, codePo: String) {
-        viewModel.getDetailDataPo("12345", token, codePo).observe(viewLifecycleOwner, Observer {
+        viewModel?.getDetailDataPo("12345", token, codePo)?.observe(viewLifecycleOwner, Observer {
             Timber.d("check Data $it")
             binding?.txTanggalOrder?.text = it.tanggalOrder
             binding?.txJudulPekerjaan?.text = it.jobTitle
@@ -85,7 +85,7 @@ class DetailPurchaseOrderFragment : Fragment() {
             binding?.txTotalAnggaran?.text = context?.getString(R.string.anggaran_po, anggaranFix)
         })
 
-        viewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
+        viewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
             if (it == NetworkState.LOADING) {
                 binding?.shimmerViewContainerDetailPo?.startShimmer()
             } else{
@@ -98,13 +98,13 @@ class DetailPurchaseOrderFragment : Fragment() {
     }
 
     private fun initiateItemPo(token: String, codePo: String) {
-        viewModel.getListItemPo(token, codePo).observe(viewLifecycleOwner, Observer {
+        viewModel?.getListItemPo(token, codePo)?.observe(viewLifecycleOwner, Observer {
             itemPagedListAdapter.submitList(it)
             Timber.d("Received data is $it")
         })
 
-        viewModel.networkStateDetail.observe(viewLifecycleOwner, Observer {
-            if (viewModel.listItemIsEmty(token, codePo) && it == NetworkState.LOADING) {
+        viewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
+            if (viewModel?.listItemIsEmty(token, codePo) == true && it == NetworkState.LOADING) {
                 binding?.shimmerViewContainerDetailPoRv?.visibility = View.VISIBLE
                 binding?.shimmerViewContainerDetailPoRv?.startShimmer()
             } else {
