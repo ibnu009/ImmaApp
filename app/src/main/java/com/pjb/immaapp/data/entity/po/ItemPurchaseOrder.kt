@@ -6,7 +6,7 @@ data class ItemPurchaseOrder(
     @field:SerializedName("nama_material")
     var namaMaterial: String,
     @field:SerializedName("unitcost")
-    var unitCost: String,
+    var unitCost: Int,
     @field:SerializedName("qty")
     var quantity: Int
 )

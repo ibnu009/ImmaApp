@@ -79,17 +79,15 @@ class PurchaseOrderFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrBlank()) {
+                    showData(token, null)
+                }
                 return false
             }
         })
     }
 
     private fun showData(token: String, keywords: String?) {
-
-//        purchaseOrderViewModel.getListDataPo(token, keywords)
-//            .observe(viewLifecycleOwner, { dataPo ->
-//                poPagedListAdapter.submitList(dataPo)
-//            })
 
         purchaseOrderViewModel?.getListDataPoPaging(token, keywords)?.observe(viewLifecycleOwner, Observer {
             poPagedListAdapter.submitData(lifecycle, it)
@@ -98,18 +96,6 @@ class PurchaseOrderFragment : Fragment() {
             Timber.d("ReceivedFragment $it")
         })
 
-//        purchaseOrderViewModel.networkState.observe(viewLifecycleOwner, { network ->
-//            if (purchaseOrderViewModel.listIsEmpty(
-//                    token,
-//                    keywords
-//                ) && network == NetworkState.LOADING
-//            ) {
-//                binding?.shimmerViewContainer?.startShimmer()
-//            } else {
-//                binding?.shimmerViewContainer?.stopShimmer()
-//                binding?.shimmerViewContainer?.visibility = View.GONE
-//            }
-//        })
     }
 
     private fun showSearchedData(token: String, keywords: String?) {

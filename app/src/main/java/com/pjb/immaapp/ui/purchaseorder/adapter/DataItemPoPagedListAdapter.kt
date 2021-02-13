@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
 import com.pjb.immaapp.databinding.DetailItemBinding
+import com.pjb.immaapp.utils.ConverterHelper
 
 class DataItemPoPagedListAdapter :
     PagedListAdapter<ItemPurchaseOrder, DataItemPoPagedListAdapter.DataItemPoViewHolder>(DIFF_CALLBACK) {
@@ -21,17 +22,19 @@ class DataItemPoPagedListAdapter :
 
     override fun onBindViewHolder(holder: DataItemPoViewHolder, position: Int) {
         getItem(position)?.let { po ->
-            holder.bind(po, position)
+            holder.bind(po)
         }
     }
 
     inner class DataItemPoViewHolder(private val binding: DetailItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(po: ItemPurchaseOrder, index: Int) {
+        fun bind(po: ItemPurchaseOrder) {
             with(binding) {
                 binding.txJobTitle.text = po.namaMaterial
                 val quantity = po.quantity.toString()
                 binding.txQty.text = binding.root.context.getString(R.string.x1, quantity)
-                binding.txTotalAnggaranDetaiItem.text = po.unitCost
+                val total = (po.quantity * po.unitCost)
+                val formattedTotal = ConverterHelper().convertAnggaranFormat(total)
+                binding.txTotalAnggaranDetaiItem.text = binding.root.context.getString(R.string.anggaran_po, formattedTotal)
             }
         }
     }
