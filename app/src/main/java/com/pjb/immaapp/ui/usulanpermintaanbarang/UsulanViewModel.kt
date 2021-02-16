@@ -3,7 +3,6 @@ package com.pjb.immaapp.ui.usulanpermintaanbarang
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
-import androidx.paging.PagingData
 import com.pjb.immaapp.data.entity.upb.HeaderUsulanPermintaanBarang
 import com.pjb.immaapp.data.entity.upb.ItemPermintaanBarang
 import com.pjb.immaapp.data.entity.upb.PermintaanBarang
@@ -68,7 +67,7 @@ class UsulanViewModel(
     }
 
     val networkStateDetail: LiveData<NetworkState> by lazy {
-        dataUpbRepository.getUpbItemNetworkState()
+        dataUpbRepository.networkState
     }
 
     override fun onCleared() {

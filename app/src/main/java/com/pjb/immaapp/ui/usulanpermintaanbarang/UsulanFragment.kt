@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentUsulanBinding
 import com.pjb.immaapp.handler.OnClickedActionDataUpb
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataUpbPagedListAdapter
@@ -70,20 +72,24 @@ class UsulanFragment : Fragment() {
         binding?.shimmerViewContainer?.visibility = View.VISIBLE
         binding?.layoutEmptyList?.visibility = View.GONE
 
+        binding?.fabTambah?.setOnClickListener{
+            it.findNavController().navigate(R.id.action_nav_usulan_to_tambahUsulanFragment)
+        }
+
         showData(token, null)
 
     }
 
     private fun showDataSearchResult(token: String, keywords: String?) {
-        upbViewModel.getListDataUpb(token, keywords)
-            .observe(viewLifecycleOwner, { dataUpb ->
+        upbViewModel?.getListDataUpb(token, keywords)
+            ?.observe(viewLifecycleOwner, { dataUpb ->
                 upbPagedListAdapter.submitList(dataUpb)
             })
 
-        upbViewModel.networkState.observe(viewLifecycleOwner, { network ->
-            if (upbViewModel.listIsEmpty(token, keywords) && network == NetworkState.LOADED) {
+        upbViewModel?.networkState?.observe(viewLifecycleOwner, { network ->
+            if (upbViewModel!!.listIsEmpty(token, keywords) && network == NetworkState.LOADED) {
                 binding?.layoutEmptyList?.visibility = View.VISIBLE
-            } else if (upbViewModel.listIsEmpty(
+            } else if (upbViewModel!!.listIsEmpty(
                     token,
                     keywords
                 ) && network == NetworkState.LOADING

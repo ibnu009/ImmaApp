@@ -1,5 +1,6 @@
 package com.pjb.immaapp.ui.stokopname
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,5 +34,6 @@ class StokOpnameFragment : Fragment() {
 
         })
     }
+
 
 }

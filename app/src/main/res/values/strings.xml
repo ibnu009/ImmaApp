@@ -82,4 +82,13 @@
     <string name="detail_purchase_order">Detail Purchase Order</string>
     <string name="item_number">Item Number</string>
     <string name="data_tidak_ditemukan">Data tidak ditemukan</string>
+    <string name="masukkan_tanggal_dibutuhkan">Masukkan tanggal dibutuhkan</string>
+    <string name="deskripsi_pekerjaan">Deskripsi Pekerjaan</string>
+    <string name="catatan">Catatan</string>
+    <string name="criticality">Criticality</string>
+    <string name="urgent">Urgent</string>
+    <string name="normal">Normal</string>
+    <string name="tor_kak">TOR/KAK</string>
+    <string name="pilih_file">Pilih File</string>
+    <string name="button_to_tambah">button_to_tambah</string>
 </resources>

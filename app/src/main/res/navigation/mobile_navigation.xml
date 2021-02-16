@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_nav_usulan_to_detailUsulanPermintaanBarangFragment"
             app:destination="@id/detailUsulanPermintaanBarangFragment"/>
+        <action
+            android:id="@+id/action_nav_usulan_to_tambahUsulanFragment"
+            app:destination="@id/tambahUsulanFragment" />
     </fragment>
 
     <fragment
@@ -72,5 +75,9 @@
             android:defaultValue="1"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/tambahUsulanFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.TambahUsulanFragment"
+        android:label="TambahUsulanFragment" />
 
 </navigation>

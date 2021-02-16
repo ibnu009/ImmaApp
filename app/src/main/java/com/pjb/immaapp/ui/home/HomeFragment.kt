@@ -55,6 +55,10 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(R.id.action_nav_home_to_nav_po)
         }
 
+        binding?.btnStockOpname?.setOnClickListener{
+            it.findNavController().navigate(R.id.action_nav_home_to_nav_opname)
+        }
+
         binding?.btnUsulan?.setOnClickListener {
             it.findNavController().navigate(R.id.action_nav_home_to_nav_usulan)
         }

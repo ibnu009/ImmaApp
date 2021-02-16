@@ -66,7 +66,7 @@ class DetailUsulanFragment : Fragment() {
         val idPermintaan = safeArgs?.passIdPermintaan
 
         sharedPreferences =
-            activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
+            activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
         token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
             ?: "Shared Preferences Not Found"
 

@@ -15,7 +15,7 @@ class RetrofitApp {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
-        private const val BASE_URL = "http://936384ccb0a0.ngrok.io/"
+        private const val BASE_URL = "http://558bcc83f1e4.ngrok.io"
 
 
         private val interceptor: HttpLoggingInterceptor =
