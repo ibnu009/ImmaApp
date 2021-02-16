@@ -51,6 +51,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
+//    Scanner
+    implementation('me.dm7.barcodescanner:zxing:1.9.8') {
+        exclude group: 'com.android.support'
+    }
+
 //    databind
     kapt "com.android.databinding:compiler:3.1.4"
 

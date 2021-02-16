@@ -26,13 +26,14 @@ class StokOpnameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding?.txManual?.setOnClickListener(object: View.OnClickListener{
-            override fun onClick(p0: View?) {
-                val bottomSheetFragment = BottomSheetFragment.newInstance()
-                activity?.supportFragmentManager?.let { bottomSheetFragment.show(it,"bottom_sheet") }
-            }
+        binding?.txManual?.setOnClickListener {
+            val bottomSheetFragment = BottomSheetFragment.newInstance()
+            activity?.supportFragmentManager?.let { bottomSheetFragment.show(it, "bottom_sheet") }
+        }
 
-        })
+        binding?.btnInitiateScan?.setOnClickListener {
+
+        }
     }
 
 

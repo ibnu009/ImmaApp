@@ -41,6 +41,10 @@ class RetrofitApp {
             return retrofit.create(UsulanPermintaanBarangService::class.java)
         }
 
+        fun getStockOpnameService(): StockOpnameService {
+            return retrofit.create(StockOpnameService::class.java)
+        }
+
     }
 
 }
