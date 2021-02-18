@@ -13,5 +13,7 @@ class NetworkState(val status: Status) {
         val ERROR: NetworkState = NetworkState(Status.FAILED)
         val ENDOFLIST: NetworkState = NetworkState(Status.FAILED)
         val USERNOTFOUND: NetworkState = NetworkState(Status.FAILED)
+        val FAILEDTOADD: NetworkState = NetworkState(Status.FAILED)
+        val EMPTYDATA: NetworkState = NetworkState(Status.FAILED)
     }
 }

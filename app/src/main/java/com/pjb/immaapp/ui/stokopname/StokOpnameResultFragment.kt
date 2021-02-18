@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -49,7 +50,6 @@ class StokOpnameResultFragment : Fragment() {
         sharedPreferences =
             context?.applicationContext?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
         token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found").toString()
-            ?: "Shared preferences not found"
 
         binding?.layoutKeterangan?.visibility = View.GONE
         binding?.parentTdd?.visibility = View.GONE
@@ -77,6 +77,38 @@ class StokOpnameResultFragment : Fragment() {
                 binding?.layoutDataOpname?.visibility = View.GONE
             }
         }
+
+        binding?.btnSimpanData?.setOnClickListener {
+            val notes = binding?.edtKeterangan?.text.toString().trim()
+            val stock = Integer.parseInt(binding?.edtStokNyata?.text.toString())
+            val kondisi = binding?.edtKondisiBarang?.text.toString().trim()
+            addDataStokOpname(token, itemNum, notes, stock, kondisi)
+        }
+    }
+
+    private fun addDataStokOpname(
+        token: String,
+        itemNum: Int,
+        notes: String,
+        stock: Int,
+        kondisi: String
+    ) {
+        stokOpnameViewModel?.addDataStokOpname("12345", token, itemNum, notes, stock, kondisi)
+            ?.observe(viewLifecycleOwner, {
+                Timber.d("New data created : ${it.message}")
+                Toast.makeText(
+                    context?.applicationContext,
+                    "Data berhasil ditambah",
+                    Toast.LENGTH_SHORT
+                ).show()
+            })
+        stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, {
+            if (it == NetworkState.FAILEDTOADD) {
+                Toast.makeText(context?.applicationContext, it.toString(), Toast.LENGTH_SHORT)
+                    .show()
+                Timber.e("Error")
+            }
+        })
     }
 
     private fun initiateDataStokOpname(token: String, itemNum: Int) {
@@ -94,8 +126,11 @@ class StokOpnameResultFragment : Fragment() {
 
         stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, {
             if (it == NetworkState.LOADING) {
+                Timber.d("Check Loading")
                 binding?.shimmerViewContainerDetailOpname?.startShimmer()
-            } else {
+            }
+            else {
+                Timber.d("Check Loaded Data")
                 binding?.shimmerViewContainerDetailOpname?.stopShimmer()
                 binding?.shimmerViewContainerDetailOpname?.visibility = View.GONE
                 binding?.layoutKeterangan?.visibility = View.VISIBLE

@@ -1,8 +1,11 @@
 package com.pjb.immaapp.data.repository
 
+import android.net.Network
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pjb.immaapp.data.entity.stockopname.StockOpname
+import com.pjb.immaapp.data.remote.response.ResponseCreateStokOpname
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.stockopname.StockOpnameService
@@ -14,6 +17,7 @@ import timber.log.Timber
 class DataStokOpnameRepository {
     private val apiService = RetrofitApp.getStockOpnameService()
     val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+    lateinit var message: String
 
     companion object {
         @Volatile
@@ -49,6 +53,40 @@ class DataStokOpnameRepository {
                     }
                 ))
         return resultData
+    }
+
+    fun createStokOpname(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String,
+        itemNum: Int,
+        notes: String,
+        stock: Int,
+        kondisi: String
+    ): LiveData<ResponseCreateStokOpname> {
+        networkState.postValue(NetworkState.LOADING)
+        val resultUser = MutableLiveData<ResponseCreateStokOpname>()
+        compositeDisposable.add(
+            apiService.postStokOpname(apiKey, token, itemNum, notes, stock, kondisi)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    {
+                        if (it.status == 200) {
+                            resultUser.postValue(it)
+                            networkState.postValue(NetworkState.LOADED)
+                            message = it.message
+                            Timber.d("Check : $message")
+                        } else {
+                            networkState.postValue(NetworkState.ERROR)
+                            Timber.d("Check L ${it.message}")
+                        }
+                    }, {
+                        Timber.e("$it")
+                    }
+                )
+        )
+        return resultUser
     }
 
 }
