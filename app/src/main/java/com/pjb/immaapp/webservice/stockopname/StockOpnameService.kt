@@ -12,6 +12,6 @@ interface StockOpnameService {
     fun getStockOpnameResponse(
         @Field("api_key") apiKey: String,
         @Field("token")token: String,
-        @Field("barcode")barcode: String
+        @Field("barcode")barcode: Int
     ): Observable<ResponseStockOpname>
 }

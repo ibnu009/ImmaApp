@@ -115,4 +115,9 @@ class DetailUsulanFragment : Fragment() {
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingFragmentDetailUsulan = null
+    }
+
 }

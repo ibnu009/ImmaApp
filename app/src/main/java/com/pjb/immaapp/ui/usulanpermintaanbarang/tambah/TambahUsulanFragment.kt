@@ -57,8 +57,12 @@ class TambahUsulanFragment: Fragment() {
     fun showDate() {
         val myFormat = "yyyy-mm-dd"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
-
         binding?.edtTanggalDibutuhkan?.setText(sdf.format(calendar.time))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingFragmentTambahUsulan = null
     }
 
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import com.pjb.immaapp.BaseApplication
 import com.pjb.immaapp.data.local.db.ImmaDatabase
 import com.pjb.immaapp.data.repository.DataPoRepository
+import com.pjb.immaapp.data.repository.DataStokOpnameRepository
 import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.data.repository.LoginRepository
 import com.pjb.immaapp.main.MainActivity
@@ -16,6 +17,7 @@ object Injection {
 
     fun provideLoginRepository(): LoginRepository = LoginRepository.getInstance()
     fun provideDataPoRepository(context: Context): DataPoRepository = DataPoRepository.getInstance(provideDatabase(context))
+    fun provideDataStokOpnameRepository() : DataStokOpnameRepository = DataStokOpnameRepository.getInstance()
 
     fun provideDataUpbRepository(): DataUpbRepository = DataUpbRepository.getInstance()
     fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()

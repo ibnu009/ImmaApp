@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentOpnameBinding
 
 class StokOpnameFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,9 +34,14 @@ class StokOpnameFragment : Fragment() {
         }
 
         binding?.btnInitiateScan?.setOnClickListener {
-
+            it.findNavController().navigate(R.id.action_nav_opname_to_barcodeScanFragment)
         }
+
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingFragmentStokOpname = null
+    }
 
 }

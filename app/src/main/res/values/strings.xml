@@ -10,6 +10,9 @@
 
 <!--  Khusus untuk valued String  -->
     <string name="anggaran_po">Rp. %1$s</string>
+    <string name="num_item">Item Num: %1$s</string>
+    <string name="deskripsi_item">Deskripsi: %1$s</string>
+    <string name="satuan_item">Satuan: %1$s</string>
 <!--  End of valued String  -->
 
 

@@ -54,7 +54,11 @@
         android:id="@+id/nav_opname"
         android:name="com.pjb.immaapp.ui.stokopname.StokOpnameFragment"
         android:label="Stock Opname"
-        tools:layout="@layout/fragment_opname" />
+        tools:layout="@layout/fragment_opname" >
+        <action
+            android:id="@+id/action_nav_opname_to_barcodeScanFragment"
+            app:destination="@id/barcodeScanFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/detailPurchaseOrderFragment"
@@ -70,14 +74,39 @@
         android:id="@+id/detailUsulanPermintaanBarangFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.detail.DetailUsulanFragment"
         android:label="DetailUsulanPermintaanBarangFragment">
+
         <argument
             android:name="passIdPermintaan"
             android:defaultValue="1"
             app:argType="integer" />
+
     </fragment>
+
     <fragment
         android:id="@+id/tambahUsulanFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.TambahUsulanFragment"
         android:label="TambahUsulanFragment" />
+
+    <fragment
+        android:id="@+id/barcodeScanFragment"
+        android:name="com.pjb.immaapp.ui.stokopname.BarcodeScanFragment"
+        android:label="BarcodeScanFragment">
+        <action
+            android:id="@+id/action_barcodeScanFragment_to_stokOpnameResultFragment"
+            app:destination="@id/stokOpnameResultFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/stokOpnameResultFragment"
+        android:name="com.pjb.immaapp.ui.stokopname.StokOpnameResultFragment"
+        android:label="StokOpnameResultFragment">
+
+        <argument
+            android:name="passItemNum"
+            android:defaultValue="1"
+            app:argType="integer" />
+
+    </fragment>
 
 </navigation>

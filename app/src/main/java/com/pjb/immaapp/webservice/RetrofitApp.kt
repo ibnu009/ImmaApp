@@ -2,6 +2,7 @@ package com.pjb.immaapp.webservice
 
 import com.pjb.immaapp.webservice.login.LoginService
 import com.pjb.immaapp.webservice.po.PurchaseOrderService
+import com.pjb.immaapp.webservice.stockopname.StockOpnameService
 import com.pjb.immaapp.webservice.usulan.UsulanPermintaanBarangService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,7 +16,7 @@ class RetrofitApp {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
-        private const val BASE_URL = "http://558bcc83f1e4.ngrok.io"
+        private const val BASE_URL = "http://76d2cb996a03.ngrok.io"
 
 
         private val interceptor: HttpLoggingInterceptor =
