@@ -40,7 +40,6 @@
     <string name="nama_pemohon">Nama Pemohon</string>
     <string name="dummy_judul_pekerjaan">Asesmen Unit</string>
     <string name="dummy_nama_pemohon">Wisnu Dwi Yanto</string>
-    <string name="detail_usulan_npermintaan_barang">Detail Usulan <br/>Permintaan Barang</string>
     <string name="usulan_pengadaan">Usulan Pengadaan....</string>
     <string name="total_anggaran">Total Anggaran</string>
     <string name="rp_3_445_000">Rp.3.445.000</string>
@@ -83,4 +82,17 @@
     <string name="dummy_keterlambatan">180 Hari</string>
     <string name="x1">x %1$s</string>
     <string name="dummy_item_usulan">4 IN 1 HUMIDITY, TEMPERATURE AIRFLOW AND LIGHT METER, 45170, POWER SUPPLY 9 VOLT, OPERATING CONDITION 0 TO 50 C, MPH 0.9 TO 67.0 MPH, KNOTS 0.8 TO 58.3 KNOTS, DISPLAY 4 DIGIT (9999 COUNT) DUAL DISPLAY LCD</string>
+    <string name="detail_usulan_npermintaan_barang">Detail Usulan Permintaan Barang</string>
+    <string name="detail_purchase_order">Detail Purchase Order</string>
+    <string name="item_number">Item Number</string>
+    <string name="data_tidak_ditemukan">Data tidak ditemukan</string>
+    <string name="masukkan_tanggal_dibutuhkan">Masukkan tanggal dibutuhkan</string>
+    <string name="deskripsi_pekerjaan">Deskripsi Pekerjaan</string>
+    <string name="catatan">Catatan</string>
+    <string name="criticality">Criticality</string>
+    <string name="urgent">Urgent</string>
+    <string name="normal">Normal</string>
+    <string name="tor_kak">TOR/KAK</string>
+    <string name="pilih_file">Pilih File</string>
+    <string name="button_to_tambah">button_to_tambah</string>
 </resources>

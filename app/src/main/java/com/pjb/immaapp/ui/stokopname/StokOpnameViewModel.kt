@@ -28,4 +28,9 @@ class StokOpnameViewModel(
         dataStokOpnameRepository.networkState
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
+    }
+
 }

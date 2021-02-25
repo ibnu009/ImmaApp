@@ -1,5 +1,10 @@
 package com.pjb.immaapp.data.repository
 
+import android.content.Context
+import android.net.Uri
+import android.os.FileUtils
+import android.text.TextUtils
+import androidx.core.text.TextUtilsCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -14,19 +19,23 @@ import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.ERROR
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
+import com.pjb.immaapp.utils.URIPathHelper
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.io.File
 
 class DataUpbRepository {
     private val apiService = RetrofitApp.getUpbService()
+    private val apiUploadService = RetrofitApp.getUploadUpbService()
     private lateinit var upbDataSourceFactory: UpbDataSourceFactory
     private lateinit var upbItemDataSourceFactory: UpbItemDataSourceFactory
     val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+    private var disposable: Disposable? = null
 
     companion object {
         @Volatile

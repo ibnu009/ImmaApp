@@ -1,11 +1,11 @@
 package com.pjb.immaapp.webservice.usulan
 
+import com.pjb.immaapp.data.remote.response.ResponseCreateUpb
 import com.pjb.immaapp.data.remote.response.ResponseDetailUpb
 import com.pjb.immaapp.data.remote.response.ResponseUsulanPermintaan
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import okhttp3.MultipartBody
+import retrofit2.http.*
 import java.util.*
 
 interface UsulanPermintaanBarangService {

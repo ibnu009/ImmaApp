@@ -30,7 +30,7 @@
             android:layout_marginTop="16dp">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_view"
+                android:id="@+id/sv_usulan"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/bg_search_view"

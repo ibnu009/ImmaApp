@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -19,15 +21,16 @@ import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.ViewModelFactory
+import timber.log.Timber
 
 
 class UsulanFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var upbPagedListAdapter : DataUpbPagedListAdapter
+    private lateinit var upbPagedListAdapter: DataUpbPagedListAdapter
     private lateinit var token: String
 
-    private val upbViewModel by lazy{
+    private val upbViewModel by lazy {
         val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
         factory?.let { ViewModelProvider(this, it).get(UsulanViewModel::class.java) }
     }
@@ -61,7 +64,11 @@ class UsulanFragment : Fragment() {
         with(binding?.rvUsulan) {
             this?.adapter = upbPagedListAdapter
             this?.layoutManager =
-                LinearLayoutManager(this?.context?.applicationContext, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(
+                    this?.context?.applicationContext,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
         }
 
         sharedPreferences =
@@ -72,63 +79,63 @@ class UsulanFragment : Fragment() {
         binding?.shimmerViewContainer?.visibility = View.VISIBLE
         binding?.layoutEmptyList?.visibility = View.GONE
 
-        binding?.fabTambah?.setOnClickListener{
+        binding?.fabTambah?.setOnClickListener {
             it.findNavController().navigate(R.id.action_nav_usulan_to_tambahUsulanFragment)
         }
+
+        binding?.svUsulan?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                showData(token, p0)
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                if (p0.isNullOrEmpty()) {
+                    showData(token, null)
+                }
+                return false
+            }
+        })
+
 
         showData(token, null)
 
     }
 
-    private fun showDataSearchResult(token: String, keywords: String?) {
-        upbViewModel?.getListDataUpb(token, keywords)
-            ?.observe(viewLifecycleOwner, { dataUpb ->
-                upbPagedListAdapter.submitList(dataUpb)
-            })
-
-        upbViewModel?.networkState?.observe(viewLifecycleOwner, { network ->
-            if (upbViewModel!!.listIsEmpty(token, keywords) && network == NetworkState.LOADED) {
-                binding?.layoutEmptyList?.visibility = View.VISIBLE
-            } else if (upbViewModel!!.listIsEmpty(
-                    token,
-                    keywords
-                ) && network == NetworkState.LOADING
-            ) {
-                binding?.shimmerViewContainer?.startShimmer()
-            } else {
-                binding?.shimmerViewContainer?.stopShimmer()
-                binding?.shimmerViewContainer?.visibility = View.GONE
-                binding?.layoutEmptyList?.visibility = View.GONE
-            }
-        })
-    }
-
     private fun showData(token: String, keywords: String?) {
         upbViewModel?.getListDataUpb(token, keywords)
             ?.observe(viewLifecycleOwner, { dataUpb ->
-                upbPagedListAdapter.submitList(dataUpb)
+                    upbPagedListAdapter.submitList(dataUpb)
             })
 
         upbViewModel?.networkState?.observe(viewLifecycleOwner, { network ->
-            if (upbViewModel!!.listIsEmpty(
-                    token, keywords
-                ) && network == NetworkState.LOADING
-            ) {
-                binding?.shimmerViewContainer?.startShimmer()
-            } else {
-                binding?.shimmerViewContainer?.stopShimmer()
-                binding?.shimmerViewContainer?.visibility = View.GONE
+            when  {
+               network == NetworkState.LOADING -> {
+                    binding?.shimmerViewContainer?.visibility = View.VISIBLE
+                    binding?.shimmerViewContainer?.startShimmer()
+                }
+                network == NetworkState.LOADED -> {
+                    binding?.shimmerViewContainer?.stopShimmer()
+                    binding?.shimmerViewContainer?.visibility = View.GONE
+                }
+                upbViewModel!!.listIsEmpty(token, keywords) ->{
+                    binding?.layoutEmptyList?.visibility = View.VISIBLE
+                }
+                else -> {
+                    Timber.e("Unknown Error")
+                }
             }
         })
     }
 
     override fun onResume() {
         super.onResume()
-        binding?.shimmerViewContainer?.startShimmer()
+        showData(token, null)
     }
 
     override fun onPause() {
         super.onPause()
+        binding?.shimmerViewContainer?.visibility = View.GONE
         binding?.shimmerViewContainer?.stopShimmer()
     }
 
