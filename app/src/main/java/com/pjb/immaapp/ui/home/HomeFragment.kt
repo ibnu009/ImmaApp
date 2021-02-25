@@ -79,6 +79,7 @@ class HomeFragment : Fragment() {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.clear().apply()
         val intent = Intent(this.context, LoginActivity::class.java)
+        activity?.finish()
         startActivity(intent)
     }
 

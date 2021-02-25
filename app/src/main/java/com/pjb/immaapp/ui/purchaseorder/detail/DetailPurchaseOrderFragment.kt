@@ -104,13 +104,26 @@ class DetailPurchaseOrderFragment : Fragment() {
         })
 
         viewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
-            if (viewModel?.listItemIsEmty(token, codePo) == true && it == NetworkState.LOADING) {
-                binding?.shimmerViewContainerDetailPoRv?.visibility = View.VISIBLE
-                binding?.shimmerViewContainerDetailPoRv?.startShimmer()
-            } else {
-                binding?.shimmerViewContainerDetailPoRv?.visibility = View.GONE
-                binding?.shimmerViewContainerDetailPoRv?.stopShimmer()
+            when {
+                it == NetworkState.LOADING -> {
+                    binding?.shimmerViewContainerDetailPoRv?.startShimmer()
+                }
+                it == NetworkState.LOADED -> {
+                    binding?.shimmerViewContainerDetailPoRv?.stopShimmer()
+                    binding?.shimmerViewContainerDetailPoRv?.visibility = View.GONE
+                }
+                it == NetworkState.ERROR -> {
+                    Timber.e("Error")
+                }
+                viewModel?.listItemIsEmty(token, codePo) == true -> {
+                    Timber.e("Empty")
+                }
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingFragmentDetailPo = null 
     }
 }

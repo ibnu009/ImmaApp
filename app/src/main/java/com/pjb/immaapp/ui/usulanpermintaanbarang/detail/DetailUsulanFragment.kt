@@ -2,6 +2,7 @@ package com.pjb.immaapp.ui.usulanpermintaanbarang.detail
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,7 @@ class DetailUsulanFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var itemPagedListAdapter: DataItemUpbPagedListAdapter
     private lateinit var token: String
+    private var idPermintaan: Int? = null
 
 
     private val upbViewModel by lazy {
@@ -61,9 +63,10 @@ class DetailUsulanFragment : Fragment() {
 
         binding?.shimmerViewContainerDetailUpb?.visibility = View.VISIBLE
         binding?.shimmerViewContainerDetailUpbRv?.visibility = View.VISIBLE
+        binding?.layoutKeteranganUpb?.visibility = View.INVISIBLE
 
         val safeArgs = arguments?.let { DetailUsulanFragmentArgs.fromBundle(it) }
-        val idPermintaan = safeArgs?.passIdPermintaan
+        idPermintaan = safeArgs?.passIdPermintaan
 
         sharedPreferences =
             activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
@@ -71,7 +74,7 @@ class DetailUsulanFragment : Fragment() {
             ?: "Shared Preferences Not Found"
 
         initiateDetail(token, idPermintaan!!)
-        initiateItemUpb(token, idPermintaan)
+        initiateItemUpb(token, idPermintaan!!)
     }
 
     private fun initiateDetail(token: String, idPermintaan: Int) {
@@ -83,17 +86,15 @@ class DetailUsulanFragment : Fragment() {
                 binding?.txJudulPekerjaan?.text = it.jobTitle
                 binding?.txTanggalDibutuhkan?.text = it.tanggalDibutuhkan
                 binding?.txTanggalPermohonan?.text = it.tanggalPermohonan
-
             })
 
         upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
-            if (upbViewModel?.listItemIsEmpty(token, idPermintaan) == true && it == NetworkState.LOADING) {
+            if (it == NetworkState.LOADING) {
                 binding?.shimmerViewContainerDetailUpb?.startShimmer()
-            } else {
+            } else if (it == NetworkState.LOADED) {
                 binding?.shimmerViewContainerDetailUpb?.stopShimmer()
                 binding?.shimmerViewContainerDetailUpb?.visibility = View.GONE
                 binding?.layoutKeteranganUpb?.visibility = View.VISIBLE
-                binding?.txDetailUsulan?.visibility = View.VISIBLE
             }
         })
     }
@@ -104,15 +105,21 @@ class DetailUsulanFragment : Fragment() {
             Timber.d("Receive data $it")
         })
 
-        upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
+        upbViewModel?.netWorkItemUpb?.observe(viewLifecycleOwner, Observer {
             if (upbViewModel?.listItemIsEmpty(token, idPermintaan) == true && it == NetworkState.LOADING){
                 binding?.shimmerViewContainerDetailUpbRv?.startShimmer()
             } else {
-                Timber.d("Network : ${it}")
+                Timber.d("Network : $it")
                 binding?.shimmerViewContainerDetailUpbRv?.stopShimmer()
                 binding?.shimmerViewContainerDetailUpbRv?.visibility = View.GONE
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initiateDetail(token, idPermintaan!!)
+        initiateItemUpb(token, idPermintaan!!)
     }
 
     override fun onDestroyView() {

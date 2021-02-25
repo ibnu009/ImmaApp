@@ -1,13 +1,18 @@
 package com.pjb.immaapp.ui.login
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.pjb.immaapp.main.MainActivity
@@ -16,17 +21,18 @@ import com.pjb.immaapp.data.entity.request.Credential
 import com.pjb.immaapp.databinding.ActivityLoginBinding
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
+import com.pjb.immaapp.utils.Status
 import com.pjb.immaapp.utils.ViewModelFactory
 import timber.log.Timber
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
 
     lateinit var sharedPreferences: SharedPreferences
+    lateinit var viewModel: LoginViewModel
 
-    private val viewModel by lazy {
-        val factory = ViewModelFactory.getInstance(this.applicationContext)
-        ViewModelProvider(this, factory).get(LoginViewModel::class.java)
-    }
+//    private val viewModel by lazy {
+//
+//    }
 
     private var _activityLoginBinding: ActivityLoginBinding? = null
     val binding get() = _activityLoginBinding
@@ -34,65 +40,90 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _activityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
+        binding?.lifecycleOwner = this
+
         setContentView(binding?.root)
 
-        binding?.edtUsername?.addTextChangedListener(textWatcher)
-        binding?.edtPassword?.addTextChangedListener(textWatcher)
+        sharedPreferences =
+            this.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)
+        binding?.progressLogin?.visibility = View.GONE
 
-        sharedPreferences = this.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)
+        val factory = ViewModelFactory.getInstance(this.applicationContext)
+        viewModel = ViewModelProvider(this, factory).get(LoginViewModel::class.java)
+        binding?.viewModel = viewModel
 
-        binding?.fabLogin?.setOnClickListener {
+        viewModel.authListener = this
+        binding?.handler = this
 
-            viewModel.getLoginRequest(getCredential()).observe(this, Observer {
-                Timber.d("Have user ${it.name}")
-                insertIntoSharedPreference(getCredential(), it)
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            })
 
-            viewModel.networkState.observe(this, Observer {
-                if (it == NetworkState.USERNOTFOUND) {
-                    Toast.makeText(this, "User Not Found", Toast.LENGTH_SHORT).show()
-                    Timber.d("UserNotFound")
-                }
-            })
-        }
+//        binding?.fabLogin?.setOnClickListener {
+//
+////            viewModel.getLoginRequest(getCredential()).observe(this, Observer {user ->
+////
+////                Timber.d("Have user ${user.name}")
+////                insertIntoSharedPreference(getCredential(), user)
+////                val intent = Intent(this, MainActivity::class.java)
+////                startActivity(intent)
+////                finish()
+////            })
+//
+////            viewModel.networkState.observe(this, Observer {
+////                when (it) {
+////                    NetworkState.USERNOTFOUND -> {
+////                        Timber.d("checkCalled UNF")
+////                        val title = "User Not Found"
+////                        initiateLoginDialog(
+////                            NetworkState.USERNOTFOUND,
+////                            "Please enter correct username or password",
+////                            title
+////                        )
+////                    }
+////                    NetworkState.LOADED -> {
+////                        binding?.progressLogin?.visibility = View.GONE
+////                    }
+////                    NetworkState.LOADING -> {
+////                        Timber.d("checkCalled Loading")
+////                        initiateLoginDialog(NetworkState.LOADING, null, "Authenticating..")
+////                    }
+////                    else -> {
+////                        Timber.e("Unknown Error")
+////                    }
+////                }
+////            })
+//
+//            viewModel.getNetworkState.observe(this, Observer {
+//                it.getContentIfNotHandled()?.let { network ->
+//                    Timber.d("check result : ${network.status}")
+//                    Timber.d("checkHandler : ${it.hasBeenHandled}")
+//                    when (network) {
+//                        NetworkState.USERNOTFOUND -> {
+//                            val title = "User Not Found"
+//                            initiateLoginDialog(
+//                                NetworkState.USERNOTFOUND,
+//                                "Please enter correct username or password",
+//                                title
+//                            )
+//                        }
+//                        NetworkState.LOADED -> {
+//                            binding?.progressLogin?.visibility = View.GONE
+//                        }
+//                        NetworkState.LOADING -> {
+//                            initiateLoginDialog(NetworkState.LOADING, null, "Authenticating..")
+//                            Timber.d("checkHandler : ${it.hasBeenHandled}")
+//                        }
+//                        else -> {
+//                            Timber.e("Unknown Error")
+//                        }
+//                    }
+//                }
+//            })
+//        }
     }
 
-    private val textWatcher = object : TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-        }
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            val username = binding?.edtUsername?.text.toString().trim()
-            val password = binding?.edtPassword?.text.toString().trim()
-
-            binding?.fabLogin?.isEnabled = username.isNotEmpty() && password.isNotEmpty()
-        }
-
-        override fun afterTextChanged(p0: Editable?) {
-
-        }
-
-    }
-
-    private fun getCredential(): Credential {
-        val username = binding?.edtUsername?.text.toString().trim()
-        val password = binding?.edtPassword?.text.toString().trim()
-        val apiKey = 12345
-
-        return Credential(
-            username = username,
-            password = password,
-            apiKey = apiKey.toString()
-        )
-    }
 
     private fun insertIntoSharedPreference(credential: Credential, user: User) {
-        val editor : SharedPreferences.Editor = sharedPreferences.edit()
-        with(editor){
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        with(editor) {
             putString(SharedPreferencesKey.KEY_USERNAME, user.username)
             putString(SharedPreferencesKey.KEY_NAME, user.name)
             putString(SharedPreferencesKey.KEY_TOKEN, user.token)
@@ -101,5 +132,65 @@ class LoginActivity : AppCompatActivity() {
             putBoolean(SharedPreferencesKey.KEY_LOGIN, true)
             apply()
         }
+    }
+
+    private fun initiateLoginDialog(status: NetworkState, message: String?, title: String?) {
+        val dialogLoadingBuilder =
+            AlertDialog.Builder(this).apply {
+                setTitle(title)
+            }
+        val dialogLoading: AlertDialog = dialogLoadingBuilder.create()
+
+
+        val dialogWrongCredentialBuilder = AlertDialog.Builder(this).apply {
+            setMessage(message)
+            setTitle(title)
+            setPositiveButton(
+                "OK"
+            ) { p0, _ -> p0?.dismiss() }
+            setCancelable(false)
+        }
+        val dialogWrongCredential: AlertDialog = dialogWrongCredentialBuilder.create()
+
+        dialogLoading.dismiss()
+        dialogWrongCredential.dismiss()
+
+        when (status) {
+            NetworkState.LOADING -> {
+                dialogLoading.show()
+                dialogWrongCredential.dismiss()
+            }
+            NetworkState.USERNOTFOUND -> {
+                dialogLoading.dismiss()
+                dialogWrongCredential.show()
+            }
+            NetworkState.LOADED -> {
+                dialogLoading.dismiss()
+                dialogWrongCredential.dismiss()
+            }
+        }
+    }
+
+    override fun onAuthenticating() {
+        Timber.d("Initiating MVVM Login Loading")
+    }
+
+    override fun onSuccess(credential: Credential, responseSuccess: LiveData<User>) {
+        Timber.d("MVVM Login Logged")
+        responseSuccess.observe(this, Observer { user ->
+                insertIntoSharedPreference(credential, user)
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+        })
+    }
+
+    override fun onFailure(message: String) {
+        Timber.d(message)
+    }
+
+    override fun onLogInClicked(view: View) {
+        Timber.d("clicked")
+        viewModel.logInAndStoreResult()
     }
 }

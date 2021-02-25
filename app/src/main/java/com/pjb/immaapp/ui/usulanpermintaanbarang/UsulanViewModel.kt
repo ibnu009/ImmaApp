@@ -72,7 +72,6 @@ class UsulanViewModel(
 
     override fun onCleared() {
         compositeDisposable.clear()
-        Timber.d("Data cleared")
         super.onCleared()
     }
 }

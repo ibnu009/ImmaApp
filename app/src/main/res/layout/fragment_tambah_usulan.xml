@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/bg_menu"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tx_title_tanggal_dibutuhkan"
@@ -105,27 +101,61 @@
             android:id="@+id/tx_title_tor_kak"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tor_kak"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
+            android:text="@string/tor_kak"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        
+        <ProgressBar
+            android:id="@+id/progress_create_upb"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:max="100"
+            tools:progress="20"/>
+    
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+            
+            <Button
+                android:id="@+id/btn_pilih_file"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@color/grey"
+                android:text="@string/pilih_file"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/tx_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginStart="16dp"
+                tools:text="PATH" />
+        </LinearLayout>
+
 
         <Button
+            android:id="@+id/btn_upload_file"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/light_blue"
-            android:text="@string/pilih_file"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_simpan_button"
+            android:text="@string/simpan"
             android:textAllCaps="false"
-            app:backgroundTint="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tx_title_tor_kak" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:backgroundTint="@null" />
 
     </LinearLayout>
 
