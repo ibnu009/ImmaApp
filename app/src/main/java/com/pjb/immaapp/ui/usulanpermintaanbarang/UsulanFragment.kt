@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentUsulanBinding
 import com.pjb.immaapp.handler.OnClickedActionDataUpb
+import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataUpbPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
@@ -97,7 +98,6 @@ class UsulanFragment : Fragment() {
             }
         })
 
-
         showData(token, null)
 
     }
@@ -143,4 +143,5 @@ class UsulanFragment : Fragment() {
         super.onDestroyView()
         _bindingFragmentUpb = null
     }
+
 }

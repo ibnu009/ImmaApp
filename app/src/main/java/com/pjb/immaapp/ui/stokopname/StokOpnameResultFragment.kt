@@ -125,16 +125,38 @@ class StokOpnameResultFragment : Fragment() {
             })
 
         stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, {
-            if (it == NetworkState.LOADING) {
-                Timber.d("Check Loading")
-                binding?.shimmerViewContainerDetailOpname?.startShimmer()
-            }
-            else {
-                Timber.d("Check Loaded Data")
-                binding?.shimmerViewContainerDetailOpname?.stopShimmer()
-                binding?.shimmerViewContainerDetailOpname?.visibility = View.GONE
-                binding?.layoutKeterangan?.visibility = View.VISIBLE
-                binding?.parentTdd?.visibility = View.VISIBLE
+            when (it) {
+                NetworkState.LOADING -> {
+                    Timber.d("Check Loading")
+                    binding?.shimmerViewContainerDetailOpname?.startShimmer()
+                }
+                NetworkState.ERROR-> {
+                    binding?.shimmerViewContainerDetailOpname?.stopShimmer()
+                    binding?.shimmerViewContainerDetailOpname?.visibility = View.GONE
+                    binding?.layoutKeterangan?.visibility = View.GONE
+                    binding?.parentTdd?.visibility = View.GONE
+                    Toast.makeText(
+                        context?.applicationContext,
+                        "Data tidak ditemukan",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                NetworkState.LOADED -> {
+                    Timber.d("Check Loaded Data")
+                    Toast.makeText(context?.applicationContext, "${it.status}", Toast.LENGTH_SHORT).show()
+                    binding?.shimmerViewContainerDetailOpname?.stopShimmer()
+                    binding?.shimmerViewContainerDetailOpname?.visibility = View.GONE
+                    binding?.layoutKeterangan?.visibility = View.VISIBLE
+                    binding?.parentTdd?.visibility = View.VISIBLE
+                }
+                else -> {
+                    Timber.d("Check Loaded Data")
+                    Toast.makeText(context?.applicationContext, "${it.status}", Toast.LENGTH_SHORT).show()
+                    binding?.shimmerViewContainerDetailOpname?.stopShimmer()
+                    binding?.shimmerViewContainerDetailOpname?.visibility = View.GONE
+                    binding?.layoutKeterangan?.visibility = View.VISIBLE
+                    binding?.parentTdd?.visibility = View.VISIBLE
+                }
             }
         })
     }

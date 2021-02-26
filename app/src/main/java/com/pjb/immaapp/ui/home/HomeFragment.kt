@@ -8,11 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentHomeBinding
+import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.ui.login.LoginActivity
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_NAME
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
@@ -36,6 +38,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _bindingHomeFragment = FragmentHomeBinding.inflate(inflater, container, false)
+
         return _bindingHomeFragment?.root
     }
 
@@ -87,4 +90,5 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _bindingHomeFragment = null
     }
+
 }

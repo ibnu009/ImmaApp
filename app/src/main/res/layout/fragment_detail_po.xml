@@ -15,7 +15,6 @@
                 android:id="@+id/layout_keterangan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -209,7 +208,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/shimmer_view_container_detail_po">
 
                 <LinearLayout
@@ -234,7 +232,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 

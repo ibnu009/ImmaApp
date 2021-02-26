@@ -45,8 +45,8 @@ class DataStokOpnameRepository {
                 }
                 .subscribe(
                     {
-                        resultData.postValue(it[0])
-                        networkState.postValue(NetworkState.LOADED)
+                            resultData.postValue(it[0])
+                            networkState.postValue(NetworkState.LOADED)
                     }, {
                         Timber.e(it)
                         networkState.postValue(NetworkState.ERROR)

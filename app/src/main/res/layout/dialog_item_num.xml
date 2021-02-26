@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/bottomLayout"
         android:orientation="vertical"
         android:background="@drawable/bg_bottom_sheet"
         android:layout_width="match_parent"
@@ -17,19 +18,21 @@
             android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/edt_keterangan"
+            android:id="@+id/edt_item_num"
+            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp" />
 
         <Button
+            android:id="@+id/btn_konfirmasi"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
             android:background="@drawable/bg_btn"
             app:backgroundTint="@null"
             android:layout_marginBottom="16dp"
-            android:text="Konfirmasi"
+            android:text="@string/konfirmasi"
             android:textAllCaps="false"
             android:layout_width="200dp"
             android:layout_height="wrap_content" />

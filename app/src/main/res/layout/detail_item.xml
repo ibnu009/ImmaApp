@@ -17,18 +17,18 @@
 
             <ImageView
                 android:id="@+id/img_icon_item_po"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_margin="16dp"
                 android:background="@drawable/bg_icon_blue"
-                android:padding="10dp"
-                android:src="@drawable/ic_resource_package" />
+                android:padding="10dp" />
 
             <TextView
                 android:id="@+id/tx_job_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
                 android:layout_weight="2"
                 android:ellipsize="end"
                 android:text="@string/dummy_item_usulan"
@@ -39,14 +39,14 @@
 
         <TextView
             android:id="@+id/tx_qty"
-            android:layout_width="wrap_content"
+            android:layout_width="69dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:text="@string/x1"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tx_total_anggaran_detai_item"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_top_section" />
 

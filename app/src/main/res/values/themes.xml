@@ -40,6 +40,11 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="Theme.ImmaApp.ActionBar">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+    </style>
+
     <style name="Theme.ImmaApp.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

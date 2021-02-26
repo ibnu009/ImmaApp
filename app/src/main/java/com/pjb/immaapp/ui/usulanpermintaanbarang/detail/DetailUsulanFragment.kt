@@ -2,29 +2,34 @@ package com.pjb.immaapp.ui.usulanpermintaanbarang.detail
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
+import com.pjb.immaapp.main.MainActivity
+import com.pjb.immaapp.main.MainViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataItemUpbPagedListAdapter
-import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.ViewModelFactory
 import timber.log.Timber
 
+
 class DetailUsulanFragment : Fragment() {
 
     companion object {
         const val EXTRA_ID_PERMINTAAN = "EXTRA_ID_UPB"
+        private const val TITLE = "Detail Usulan Permintaan"
     }
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -32,6 +37,7 @@ class DetailUsulanFragment : Fragment() {
     private lateinit var token: String
     private var idPermintaan: Int? = null
 
+    private lateinit var viewModel: MainViewModel
 
     private val upbViewModel by lazy {
         val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
@@ -48,7 +54,17 @@ class DetailUsulanFragment : Fragment() {
     ): View? {
         _bindingFragmentDetailUsulan =
             FragmentDetailUsulanBinding.inflate(inflater, container, false)
+
         return _bindingFragmentDetailUsulan?.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        activity?.run {
+            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        } ?: throw Throwable("invalid activity")
+        viewModel.updateActionBarTitle("Detail Usulan Fragment")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,7 +74,11 @@ class DetailUsulanFragment : Fragment() {
         with(binding?.rvItemDataUpb) {
             this?.adapter = itemPagedListAdapter
             this?.layoutManager =
-                LinearLayoutManager(this?.context?.applicationContext, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(
+                    this?.context?.applicationContext,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
         }
 
         binding?.shimmerViewContainerDetailUpb?.visibility = View.VISIBLE
@@ -106,7 +126,11 @@ class DetailUsulanFragment : Fragment() {
         })
 
         upbViewModel?.netWorkItemUpb?.observe(viewLifecycleOwner, Observer {
-            if (upbViewModel?.listItemIsEmpty(token, idPermintaan) == true && it == NetworkState.LOADING){
+            if (upbViewModel?.listItemIsEmpty(
+                    token,
+                    idPermintaan
+                ) == true && it == NetworkState.LOADING
+            ) {
                 binding?.shimmerViewContainerDetailUpbRv?.startShimmer()
             } else {
                 Timber.d("Network : $it")
@@ -116,15 +140,15 @@ class DetailUsulanFragment : Fragment() {
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingFragmentDetailUsulan = null
+    }
+
     override fun onResume() {
         super.onResume()
         initiateDetail(token, idPermintaan!!)
         initiateItemUpb(token, idPermintaan!!)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _bindingFragmentDetailUsulan = null
     }
 
 }
