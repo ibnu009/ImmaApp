@@ -147,6 +147,7 @@ class DetailUsulanFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
         initiateDetail(token, idPermintaan!!)
         initiateItemUpb(token, idPermintaan!!)
     }

@@ -78,15 +78,16 @@ class BarcodeScanFragment : Fragment(), ZXingScannerView.ResultHandler {
         }catch (ex: NumberFormatException){
             Toast.makeText(context?.applicationContext, "Item num tidak valid", Toast.LENGTH_SHORT).show()
         }
+    }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        zXingScannerView?.addView(null)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _bindingBarcodeScanFragment = null
-        zXingScannerView = null
-        binding?.cameraFrame?.addView(null)
     }
 
 }

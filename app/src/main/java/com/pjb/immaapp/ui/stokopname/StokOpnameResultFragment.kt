@@ -1,11 +1,14 @@
 package com.pjb.immaapp.ui.stokopname
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -25,6 +28,7 @@ class StokOpnameResultFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var token: String
+    private lateinit var dialog: AlertDialog
 
     private val stokOpnameViewModel by lazy {
         val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
@@ -46,6 +50,8 @@ class StokOpnameResultFragment : Fragment() {
 
         val safeArgs = arguments?.let { StokOpnameResultFragmentArgs.fromBundle(it) }
         val itemNum = safeArgs?.passItemNum
+
+        dialog = setProgressDialog(activity?.applicationContext!!, "Menambahkan")
 
         sharedPreferences =
             context?.applicationContext?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
@@ -80,10 +86,49 @@ class StokOpnameResultFragment : Fragment() {
 
         binding?.btnSimpanData?.setOnClickListener {
             val notes = binding?.edtKeterangan?.text.toString().trim()
-            val stock = Integer.parseInt(binding?.edtStokNyata?.text.toString())
+            val raw = binding?.edtStokNyata?.text.toString()
             val kondisi = binding?.edtKondisiBarang?.text.toString().trim()
-            addDataStokOpname(token, itemNum, notes, stock, kondisi)
+
+            if(checkIsEmpty(notes, raw, kondisi)){
+                val stock = Integer.parseInt(raw)
+                addDataStokOpname(token, itemNum, notes, stock, kondisi)
+            }
         }
+    }
+
+    private fun clearInput() {
+        binding?.edtKeterangan?.text?.clear()
+        binding?.edtStokNyata?.text?.clear()
+        binding?.edtKondisiBarang?.text?.clear()
+
+        binding?.edtStokNyata?.requestFocus()
+    }
+
+    private fun checkIsEmpty(keterangan: String, stok: String, kondisi: String): Boolean {
+        with(binding) {
+            when {
+                stok.isEmpty() -> {
+                    this?.edtStokNyata?.requestFocus()
+                    this?.edtStokNyata?.error = "Masukkan Stok"
+
+                    return false
+                }
+                kondisi.isEmpty() -> {
+                    this?.edtKondisiBarang?.requestFocus()
+                    this?.edtKondisiBarang?.error = "Masukkan kondisi barang"
+
+                    return false
+                }
+                keterangan.isEmpty() -> {
+                    this?.edtKeterangan?.requestFocus()
+                    this?.edtKeterangan?.error = "Masukkan keterangan"
+
+                    return false
+                }
+            }
+            return true
+        }
+
     }
 
     private fun addDataStokOpname(
@@ -103,10 +148,19 @@ class StokOpnameResultFragment : Fragment() {
                 ).show()
             })
         stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, {
-            if (it == NetworkState.FAILEDTOADD) {
-                Toast.makeText(context?.applicationContext, it.toString(), Toast.LENGTH_SHORT)
-                    .show()
-                Timber.e("Error")
+            when (it) {
+                NetworkState.FAILEDTOADD -> {
+                    Toast.makeText(context?.applicationContext, it.toString(), Toast.LENGTH_SHORT)
+                        .show()
+                    Timber.e("Error")
+                }
+                NetworkState.LOADED -> {
+                    clearInput()
+                    dialog.dismiss()
+                }
+                NetworkState.LOADING -> {
+                    dialog.show()
+                }
             }
         })
     }
@@ -130,20 +184,14 @@ class StokOpnameResultFragment : Fragment() {
                     Timber.d("Check Loading")
                     binding?.shimmerViewContainerDetailOpname?.startShimmer()
                 }
-                NetworkState.ERROR-> {
+                NetworkState.ERROR -> {
                     binding?.shimmerViewContainerDetailOpname?.stopShimmer()
                     binding?.shimmerViewContainerDetailOpname?.visibility = View.GONE
                     binding?.layoutKeterangan?.visibility = View.GONE
                     binding?.parentTdd?.visibility = View.GONE
-                    Toast.makeText(
-                        context?.applicationContext,
-                        "Data tidak ditemukan",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
                 NetworkState.LOADED -> {
                     Timber.d("Check Loaded Data")
-                    Toast.makeText(context?.applicationContext, "${it.status}", Toast.LENGTH_SHORT).show()
                     binding?.shimmerViewContainerDetailOpname?.stopShimmer()
                     binding?.shimmerViewContainerDetailOpname?.visibility = View.GONE
                     binding?.layoutKeterangan?.visibility = View.VISIBLE
@@ -151,7 +199,6 @@ class StokOpnameResultFragment : Fragment() {
                 }
                 else -> {
                     Timber.d("Check Loaded Data")
-                    Toast.makeText(context?.applicationContext, "${it.status}", Toast.LENGTH_SHORT).show()
                     binding?.shimmerViewContainerDetailOpname?.stopShimmer()
                     binding?.shimmerViewContainerDetailOpname?.visibility = View.GONE
                     binding?.layoutKeterangan?.visibility = View.VISIBLE
@@ -159,6 +206,54 @@ class StokOpnameResultFragment : Fragment() {
                 }
             }
         })
+    }
+
+    fun setProgressDialog(context: Context, message: String): AlertDialog {
+        val llPadding = 30
+        val ll = LinearLayout(context)
+        ll.orientation = LinearLayout.HORIZONTAL
+        ll.setPadding(llPadding, llPadding, llPadding, llPadding)
+        ll.gravity = Gravity.CENTER
+        var llParam = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        llParam.gravity = Gravity.CENTER
+        ll.layoutParams = llParam
+
+        val progressBar = ProgressBar(context)
+        progressBar.isIndeterminate = true
+        progressBar.setPadding(0, 0, llPadding, 0)
+        progressBar.layoutParams = llParam
+
+        llParam = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        llParam.gravity = Gravity.CENTER
+        val tvText = TextView(context)
+        tvText.text = message
+        tvText.setTextColor(Color.parseColor("#000000"))
+        tvText.textSize = 20.toFloat()
+        tvText.layoutParams = llParam
+
+        ll.addView(progressBar)
+        ll.addView(tvText)
+
+        val builder = AlertDialog.Builder(activity)
+        builder.setCancelable(true)
+        builder.setView(ll)
+
+        val dialog = builder.create()
+        val window = dialog.window
+        if (window != null) {
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.copyFrom(dialog.window?.attributes)
+            layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
+            layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+            dialog.window?.attributes = layoutParams
+        }
+        return dialog
     }
 
     override fun onDestroyView() {

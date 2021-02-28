@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentHomeBinding
-import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.ui.login.LoginActivity
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_NAME
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
@@ -39,8 +38,12 @@ class HomeFragment : Fragment() {
     ): View? {
         _bindingHomeFragment = FragmentHomeBinding.inflate(inflater, container, false)
 
+        (activity as AppCompatActivity).supportActionBar?.hide()
+
         return _bindingHomeFragment?.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

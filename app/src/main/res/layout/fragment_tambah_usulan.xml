@@ -134,6 +134,7 @@
                     android:background="@color/grey"
                     android:text="@string/pilih_file"
                     android:textAllCaps="false"
+                    android:backgroundTint="@null"
                     app:backgroundTint="@null" />
 
                 <TextView

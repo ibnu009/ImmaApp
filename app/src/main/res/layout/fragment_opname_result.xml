@@ -158,7 +158,7 @@
                     android:layout_marginBottom="24dp"
                     android:background="@drawable/bg_btn"
                     app:backgroundTint="@null"
-                    android:text="Simpan"
+                    android:text="@string/simpan"
                     android:textAllCaps="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -170,7 +170,6 @@
             android:id="@+id/shimmer_view_container_detail_opname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout

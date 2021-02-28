@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentUsulanBinding
 import com.pjb.immaapp.handler.OnClickedActionDataUpb
-import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataUpbPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
@@ -55,6 +54,8 @@ class UsulanFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _bindingFragmentUpb = FragmentUsulanBinding.inflate(inflater, container, false)
+
+        (activity as AppCompatActivity).supportActionBar?.hide()
 
         return _bindingFragmentUpb?.root
     }
@@ -109,17 +110,14 @@ class UsulanFragment : Fragment() {
             })
 
         upbViewModel?.networkState?.observe(viewLifecycleOwner, { network ->
-            when  {
-               network == NetworkState.LOADING -> {
+            when (network) {
+                NetworkState.LOADING -> {
                     binding?.shimmerViewContainer?.visibility = View.VISIBLE
                     binding?.shimmerViewContainer?.startShimmer()
                 }
-                network == NetworkState.LOADED -> {
+                NetworkState.LOADED -> {
                     binding?.shimmerViewContainer?.stopShimmer()
                     binding?.shimmerViewContainer?.visibility = View.GONE
-                }
-                upbViewModel!!.listIsEmpty(token, keywords) ->{
-                    binding?.layoutEmptyList?.visibility = View.VISIBLE
                 }
                 else -> {
                     Timber.e("Unknown Error")
@@ -130,7 +128,13 @@ class UsulanFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
         showData(token, null)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
     }
 
     override fun onPause() {
@@ -142,6 +146,7 @@ class UsulanFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _bindingFragmentUpb = null
+        binding?.rvUsulan?.adapter = null
     }
 
 }
