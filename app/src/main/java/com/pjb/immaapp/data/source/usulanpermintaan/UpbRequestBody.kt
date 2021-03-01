@@ -45,7 +45,6 @@ class UpbRequestBody(
         override fun run() {
             callback.onProgressUpdate((100 * uploaded / total).toInt())
         }
-
     }
 
     companion object {

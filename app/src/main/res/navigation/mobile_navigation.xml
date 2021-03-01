@@ -77,18 +77,16 @@
         android:id="@+id/detailUsulanPermintaanBarangFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.detail.DetailUsulanFragment"
         android:label="DetailUsulanPermintaanBarangFragment">
-
         <argument
             android:name="passIdPermintaan"
             android:defaultValue="1"
             app:argType="integer" />
 
-    </fragment>
+        <action
+            android:id="@+id/action_detailUsulanPermintaanBarangFragment_to_tambahMaterialUpbFragment"
+            app:destination="@id/tambahMaterialUpbFragment" />
 
-    <fragment
-        android:id="@+id/tambahUsulanFragment"
-        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.TambahUsulanFragment"
-        android:label="TambahUsulanFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/barcodeScanFragment"
@@ -109,10 +107,20 @@
             android:name="passItemNum"
             android:defaultValue="1"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_stokOpnameResultFragment_to_nav_opname"
-            app:destination="@id/nav_opname" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/tambahMaterialUpbFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.TambahMaterialUpbFragment"
+        android:label="TambahMaterialUpbFragment" />
+    <fragment
+        android:id="@+id/tambahUsulanFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.TambahUsulanFragment"
+        android:label="TambahUsulanFragment" >
+        <action
+            android:id="@+id/action_tambahUsulanFragment_to_detailUsulanPermintaanBarangFragment"
+            app:destination="@id/detailUsulanPermintaanBarangFragment" />
     </fragment>
 
 </navigation>

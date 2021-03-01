@@ -8,12 +8,12 @@
     <string name="action_settings">Settings</string>
 
 
-<!--  Khusus untuk valued String  -->
+    <!--  Khusus untuk valued String  -->
     <string name="anggaran_po">Rp. %1$s</string>
     <string name="num_item">Item Num: %1$s</string>
     <string name="deskripsi_item">Deskripsi: %1$s</string>
     <string name="satuan_item">Satuan: %1$s</string>
-<!--  End of valued String  -->
+    <!--  End of valued String  -->
 
 
     <string name="menu_home">Home</string>
@@ -114,5 +114,7 @@
         <item>Services</item>
         <item>Items</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

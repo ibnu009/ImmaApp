@@ -22,7 +22,6 @@ class TambahMaterialUpbFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _bindingTambahMaterialFragment = FragmentTambahMaterialBinding.inflate(inflater, container, false)
         return _bindingTambahMaterialFragment?.root
 
@@ -41,6 +40,11 @@ class TambahMaterialUpbFragment: Fragment() {
         txView.text = getString(R.string.tambah_material)
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar.root)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingTambahMaterialFragment = null
     }
 
 }

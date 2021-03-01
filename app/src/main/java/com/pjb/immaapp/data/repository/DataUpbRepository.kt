@@ -31,7 +31,6 @@ import java.io.File
 
 class DataUpbRepository {
     private val apiService = RetrofitApp.getUpbService()
-    private val apiUploadService = RetrofitApp.getUploadUpbService()
     private lateinit var upbDataSourceFactory: UpbDataSourceFactory
     private lateinit var upbItemDataSourceFactory: UpbItemDataSourceFactory
     val networkState: MutableLiveData<NetworkState> = MutableLiveData()

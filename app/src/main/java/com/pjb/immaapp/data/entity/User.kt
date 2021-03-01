@@ -2,7 +2,7 @@ package com.pjb.immaapp.data.entity
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class User(
@@ -10,6 +10,8 @@ data class User(
     var username: String,
     @field:SerializedName("nama")
     var name: String,
+    @field: SerializedName("id_sdm")
+    var idSdm: String,
     @field:SerializedName("token")
     var token: String
 ): Parcelable

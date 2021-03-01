@@ -1,111 +1,103 @@
 package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah
 
-import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.MimeTypeMap
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.pjb.immaapp.R
-import com.pjb.immaapp.data.remote.response.ResponseCreateUpb
-import com.pjb.immaapp.data.source.usulanpermintaan.UpbRequestBody
+import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
 import com.pjb.immaapp.databinding.FragmentTambahUsulanBinding
-import com.pjb.immaapp.utils.SharedPreferencesKey
-import com.pjb.immaapp.utils.getFileName
-import com.pjb.immaapp.utils.snackbar
-import com.pjb.immaapp.webservice.RetrofitApp
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.API_KEY
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.pjb.immaapp.handler.OnClickHandlerUpbCreate
+import com.pjb.immaapp.handler.UpbFileUploadListener
+import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanFragmentDirections
+import com.pjb.immaapp.utils.*
 import timber.log.Timber
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TambahUsulanFragment : Fragment(), UpbRequestBody.UploadCallback {
 
-    private var _bindingFragmentTambahUsulan: FragmentTambahUsulanBinding? = null
-    private val binding get() = _bindingFragmentTambahUsulan
+class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadListener {
 
-    private var selectedDocumentUri: Uri? = null
     private lateinit var token: String
+    private lateinit var idSdm: String
+    private lateinit var apiKey: String
     private lateinit var sharedPreferences: SharedPreferences
-
+    private var date: String? = null
+    var path: String? = null
     private val calendar: Calendar = Calendar.getInstance()
 
+    private val viewModel by lazy {
+        val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
+        factory?.let { ViewModelProvider(this, it) }?.get(CreateUpbViewModel::class.java)
+    }
+
+    private var _bindingFragmentTambahlUsulan: FragmentTambahUsulanBinding? = null
+    private val binding get() = _bindingFragmentTambahlUsulan
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _bindingFragmentTambahUsulan =
+        _bindingFragmentTambahlUsulan =
             FragmentTambahUsulanBinding.inflate(inflater, container, false)
-        return _bindingFragmentTambahUsulan?.root
+        return _bindingFragmentTambahlUsulan?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val toolbar = binding?.customToolbarTambahUsulan
-        val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
-        val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
-        btnBack.setOnClickListener {
-            it.findNavController().popBackStack()
-        }
+        binding?.viewModel = viewModel
+        binding?.lifecycleOwner = this
+        viewModel?.upbFileUploadListener = this
+        binding?.handler = this
 
-        txView.text = getString(R.string.tambah_usulan_permintaan_barang)
-
-        sharedPreferences =
-            activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
-        token =
-            sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
-                ?: "Shared Preference Not Found"
-
-
+        sharedPreferences = activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
+        initiateKeys()
         initiateDateDialogPicker()
+        this.context?.let { initiatePermission(it) }
 
         binding?.btnPilihFile?.setOnClickListener {
-            openDocumentChooser()
-        }
-
-        binding?.btnUploadFile?.setOnClickListener {
-            uploadDocument()
-        }
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            when (requestCode) {
-                REQUEST_CODE_PICK_DOCUMENT -> {
-                    selectedDocumentUri = data?.data
-                    binding?.txPath?.text = selectedDocumentUri?.lastPathSegment
-                }
+            Intent(Intent.ACTION_GET_CONTENT).also {
+                it.type = "application/pdf"
+                val mimes = arrayOf("application/pdf")
+                it.putExtra(Intent.EXTRA_MIME_TYPES, mimes)
+                startActivityForResult(it, REQUEST_CODE_PICK_DOCUMENT)
             }
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == AppCompatActivity.RESULT_OK) {
+            val uri = data?.data
+            path = FIleHelper().getFilePathFromURI(this.context?.applicationContext, uri)
+            binding?.txPath?.text = File(path?:"-").name
+            Timber.d("getPathIs $path")
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+
 
     private fun initiateDateDialogPicker() {
         val cal = Calendar.getInstance()
 
         val dateSetListener =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -113,120 +105,97 @@ class TambahUsulanFragment : Fragment(), UpbRequestBody.UploadCallback {
             }
 
         binding?.edtTanggalDibutuhkan?.setOnClickListener {
-            requireActivity().let {
-                DatePickerDialog(
-                    it,
-                    dateSetListener,
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH)
-                ).show()
-            }
+            DatePickerDialog(
+                requireActivity(),
+                dateSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
     }
 
     private fun showDate(calendar: Calendar) {
+//        Formatter untuk dikirim ke Server
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        date = format.format(calendar.time)
+
+//        Formatter untuk tampil ke User
         val myFormat = "dd/MMM/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
-        binding?.edtTanggalDibutuhkan?.setText(sdf.format(calendar.time))
+        val convertedDate = sdf.format(calendar.time)
+        binding?.edtTanggalDibutuhkan?.setText(convertedDate)
     }
 
-    private fun openDocumentChooser() {
-        Intent(Intent.ACTION_GET_CONTENT).also {
-            it.type = "*/*"
-            val mimeType =
-                arrayOf(
-                    "application/msword",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    "application/pdf",
-                    "text/plain"
-                )
-            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeType)
-            startActivityForResult(it, REQUEST_CODE_PICK_DOCUMENT)
+
+    override fun onClickUpload(view: View) {
+        this.context?.let { viewModel?.checkField(it, this, token, apiKey, path ?: "-", date, idSdm) }
+    }
+
+    override fun onInitiating() {
+        Timber.d("Loading...")
+        this.context?.loadingDialog("Loading...")?.show()
+    }
+
+    override fun onSuccess(message: String, idPermintaan: Int?) {
+        binding?.root?.snackbar(message)
+        this.context?.loadingDialog(null)?.dismiss()
+        if (idPermintaan != null) {
+            val action = TambahUsulanFragmentDirections.actionTambahUsulanFragmentToDetailUsulanPermintaanBarangFragment(
+                idPermintaan
+            )
+            findNavController().navigate(action)
+        } else {
+            Timber.d("idPermintaan Null")
         }
     }
 
-    private fun uploadDocument() {
-        Timber.d("uploading...")
-        if (selectedDocumentUri == null) {
-            Timber.d("Null")
-            return
-        }
-        val parcelFileDescriptor =
-            requireActivity().contentResolver.openFileDescriptor(selectedDocumentUri!!, "r", null)
-                ?: return
+    override fun onFailure(message: String) {
+        binding?.root?.snackbar(message)
+        this.context?.loadingDialog(null)?.dismiss()
+    }
 
-        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-        val file = File(
-            requireActivity().cacheDir, requireActivity().contentResolver.getFileName(
-                selectedDocumentUri!!
-            )
-        )
-        val outputStream = FileOutputStream(file)
-        inputStream.copyTo(outputStream)
-        binding?.progressCreateUpb?.progress = 0
-
-        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(selectedDocumentUri.toString())
-        val contentType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-            fileExtension.toLowerCase(
-                Locale.ROOT
-            )
-        )
-
-        Timber.d("contenttype is $contentType")
-
-        val body = UpbRequestBody(file, contentType!!, this)
-
-        try {
-            RetrofitApp.getUploadUpbService().createPermintaanBarang(
-                token = MultipartBody.Part.createFormData("token", token),
-                apiKey = MultipartBody.Part.createFormData("api_key", API_KEY.toString()),
-                requiredDate = "2020-02-11".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                description = "jobTitleeeeeeeeeeeeeee".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                notes = "Notes".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                critical = "0".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                idSdm = "860".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
-                file = MultipartBody.Part.createFormData(
-                    "$contentType",
-                    file.name,
-                    body
-                )
-            ).enqueue(object : Callback<ResponseCreateUpb> {
-                override fun onResponse(
-                    call: Call<ResponseCreateUpb>,
-                    response: Response<ResponseCreateUpb>
-                ) {
-                    response.body()?.let {
-                        binding?.root?.snackbar(it.message ?: "Sudah")
-                        Timber.d("haha ${it.message}")
-                        binding?.progressCreateUpb?.progress = 100
+    private fun initiatePermission(context: Context) {
+        Dexter.withContext(context)
+            .withPermissions(
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ).withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
+                    if (p0?.areAllPermissionsGranted() == true) {
+                        binding?.root?.snackbar("All Permissions are granted")
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseCreateUpb>, t: Throwable) {
-                    Timber.d("errordong ${t.message}")
-                    binding?.progressCreateUpb?.progress = 100
-                    t.message?.let { binding?.root?.snackbar(it) }
+                override fun onPermissionRationaleShouldBeShown(
+                    p0: MutableList<PermissionRequest>?,
+                    p1: PermissionToken?
+                ) {
+                    p1?.continuePermissionRequest()
                 }
-            })
-        } catch (e: Exception) {
-            Timber.e("errornya ${e.message}")
-        }
-
+            }).withErrorListener {
+                binding?.root?.snackbar("Error!!!")
+            }.onSameThread()
+            .check()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _bindingFragmentTambahUsulan = null
+    private fun initiateKeys() {
+        apiKey = sharedPreferences.getString(SharedPreferencesKey.KEY_API, "Not Found")
+            ?: "Shared Preference Not Found"
+        token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
+            ?: "Shared Preference Not Found"
+        idSdm = sharedPreferences.getString(SharedPreferencesKey.KEY_ID_SDM, "Not Found")
+            ?: "Shared Preference Not Found"
     }
 
     companion object {
         const val REQUEST_CODE_PICK_DOCUMENT = 100
     }
 
-    override fun onProgressUpdate(percentage: Int) {
-        binding?.progressCreateUpb?.visibility = View.VISIBLE
-        binding?.progressCreateUpb?.progress = percentage
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _bindingFragmentTambahlUsulan = null
     }
+
 
 }

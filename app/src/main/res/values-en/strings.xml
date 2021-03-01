@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Imma App</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -11,9 +10,9 @@
 
     <!--  Khusus untuk valued String  -->
     <string name="anggaran_po">Rp. %1$s</string>
-    <string name="num_item">Rp. %1$s</string>
-    <string name="deskripsi_item">Item Num %1$s</string>
-    <string name="satuan_item">Item Num %1$s</string>
+    <string name="num_item">Item Num: %1$s</string>
+    <string name="deskripsi_item">Deskripsi: %1$s</string>
+    <string name="satuan_item">Satuan: %1$s</string>
     <!--  End of valued String  -->
 
 
@@ -60,6 +59,7 @@
     <string name="arahkan_qr_code_ke_kamera_anda_nuntuk_data_terbaca_otomatis">Arahkan QR Code ke kamera anda untuk data terbaca otomatis</string>
     <string name="scan_sekarang">Scan Sekarang</string>
     <string name="klik_disini_jika_mengecek_data_secara_manual">Klik disini jika mengecek data secara manual</string>
+    <string name="detail_stok_opname">Detail Stok Opname</string>
     <string name="stok_opname">Stok Opname</string>
     <string name="data_opname">Data Opname</string>
     <string name="stok_nyata">Stok Nyata</string>
@@ -80,9 +80,10 @@
     <string name="complete">Complete</string>
     <string name="keterlambatan">Keterlambatan</string>
     <string name="dummy_keterlambatan">180 Hari</string>
-    <string name="x1">x %1$s</string>
+    <string name="x1">x%1$s</string>
     <string name="dummy_item_usulan">4 IN 1 HUMIDITY, TEMPERATURE AIRFLOW AND LIGHT METER, 45170, POWER SUPPLY 9 VOLT, OPERATING CONDITION 0 TO 50 C, MPH 0.9 TO 67.0 MPH, KNOTS 0.8 TO 58.3 KNOTS, DISPLAY 4 DIGIT (9999 COUNT) DUAL DISPLAY LCD</string>
     <string name="detail_usulan_npermintaan_barang">Detail Usulan Permintaan Barang</string>
+    <string name="tambah_material_upb">Tambah Material</string>
     <string name="detail_purchase_order">Detail Purchase Order</string>
     <string name="item_number">Item Number</string>
     <string name="data_tidak_ditemukan">Data tidak ditemukan</string>
@@ -95,7 +96,25 @@
     <string name="tor_kak">TOR/KAK</string>
     <string name="pilih_file">Pilih File</string>
     <string name="button_to_tambah">button_to_tambah</string>
-    <string name="simpan">Save</string>
-    <string name="konfirmasi">Confirm</string>
-    <string name="detail_stok_opname">Stock Opname Detail</string>
+    <string name="simpan">Simpan</string>
+    <string name="konfirmasi">Konfirmasi</string>
+    <string name="button_untuk_tambah_material">this button use for add new material</string>
+    <string name="btn_for_back">btn for back</string>
+    <string name="tambah_usulan_permintaan_barang">Tambah Usulan Permintaan Barang</string>
+    <string name="nama_material">Nama Material</string>
+    <string name="tambah_material">Tambah Material</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="masukkan_nama_material">Masukkan nama material</string>
+    <string name="jumlah">Jumlah</string>
+    <string name="satuan">Satuan</string>
+    <string name="spesifikasi">Spesifikasi</string>
+    <string name="daftar_material">Daftar Material</string>
+
+    <string-array name="line_type">
+        <item>Services</item>
+        <item>Items</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

@@ -9,6 +9,7 @@ class GeneralErrorHandler : ErrorHandler {
 
     override fun getError(throwable: Throwable): ErrorEntity {
         return when(throwable) {
+//           no Connection Error
             is IOException -> ErrorEntity.Network
             is HttpException -> {
                 when(throwable.code()) {

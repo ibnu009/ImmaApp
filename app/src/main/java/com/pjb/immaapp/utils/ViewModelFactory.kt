@@ -13,6 +13,7 @@ import com.pjb.immaapp.ui.login.LoginViewModel
 import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderViewModel
 import com.pjb.immaapp.ui.stokopname.StokOpnameViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
+import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.CreateUpbViewModel
 import io.reactivex.disposables.CompositeDisposable
 
 class ViewModelFactory(
@@ -55,6 +56,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(StokOpnameViewModel::class.java) -> {
                 StokOpnameViewModel(dataStokOpnameRepository, compositeDisposable) as T
+            }
+            modelClass.isAssignableFrom(CreateUpbViewModel::class.java) -> {
+                CreateUpbViewModel(compositeDisposable) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

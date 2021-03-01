@@ -89,6 +89,16 @@ class HomeFragment : Fragment() {
         startActivity(intent)
     }
 
+    override fun onStop() {
+        super.onStop()
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _bindingHomeFragment = null

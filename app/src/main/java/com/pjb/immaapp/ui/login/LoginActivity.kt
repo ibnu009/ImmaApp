@@ -30,10 +30,6 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var viewModel: LoginViewModel
 
-//    private val viewModel by lazy {
-//
-//    }
-
     private var _activityLoginBinding: ActivityLoginBinding? = null
     val binding get() = _activityLoginBinding
 
@@ -50,8 +46,8 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
 
         val factory = ViewModelFactory.getInstance(this.applicationContext)
         viewModel = ViewModelProvider(this, factory).get(LoginViewModel::class.java)
-        binding?.viewModel = viewModel
 
+        binding?.viewModel = viewModel
         viewModel.authListener = this
         binding?.handler = this
 
@@ -127,47 +123,11 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
             putString(SharedPreferencesKey.KEY_USERNAME, user.username)
             putString(SharedPreferencesKey.KEY_NAME, user.name)
             putString(SharedPreferencesKey.KEY_TOKEN, user.token)
+            putString(SharedPreferencesKey.KEY_ID_SDM, user.idSdm)
             putString(SharedPreferencesKey.KEY_PASSWORD, credential.password)
             putString(SharedPreferencesKey.KEY_API, credential.apiKey)
             putBoolean(SharedPreferencesKey.KEY_LOGIN, true)
             apply()
-        }
-    }
-
-    private fun initiateLoginDialog(status: NetworkState, message: String?, title: String?) {
-        val dialogLoadingBuilder =
-            AlertDialog.Builder(this).apply {
-                setTitle(title)
-            }
-        val dialogLoading: AlertDialog = dialogLoadingBuilder.create()
-
-
-        val dialogWrongCredentialBuilder = AlertDialog.Builder(this).apply {
-            setMessage(message)
-            setTitle(title)
-            setPositiveButton(
-                "OK"
-            ) { p0, _ -> p0?.dismiss() }
-            setCancelable(false)
-        }
-        val dialogWrongCredential: AlertDialog = dialogWrongCredentialBuilder.create()
-
-        dialogLoading.dismiss()
-        dialogWrongCredential.dismiss()
-
-        when (status) {
-            NetworkState.LOADING -> {
-                dialogLoading.show()
-                dialogWrongCredential.dismiss()
-            }
-            NetworkState.USERNOTFOUND -> {
-                dialogLoading.dismiss()
-                dialogWrongCredential.show()
-            }
-            NetworkState.LOADED -> {
-                dialogLoading.dismiss()
-                dialogWrongCredential.dismiss()
-            }
         }
     }
 

@@ -3,15 +3,14 @@ package com.pjb.immaapp.webservice
 import com.pjb.immaapp.webservice.login.LoginService
 import com.pjb.immaapp.webservice.po.PurchaseOrderService
 import com.pjb.immaapp.webservice.stockopname.StockOpnameService
-import com.pjb.immaapp.webservice.usulan.UpbUploadService
 import com.pjb.immaapp.webservice.usulan.UsulanPermintaanBarangService
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+
 
 class RetrofitApp {
 
@@ -20,6 +19,7 @@ class RetrofitApp {
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
         private const val BASE_URL = "http://09f02bafc978.ngrok.io"
+        const val UPLOAD_URL = "$BASE_URL/api/fpb/create"
 
 
         private val interceptor: HttpLoggingInterceptor =
@@ -63,10 +63,6 @@ class RetrofitApp {
 
         fun getStockOpnameService(): StockOpnameService {
             return retrofit.create(StockOpnameService::class.java)
-        }
-
-        fun getUploadUpbService(): UpbUploadService {
-            return uploadRetrofit.create(UpbUploadService::class.java)
         }
 
     }
