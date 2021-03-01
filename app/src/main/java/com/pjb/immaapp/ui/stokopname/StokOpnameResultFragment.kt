@@ -6,13 +6,13 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentOpnameResultBinding
 import com.pjb.immaapp.utils.NetworkState
@@ -42,11 +42,24 @@ class StokOpnameResultFragment : Fragment() {
     ): View? {
         _bindingFragmentOpnameResult =
             FragmentOpnameResultBinding.inflate(inflater, container, false)
+
         return _bindingFragmentOpnameResult?.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        val toolbar = binding?.customToolbarDetailOpname
+        val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
+        val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
+        btnBack.setOnClickListener {
+            it.findNavController().popBackStack()
+        }
+
+        txView.text = context?.resources?.getString(R.string.detail_stok_opname)
+
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar.root)
 
         val safeArgs = arguments?.let { StokOpnameResultFragmentArgs.fromBundle(it) }
         val itemNum = safeArgs?.passItemNum

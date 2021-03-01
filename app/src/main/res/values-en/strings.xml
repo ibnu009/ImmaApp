@@ -95,4 +95,7 @@
     <string name="tor_kak">TOR/KAK</string>
     <string name="pilih_file">Pilih File</string>
     <string name="button_to_tambah">button_to_tambah</string>
+    <string name="simpan">Save</string>
+    <string name="konfirmasi">Confirm</string>
+    <string name="detail_stok_opname">Stock Opname Detail</string>
 </resources>

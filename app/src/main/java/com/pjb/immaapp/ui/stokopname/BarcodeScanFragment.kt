@@ -80,11 +80,6 @@ class BarcodeScanFragment : Fragment(), ZXingScannerView.ResultHandler {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        zXingScannerView?.addView(null)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _bindingBarcodeScanFragment = null

@@ -109,15 +109,10 @@
             android:name="passItemNum"
             android:defaultValue="1"
             app:argType="integer" />
-
-    </fragment>
-    <fragment
-        android:id="@+id/bottomSheetFragment"
-        android:name="com.pjb.immaapp.ui.stokopname.BottomSheetFragment"
-        android:label="BottomSheetFragment" >
         <action
-            android:id="@+id/action_bottomSheetFragment_to_stokOpnameResultFragment"
-            app:destination="@id/stokOpnameResultFragment" />
+            android:id="@+id/action_stokOpnameResultFragment_to_nav_opname"
+            app:destination="@id/nav_opname" />
+
     </fragment>
 
 </navigation>

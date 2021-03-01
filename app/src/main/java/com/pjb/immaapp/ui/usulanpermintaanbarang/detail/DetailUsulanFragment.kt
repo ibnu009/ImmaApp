@@ -6,15 +6,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
-import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.main.MainViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataItemUpbPagedListAdapter
@@ -70,6 +71,17 @@ class DetailUsulanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val toolbar = binding?.customToolbarDetailUsulan
+        val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
+        val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
+        btnBack.setOnClickListener {
+            it.findNavController().popBackStack()
+        }
+
+        txView.text = context?.resources?.getString(R.string.detail_usulan_npermintaan_barang)
+
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar.root)
+
         itemPagedListAdapter = DataItemUpbPagedListAdapter()
         with(binding?.rvItemDataUpb) {
             this?.adapter = itemPagedListAdapter
@@ -99,7 +111,7 @@ class DetailUsulanFragment : Fragment() {
 
     private fun initiateDetail(token: String, idPermintaan: Int) {
         upbViewModel?.getDetailDataUpb("12345", token, idPermintaan)
-            ?.observe(viewLifecycleOwner, Observer {
+            ?.observe(viewLifecycleOwner,  {
                 Timber.d("Check data $it")
 
                 binding?.txNamaPemohon?.text = it.pemohon
@@ -115,6 +127,7 @@ class DetailUsulanFragment : Fragment() {
                 binding?.shimmerViewContainerDetailUpb?.stopShimmer()
                 binding?.shimmerViewContainerDetailUpb?.visibility = View.GONE
                 binding?.layoutKeteranganUpb?.visibility = View.VISIBLE
+                binding?.txTitleDaftarMaterial?.visibility = View.VISIBLE
             }
         })
     }

@@ -11,7 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import com.pjb.immaapp.R
 import com.pjb.immaapp.data.remote.response.ResponseCreateUpb
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbRequestBody
 import com.pjb.immaapp.databinding.FragmentTambahUsulanBinding
@@ -56,6 +60,15 @@ class TambahUsulanFragment : Fragment(), UpbRequestBody.UploadCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding?.customToolbarTambahUsulan
+        val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
+        val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
+        btnBack.setOnClickListener {
+            it.findNavController().popBackStack()
+        }
+
+        txView.text = getString(R.string.tambah_usulan_permintaan_barang)
 
         sharedPreferences =
             activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!

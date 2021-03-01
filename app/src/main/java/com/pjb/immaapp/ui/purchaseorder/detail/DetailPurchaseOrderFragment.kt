@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailPoBinding
@@ -51,6 +54,15 @@ class DetailPurchaseOrderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val toolbar = binding?.customToolbarDetailPo
+        val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
+        val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
+        btnBack.setOnClickListener {
+            it.findNavController().popBackStack()
+        }
+
+        txView.text = getString(R.string.detail_purchase_order)
+
         itemPagedListAdapter = DataItemPoPagedListAdapter()
         with(binding?.rvItemDataPo) {
             this?.adapter = itemPagedListAdapter
@@ -59,6 +71,7 @@ class DetailPurchaseOrderFragment : Fragment() {
 
         binding?.shimmerViewContainerDetailPo?.visibility = View.VISIBLE
         binding?.shimmerViewContainerDetailPoRv?.visibility = View.VISIBLE
+        binding?.layoutKeterangan?.visibility = View.INVISIBLE
 
         val safeArgs = arguments?.let { DetailPurchaseOrderFragmentArgs.fromBundle(it) }
         val codePo = safeArgs?.passEncodePo

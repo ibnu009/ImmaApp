@@ -59,6 +59,7 @@
     <string name="arahkan_qr_code_ke_kamera_anda_nuntuk_data_terbaca_otomatis">Arahkan QR Code ke kamera anda untuk data terbaca otomatis</string>
     <string name="scan_sekarang">Scan Sekarang</string>
     <string name="klik_disini_jika_mengecek_data_secara_manual">Klik disini jika mengecek data secara manual</string>
+    <string name="detail_stok_opname">Detail Stok Opname</string>
     <string name="stok_opname">Stok Opname</string>
     <string name="data_opname">Data Opname</string>
     <string name="stok_nyata">Stok Nyata</string>
@@ -82,6 +83,7 @@
     <string name="x1">x%1$s</string>
     <string name="dummy_item_usulan">4 IN 1 HUMIDITY, TEMPERATURE AIRFLOW AND LIGHT METER, 45170, POWER SUPPLY 9 VOLT, OPERATING CONDITION 0 TO 50 C, MPH 0.9 TO 67.0 MPH, KNOTS 0.8 TO 58.3 KNOTS, DISPLAY 4 DIGIT (9999 COUNT) DUAL DISPLAY LCD</string>
     <string name="detail_usulan_npermintaan_barang">Detail Usulan Permintaan Barang</string>
+    <string name="tambah_material_upb">Tambah Material</string>
     <string name="detail_purchase_order">Detail Purchase Order</string>
     <string name="item_number">Item Number</string>
     <string name="data_tidak_ditemukan">Data tidak ditemukan</string>
@@ -96,7 +98,7 @@
     <string name="button_to_tambah">button_to_tambah</string>
     <string name="simpan">Simpan</string>
     <string name="konfirmasi">Konfirmasi</string>
-    <string name="this_button_use_for_add_new_material">this button use for add new material</string>
+    <string name="button_untuk_tambah_material">this button use for add new material</string>
     <string name="btn_for_back">btn for back</string>
     <string name="tambah_usulan_permintaan_barang">Tambah Usulan Permintaan Barang</string>
     <string name="nama_material">Nama Material</string>
@@ -106,6 +108,7 @@
     <string name="jumlah">Jumlah</string>
     <string name="satuan">Satuan</string>
     <string name="spesifikasi">Spesifikasi</string>
+    <string name="daftar_material">Daftar Material</string>
 
     <string-array name="line_type">
         <item>Services</item>

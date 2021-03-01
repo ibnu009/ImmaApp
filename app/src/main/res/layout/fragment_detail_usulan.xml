@@ -7,9 +7,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/custom_toolbar_detail_usulan"
+            layout="@layout/custom_toolbar"/>
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/custom_toolbar_detail_usulan">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -106,24 +111,22 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/tx_detail_usulan"
+                    android:id="@+id/tx_title_daftar_material"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/detail_usulan_npermintaan_barang"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:text="@string/daftar_material"
+                    android:layout_margin="16dp"
+                    android:visibility="gone"
+                    style="@style/TextSectionTitle"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/layout_keterangan_upb" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/shimmer_view_container_detail_upb_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/layout_keterangan_upb">
+                    app:layout_constraintTop_toBottomOf="@id/tx_title_daftar_material">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -160,8 +163,8 @@
                     android:id="@+id/rv_item_data_upb"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintTop_toBottomOf="@id/layout_keterangan_upb"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/tx_title_daftar_material"
                     tools:listitem="@layout/detail_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -175,7 +178,7 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="16dp"
             android:backgroundTint="@color/dark_blue"
-            android:contentDescription="@string/this_button_use_for_add_new_material"
+            android:contentDescription="@string/button_untuk_tambah_material"
             android:src="@drawable/ic_baseline_add_24"
             app:tint="@color/white" />
 
