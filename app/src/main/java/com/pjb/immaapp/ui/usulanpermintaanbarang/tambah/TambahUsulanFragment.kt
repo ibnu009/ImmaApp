@@ -9,9 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -60,6 +63,17 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = binding?.customToolbarTambahUsulan
+        val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
+        val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
+        btnBack.setOnClickListener {
+            it.findNavController().popBackStack()
+        }
+
+        txView.text = getString(R.string.tambah_usulan_permintaan_barang)
+
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar.root)
 
         binding?.viewModel = viewModel
         binding?.lifecycleOwner = this

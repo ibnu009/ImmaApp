@@ -109,10 +109,23 @@
     <string name="satuan">Satuan</string>
     <string name="spesifikasi">Spesifikasi</string>
     <string name="daftar_material">Daftar Material</string>
+    <string name="services">Services</string>
+    <string name="items">Items</string>
+    <string name="baik">Baik</string>
+    <string name="rusak">Rusak</string>
+    <string name="baik_tapi_tidak_bisa_dipakai">Baik tapi tidak bisa dipakai</string>
+    <string name="rusak_dan_tidak_bisa_diperbaiki">Rusak dan tidak bisa diperbaiki</string>
+
+    <string-array name="kondisi_barang">
+        <item>@string/baik</item>
+        <item>@string/rusak</item>
+        <item>@string/baik_tapi_tidak_bisa_dipakai</item>
+        <item>@string/rusak_dan_tidak_bisa_diperbaiki</item>
+    </string-array>
 
     <string-array name="line_type">
-        <item>Services</item>
-        <item>Items</item>
+        <item>@string/services</item>
+        <item>@string/items</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

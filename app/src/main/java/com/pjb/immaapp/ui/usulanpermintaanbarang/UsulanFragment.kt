@@ -144,9 +144,18 @@ class UsulanFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _bindingFragmentUpb = null
-        binding?.rvUsulan?.adapter = null
+        binding?.rvUsulan?.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener{
+            override fun onViewAttachedToWindow(p0: View?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onViewDetachedFromWindow(p0: View?) {
+                binding?.rvUsulan?.adapter = null
+            }
+        })
+
+        super.onDestroyView()
     }
 
 }

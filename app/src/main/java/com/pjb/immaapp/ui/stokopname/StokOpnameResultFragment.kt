@@ -12,7 +12,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentOpnameResultBinding
 import com.pjb.immaapp.utils.NetworkState
@@ -21,6 +20,7 @@ import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.ViewModelFactory
 import timber.log.Timber
 
+
 class StokOpnameResultFragment : Fragment() {
 
     private var _bindingFragmentOpnameResult: FragmentOpnameResultBinding? = null
@@ -28,7 +28,7 @@ class StokOpnameResultFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var token: String
-    private lateinit var dialog: AlertDialog
+    private var dialog: AlertDialog? = null
 
     private val stokOpnameViewModel by lazy {
         val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
@@ -100,9 +100,32 @@ class StokOpnameResultFragment : Fragment() {
         binding?.btnSimpanData?.setOnClickListener {
             val notes = binding?.edtKeterangan?.text.toString().trim()
             val raw = binding?.edtStokNyata?.text.toString()
-            val kondisi = binding?.edtKondisiBarang?.text.toString().trim()
+            val raw_kondisi = binding?.spinnerKondisiBarang?.selectedItem.toString()
+            val kondisi: String
 
-            if(checkIsEmpty(notes, raw, kondisi)){
+            when(raw_kondisi){
+                getString(R.string.baik) -> {
+                    kondisi = "B"
+                }
+
+                getString(R.string.rusak) -> {
+                    kondisi = "R"
+                }
+
+                getString(R.string.baik_tapi_tidak_bisa_dipakai) -> {
+                    kondisi = "T"
+                }
+
+                getString(R.string.rusak_dan_tidak_bisa_diperbaiki) -> {
+                    kondisi = "P"
+                }
+
+                else -> {
+                    kondisi = "invalid"
+                }
+            }
+
+            if(checkIsEmpty(notes, raw)){
                 val stock = Integer.parseInt(raw)
                 addDataStokOpname(token, itemNum, notes, stock, kondisi)
             }
@@ -112,29 +135,22 @@ class StokOpnameResultFragment : Fragment() {
     private fun clearInput() {
         binding?.edtKeterangan?.text?.clear()
         binding?.edtStokNyata?.text?.clear()
-        binding?.edtKondisiBarang?.text?.clear()
 
         binding?.edtStokNyata?.requestFocus()
     }
 
-    private fun checkIsEmpty(keterangan: String, stok: String, kondisi: String): Boolean {
+    private fun checkIsEmpty(keterangan: String, stok: String): Boolean {
         with(binding) {
             when {
                 stok.isEmpty() -> {
                     this?.edtStokNyata?.requestFocus()
-                    this?.edtStokNyata?.error = "Masukkan Stok"
+                    this?.edtStokNyata?.error = "Stok tidak boleh kosong"
 
                     return false
                 }
-                kondisi.isEmpty() -> {
-                    this?.edtKondisiBarang?.requestFocus()
-                    this?.edtKondisiBarang?.error = "Masukkan kondisi barang"
-
-                    return false
-                }
-                keterangan.isEmpty() -> {
+                keterangan.length < 10 -> {
                     this?.edtKeterangan?.requestFocus()
-                    this?.edtKeterangan?.error = "Masukkan keterangan"
+                    this?.edtKeterangan?.error = "Keterangan minimal 10 Huruf"
 
                     return false
                 }
@@ -169,10 +185,10 @@ class StokOpnameResultFragment : Fragment() {
                 }
                 NetworkState.LOADED -> {
                     clearInput()
-                    dialog.dismiss()
+                    dialog?.dismiss()
                 }
                 NetworkState.LOADING -> {
-                    dialog.show()
+                    dialog?.show()
                 }
             }
         })
@@ -221,7 +237,7 @@ class StokOpnameResultFragment : Fragment() {
         })
     }
 
-    fun setProgressDialog(context: Context, message: String): AlertDialog {
+    private fun setProgressDialog(context: Context, message: String): AlertDialog {
         val llPadding = 30
         val ll = LinearLayout(context)
         ll.orientation = LinearLayout.HORIZONTAL
@@ -272,6 +288,7 @@ class StokOpnameResultFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _bindingFragmentOpnameResult = null
+        dialog = null
     }
 
 }
