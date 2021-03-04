@@ -1,29 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <include
-        android:id="@+id/custom_toolbar_notification"
-        layout="@layout/custom_toolbar"/>
-
-    <ScrollView
-        android:layout_below="@id/custom_toolbar_notification"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <include
+            android:id="@+id/custom_toolbar_notification"
+            layout="@layout/custom_toolbar" />
+
+        <ScrollView
+            android:layout_below="@id/custom_toolbar_notification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                tools:listitem="@layout/notification_item"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
 
-        </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_notification"
+                    tools:listitem="@layout/notification_item"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-    </ScrollView>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-</RelativeLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <include
+                            layout="@layout/notification_shimmer_placeholder"/>
+
+                        <include
+                            layout="@layout/notification_shimmer_placeholder"/>
+
+                        <include
+                            layout="@layout/notification_shimmer_placeholder"/>
+
+                        <include
+                            layout="@layout/notification_shimmer_placeholder"/>
+
+                        <include
+                            layout="@layout/notification_shimmer_placeholder"/>
+
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+</layout>

@@ -68,6 +68,10 @@ class HomeFragment : Fragment() {
         binding?.btnUsulan?.setOnClickListener {
             it.findNavController().navigate(R.id.action_nav_home_to_nav_usulan)
         }
+
+        binding?.btnToNotification?.setOnClickListener {
+            it.findNavController().navigate(R.id.action_nav_home_to_notificationFragment)
+        }
     }
 
     private fun openLogoutDialog() {

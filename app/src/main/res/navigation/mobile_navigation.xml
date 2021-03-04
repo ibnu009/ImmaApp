@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_opname"
             app:destination="@id/nav_opname" />
+        <action
+            android:id="@+id/action_nav_home_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
     </fragment>
 
     <fragment
@@ -122,5 +125,11 @@
             android:id="@+id/action_tambahUsulanFragment_to_detailUsulanPermintaanBarangFragment"
             app:destination="@id/detailUsulanPermintaanBarangFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.pjb.immaapp.ui.notification.NotificationFragment"
+        tools:layout="@layout/fragment_notification"
+        android:label="NotificationFragment" />
 
 </navigation>
