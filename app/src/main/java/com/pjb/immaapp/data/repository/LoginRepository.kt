@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.pjb.immaapp.data.entity.User
 import com.pjb.immaapp.data.entity.request.Credential
-import com.pjb.immaapp.data.remote.response.ResponseUser
-import com.pjb.immaapp.utils.ImprovedNetworkState
 import com.pjb.immaapp.utils.NetworkState
+import com.pjb.immaapp.utils.global.ImmaEventHandler
 import com.pjb.immaapp.webservice.RetrofitApp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,8 +14,9 @@ import timber.log.Timber
 
 class LoginRepository {
     private val apiService = RetrofitApp.getLoginService()
-    var networkState = MutableLiveData<NetworkState>()
-    var networkStateTest = NetworkState.LOADING
+    var networkStateRepo: ImmaEventHandler<NetworkState> = ImmaEventHandler()
+    private val resultUser = MutableLiveData<User>()
+
 
     companion object {
         @Volatile
@@ -32,7 +32,7 @@ class LoginRepository {
         compositeDisposable: CompositeDisposable
     ): LiveData<User> {
         Timber.d("Loading")
-        val resultUser = MutableLiveData<User>()
+        networkStateRepo.postValue(NetworkState.LOADING)
         compositeDisposable.add(
             apiService.loginRequest(credential)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -40,8 +40,10 @@ class LoginRepository {
                 .subscribe({
                     Timber.d("Get User")
                     resultUser.postValue(it.data)
+                    networkStateRepo.postValue(NetworkState.LOADED)
                 }, {
                     Timber.e("ErrorLogin is $it")
+                    networkStateRepo.postValue(NetworkState.USERNOTFOUND)
                 })
         )
         return resultUser

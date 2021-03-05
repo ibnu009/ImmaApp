@@ -1,17 +1,11 @@
 package com.pjb.immaapp.ui.login
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,10 +13,10 @@ import com.pjb.immaapp.main.MainActivity
 import com.pjb.immaapp.data.entity.User
 import com.pjb.immaapp.data.entity.request.Credential
 import com.pjb.immaapp.databinding.ActivityLoginBinding
+import com.pjb.immaapp.utils.*
+import com.pjb.immaapp.utils.NetworkState.Companion.USERNOTFOUND
 import com.pjb.immaapp.utils.NetworkState
-import com.pjb.immaapp.utils.SharedPreferencesKey
-import com.pjb.immaapp.utils.Status
-import com.pjb.immaapp.utils.ViewModelFactory
+import com.pjb.immaapp.utils.global.ViewModelFactory
 import timber.log.Timber
 
 class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
@@ -50,70 +44,6 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
         binding?.viewModel = viewModel
         viewModel.authListener = this
         binding?.handler = this
-
-
-//        binding?.fabLogin?.setOnClickListener {
-//
-////            viewModel.getLoginRequest(getCredential()).observe(this, Observer {user ->
-////
-////                Timber.d("Have user ${user.name}")
-////                insertIntoSharedPreference(getCredential(), user)
-////                val intent = Intent(this, MainActivity::class.java)
-////                startActivity(intent)
-////                finish()
-////            })
-//
-////            viewModel.networkState.observe(this, Observer {
-////                when (it) {
-////                    NetworkState.USERNOTFOUND -> {
-////                        Timber.d("checkCalled UNF")
-////                        val title = "User Not Found"
-////                        initiateLoginDialog(
-////                            NetworkState.USERNOTFOUND,
-////                            "Please enter correct username or password",
-////                            title
-////                        )
-////                    }
-////                    NetworkState.LOADED -> {
-////                        binding?.progressLogin?.visibility = View.GONE
-////                    }
-////                    NetworkState.LOADING -> {
-////                        Timber.d("checkCalled Loading")
-////                        initiateLoginDialog(NetworkState.LOADING, null, "Authenticating..")
-////                    }
-////                    else -> {
-////                        Timber.e("Unknown Error")
-////                    }
-////                }
-////            })
-//
-//            viewModel.getNetworkState.observe(this, Observer {
-//                it.getContentIfNotHandled()?.let { network ->
-//                    Timber.d("check result : ${network.status}")
-//                    Timber.d("checkHandler : ${it.hasBeenHandled}")
-//                    when (network) {
-//                        NetworkState.USERNOTFOUND -> {
-//                            val title = "User Not Found"
-//                            initiateLoginDialog(
-//                                NetworkState.USERNOTFOUND,
-//                                "Please enter correct username or password",
-//                                title
-//                            )
-//                        }
-//                        NetworkState.LOADED -> {
-//                            binding?.progressLogin?.visibility = View.GONE
-//                        }
-//                        NetworkState.LOADING -> {
-//                            initiateLoginDialog(NetworkState.LOADING, null, "Authenticating..")
-//                            Timber.d("checkHandler : ${it.hasBeenHandled}")
-//                        }
-//                        else -> {
-//                            Timber.e("Unknown Error")
-//                        }
-//                    }
-//                }
-//            })
-//        }
     }
 
 
@@ -145,12 +75,47 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
         })
     }
 
+    override fun onStop() {
+        super.onStop()
+        _activityLoginBinding = null
+    }
+
     override fun onFailure(message: String) {
-        Timber.d(message)
+        binding?.root?.snackbar(message)
     }
 
     override fun onLogInClicked(view: View) {
         Timber.d("clicked")
         viewModel.logInAndStoreResult()
+
+        viewModel.checkState().observe(this, Observer { network ->
+            Timber.d("check result : ${network.status}")
+            when (network) {
+                USERNOTFOUND -> {
+                    binding?.root?.snackbar("User Not Found")
+                    isLoading(false)
+                }
+                NetworkState.LOADED -> {
+                    isLoading(false)
+                }
+                NetworkState.LOADING -> {
+                    isLoading(true)
+                }
+                else -> {
+                    Timber.e("Unknown Error")
+                }
+            }
+
+        })
+    }
+
+    private fun isLoading(status: Boolean) {
+        if (!status) {
+            binding?.progressLogin?.visibility = View.GONE
+            binding?.backgroundDim?.visibility = View.GONE
+        }else{
+            binding?.progressLogin?.visibility = View.VISIBLE
+            binding?.backgroundDim?.visibility = View.VISIBLE
+        }
     }
 }

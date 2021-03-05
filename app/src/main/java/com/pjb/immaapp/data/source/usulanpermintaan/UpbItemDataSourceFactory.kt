@@ -18,8 +18,8 @@ class UpbItemDataSourceFactory(
     override fun create(): DataSource<Int, ItemPermintaanBarang> {
         val upbItemDataSource =
             UpbItemDataSource(apiService, compositeDisposable, token, idPermintaan)
-        upbLiveDataSource.postValue(upbItemDataSource)
 
+        upbLiveDataSource.postValue(upbItemDataSource)
         return upbItemDataSource
     }
 }

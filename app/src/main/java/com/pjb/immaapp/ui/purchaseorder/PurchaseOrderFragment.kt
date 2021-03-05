@@ -18,7 +18,7 @@ import com.pjb.immaapp.handler.OnClickedActionDataPo
 import com.pjb.immaapp.ui.purchaseorder.adapter.DataPoPagedListAdapter
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
-import com.pjb.immaapp.utils.ViewModelFactory
+import com.pjb.immaapp.utils.global.ViewModelFactory
 import timber.log.Timber
 
 @ExperimentalPagingApi

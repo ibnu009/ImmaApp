@@ -1,4 +1,4 @@
-package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah
+package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material
 
 import android.os.Bundle
 import android.view.LayoutInflater

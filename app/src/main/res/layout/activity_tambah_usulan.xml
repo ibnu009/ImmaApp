@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.CreateUpbViewModel"/>
+            type="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.CreateUpbViewModel"/>
         <variable
             name="handler"
             type="com.pjb.immaapp.handler.OnClickHandlerUpbCreate"/>

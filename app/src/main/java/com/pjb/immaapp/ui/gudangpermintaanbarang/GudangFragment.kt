@@ -12,7 +12,7 @@ import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.GudangPermintaanBarang
 import com.pjb.immaapp.databinding.FragmentGudangBinding
 import com.pjb.immaapp.ui.gudangpermintaanbarang.adapter.GudangPermintaanAdapter
-import com.pjb.immaapp.utils.ViewModelFactory
+import com.pjb.immaapp.utils.global.ViewModelFactory
 import timber.log.Timber
 
 class GudangFragment : Fragment() {

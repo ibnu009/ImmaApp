@@ -1,4 +1,4 @@
-package com.pjb.immaapp.utils
+package com.pjb.immaapp.utils.global
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -13,7 +13,8 @@ import com.pjb.immaapp.ui.login.LoginViewModel
 import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderViewModel
 import com.pjb.immaapp.ui.stokopname.StokOpnameViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
-import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.CreateUpbViewModel
+import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialViewModel
+import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.CreateUpbViewModel
 import io.reactivex.disposables.CompositeDisposable
 
 class ViewModelFactory(
@@ -59,6 +60,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(CreateUpbViewModel::class.java) -> {
                 CreateUpbViewModel(compositeDisposable) as T
+            }
+            modelClass.isAssignableFrom(TambahMaterialViewModel::class.java) -> {
+                TambahMaterialViewModel() as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

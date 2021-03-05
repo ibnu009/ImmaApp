@@ -17,10 +17,13 @@ fun View.snackbar(message: String) {
     }.show()
 }
 
-fun Context.loadingDialog(message: String?): AlertDialog {
+fun Context.welcomeDialog(message: String?): AlertDialog {
     val dialogLoadingBuilder =
         AlertDialog.Builder(this).apply {
-            setTitle(message)
+            setTitle("Welcome!")
+            setMessage(message)
+            setPositiveButton("OK"
+            ) { p0, _ ->  p0.dismiss()}
         }
     return dialogLoadingBuilder.create()
 }

@@ -115,11 +115,11 @@
 
     <fragment
         android:id="@+id/tambahMaterialUpbFragment"
-        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.TambahMaterialUpbFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialUpbFragment"
         android:label="TambahMaterialUpbFragment" />
     <fragment
         android:id="@+id/tambahUsulanFragment"
-        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.TambahUsulanFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.TambahUsulanFragment"
         android:label="TambahUsulanFragment" >
         <action
             android:id="@+id/action_tambahUsulanFragment_to_detailUsulanPermintaanBarangFragment"

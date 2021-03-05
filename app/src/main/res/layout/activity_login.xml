@@ -101,10 +101,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:contentDescription="@string/login_button" />
 
+        <View
+            android:id="@+id/background_dim"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:background="#4B131313" />
+
         <ProgressBar
             android:id="@+id/progress_login"
+            style="@style/GenericProgressIndicator"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

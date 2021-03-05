@@ -17,7 +17,7 @@ import com.pjb.immaapp.databinding.FragmentOpnameResultBinding
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
-import com.pjb.immaapp.utils.ViewModelFactory
+import com.pjb.immaapp.utils.global.ViewModelFactory
 import timber.log.Timber
 
 

@@ -3,13 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialViewModel" />
+        <variable
+            name="handler"
+            type="com.pjb.immaapp.handler.UpbCreateMaterialHandler" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include
             android:id="@+id/custom_toolbar_tambah_material"
-            layout="@layout/custom_toolbar"/>
+            layout="@layout/custom_toolbar_material"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -78,6 +87,8 @@
                         android:id="@+id/edt_jumlah"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@={viewModel.catatan}"
+                        android:inputType="numberDecimal"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp" />
 
@@ -136,7 +147,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="4dp"
-                        android:text="@string/tor_kak" />
+                        android:text="@string/foto" />
+
+                <!--         Includekan Foto viewer           -->
 
                     <ProgressBar
                         android:id="@+id/progress_create_upb"
@@ -151,8 +164,9 @@
                         tools:progress="20" />
 
                     <LinearLayout
+                        android:weightSum="2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
@@ -161,21 +175,30 @@
 
                         <Button
                             android:id="@+id/btn_pilih_file"
-                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:background="@color/grey"
+                            android:textAllCaps="false"
+                            android:layout_marginEnd="5dp"
                             android:text="@string/pilih_file"
+                            android:textColor="@color/black"
+                            android:drawableEnd="@drawable/ic_baseline_insert_photo_24"
+                            app:backgroundTint="@null" />
+
+                        <Button
+                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:id="@+id/btn_open_camera"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:background="@color/grey"
+                            android:drawableEnd="@drawable/ic_menu_camera"
+                            android:text="@string/ambil_gambar"
+                            android:textColor="@color/black"
                             android:textAllCaps="false"
                             app:backgroundTint="@null" />
 
-                        <TextView
-                            android:id="@+id/tx_path"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            tools:text="PATH" />
                     </LinearLayout>
 
                     <TextView
@@ -184,11 +207,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
-                        android:text="@string/spesifikasi" />
+                        android:text="@string/catatan" />
 
                     <EditText
                         android:id="@+id/edt_catatan"
                         android:layout_width="match_parent"
+                        android:text="@={viewModel.catatan}"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp" />

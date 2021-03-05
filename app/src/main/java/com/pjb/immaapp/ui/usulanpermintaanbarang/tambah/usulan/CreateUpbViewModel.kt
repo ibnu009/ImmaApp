@@ -1,4 +1,4 @@
-package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah
+package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner

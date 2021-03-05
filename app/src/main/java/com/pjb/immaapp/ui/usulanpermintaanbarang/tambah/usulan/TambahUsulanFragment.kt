@@ -1,4 +1,4 @@
-package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah
+package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -13,7 +13,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.karumi.dexter.Dexter
@@ -22,17 +21,15 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.pjb.immaapp.R
-import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
 import com.pjb.immaapp.databinding.FragmentTambahUsulanBinding
 import com.pjb.immaapp.handler.OnClickHandlerUpbCreate
 import com.pjb.immaapp.handler.UpbFileUploadListener
-import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanFragmentDirections
 import com.pjb.immaapp.utils.*
+import com.pjb.immaapp.utils.global.ViewModelFactory
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadListener {
 
@@ -72,7 +69,6 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
         }
 
         txView.text = getString(R.string.tambah_usulan_permintaan_barang)
-
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar.root)
 
         binding?.viewModel = viewModel
@@ -104,8 +100,6 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
-
 
     private fun initiateDateDialogPicker() {
         val cal = Calendar.getInstance()
@@ -148,16 +142,15 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
 
     override fun onInitiating() {
         Timber.d("Loading...")
-        this.context?.loadingDialog("Loading...")?.show()
     }
 
     override fun onSuccess(message: String, idPermintaan: Int?) {
         binding?.root?.snackbar(message)
-        this.context?.loadingDialog(null)?.dismiss()
         if (idPermintaan != null) {
-            val action = TambahUsulanFragmentDirections.actionTambahUsulanFragmentToDetailUsulanPermintaanBarangFragment(
-                idPermintaan
-            )
+            val action =
+                TambahUsulanFragmentDirections.actionTambahUsulanFragmentToDetailUsulanPermintaanBarangFragment(
+                    idPermintaan
+                )
             findNavController().navigate(action)
         } else {
             Timber.d("idPermintaan Null")
@@ -166,7 +159,6 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
 
     override fun onFailure(message: String) {
         binding?.root?.snackbar(message)
-        this.context?.loadingDialog(null)?.dismiss()
     }
 
     private fun initiatePermission(context: Context) {

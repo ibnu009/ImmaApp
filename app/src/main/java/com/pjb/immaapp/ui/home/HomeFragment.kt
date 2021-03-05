@@ -17,7 +17,8 @@ import com.pjb.immaapp.databinding.FragmentHomeBinding
 import com.pjb.immaapp.ui.login.LoginActivity
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_NAME
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
-import com.pjb.immaapp.utils.ViewModelFactory
+import com.pjb.immaapp.utils.global.ViewModelFactory
+import com.pjb.immaapp.utils.welcomeDialog
 import timber.log.Timber
 
 class HomeFragment : Fragment() {
@@ -43,8 +44,6 @@ class HomeFragment : Fragment() {
         return _bindingHomeFragment?.root
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPreferences = activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!
@@ -52,6 +51,8 @@ class HomeFragment : Fragment() {
             sharedPreferences.getString(KEY_NAME, "Not Found") ?: "Shared Preference Not Found"
         Timber.d("User is $userName")
         binding?.txNama?.text = userName
+
+        showWelcoming(userName)
 
         binding?.btnLogout?.setOnClickListener {
             openLogoutDialog()
@@ -106,6 +107,10 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _bindingHomeFragment = null
+    }
+
+    private fun showWelcoming(userName: String) {
+        this.context?.welcomeDialog(userName)?.show()
     }
 
 }
