@@ -17,6 +17,7 @@ import com.pjb.immaapp.utils.*
 import com.pjb.immaapp.utils.NetworkState.Companion.USERNOTFOUND
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.global.ViewModelFactory
+import com.pjb.immaapp.utils.global.snackbar
 import timber.log.Timber
 
 class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {

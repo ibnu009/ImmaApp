@@ -62,7 +62,6 @@ class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable) :
     ) {
         try {
             Timber.d("Initiating upload")
-            upbFileUploadListener?.onInitiating()
             MultipartUploadRequest(context, UPLOAD_URL)
                 .setMethod("POST")
                 .addParameter("token", token)
@@ -95,6 +94,7 @@ class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable) :
 
                     override fun onProgress(context: Context, uploadInfo: UploadInfo) {
                         Timber.d("Barang lagi proses")
+                        upbFileUploadListener?.onInitiating()
                     }
 
                     override fun onSuccess(

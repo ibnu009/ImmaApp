@@ -62,7 +62,7 @@ class ViewModelFactory(
                 CreateUpbViewModel(compositeDisposable) as T
             }
             modelClass.isAssignableFrom(TambahMaterialViewModel::class.java) -> {
-                TambahMaterialViewModel() as T
+                TambahMaterialViewModel(dataStokOpnameRepository, compositeDisposable) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

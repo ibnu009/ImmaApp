@@ -2,20 +2,38 @@ package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.pjb.immaapp.data.entity.stockopname.StockOpname
+import com.pjb.immaapp.data.repository.DataStokOpnameRepository
 import com.pjb.immaapp.handler.UpbCreateMaterialListener
 import com.pjb.immaapp.webservice.RetrofitApp
+import io.reactivex.disposables.CompositeDisposable
 import net.gotev.uploadservice.data.UploadInfo
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
 import timber.log.Timber
+import java.io.File
 
-class TambahMaterialViewModel : ViewModel() {
-    var jumlah: Int? = null
+class TambahMaterialViewModel(
+    private val dataStokOpnameRepository: DataStokOpnameRepository,
+    private val compositeDisposable: CompositeDisposable
+) :
+    ViewModel() {
+    var jumlah: String? = null
     var catatan: String? = null
+    var lineType: Int = 0
 
     var upbCreateMaterialListener: UpbCreateMaterialListener? = null
+
+    fun getDataMaterial(
+        apiKey: String,
+        token: String,
+        itemNum: Int
+    ): LiveData<StockOpname> {
+        return dataStokOpnameRepository.requestGetDataStockOpname(compositeDisposable, apiKey, token, itemNum)
+    }
 
     fun validateMaterialUpload(
         context: Context,
@@ -27,15 +45,29 @@ class TambahMaterialViewModel : ViewModel() {
         lineType: Int,
         path: String
     ) {
+        Timber.d("check Result. jumlah = $jumlah, catatan = $catatan")
         when {
-            jumlah == -1 || jumlah == null -> {
+            jumlah.isNullOrEmpty() -> {
+                Timber.e("error jumlah, jumlah = $jumlah")
                 upbCreateMaterialListener?.onFailure("Invalid Input pada Jumlah")
             }
             catatan.isNullOrEmpty() -> {
+                Timber.e("error catatan, catatan = $catatan")
                 upbCreateMaterialListener?.onFailure("Catatan tidak boleh kosong")
             }
             else -> {
-                uploadMaterial(context, lifecycleOwner, apiKey, token, itemNum, catatan, jumlah ?: 0, idPermintaan, lineType, path)
+                uploadMaterial(
+                    context,
+                    lifecycleOwner,
+                    apiKey,
+                    token,
+                    itemNum,
+                    catatan,
+                    jumlah,
+                    idPermintaan,
+                    lineType,
+                    path
+                )
             }
         }
     }
@@ -47,15 +79,14 @@ class TambahMaterialViewModel : ViewModel() {
         token: String,
         itemNum: String,
         notes: String?,
-        qty: Int,
+        qty: String?,
         idPermintaan: Int,
         lineType: Int,
         path: String
     ) {
         try {
             Timber.d("Initiating upload")
-            upbCreateMaterialListener?.onInitiating()
-            MultipartUploadRequest(context, RetrofitApp.UPLOAD_URL)
+            MultipartUploadRequest(context, RetrofitApp.UPLOAD_MATERIAL_URL)
                 .setMethod("POST")
                 .addParameter("token", token)
                 .addParameter("api_key", apiKey)
@@ -87,6 +118,7 @@ class TambahMaterialViewModel : ViewModel() {
 
                     override fun onProgress(context: Context, uploadInfo: UploadInfo) {
                         Timber.d("Material lagi proses")
+                        upbCreateMaterialListener?.onInitiating()
                     }
 
                     override fun onSuccess(
@@ -102,6 +134,13 @@ class TambahMaterialViewModel : ViewModel() {
             Timber.e("Errorkarena $e")
             upbCreateMaterialListener?.onFailure("Mohon maaf sedang ada trouble")
         }
+    }
 
+
+
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
     }
 }

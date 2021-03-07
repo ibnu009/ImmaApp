@@ -14,7 +14,6 @@ import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.ERROR
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
-import com.pjb.immaapp.utils.URIPathHelper
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,7 +21,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import java.io.File
 
 class DataUpbRepository {
     private val apiService = RetrofitApp.getUpbService()

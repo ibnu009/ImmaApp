@@ -26,6 +26,7 @@ import com.pjb.immaapp.handler.OnClickHandlerUpbCreate
 import com.pjb.immaapp.handler.UpbFileUploadListener
 import com.pjb.immaapp.utils.*
 import com.pjb.immaapp.utils.global.ViewModelFactory
+import com.pjb.immaapp.utils.global.snackbar
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
@@ -62,14 +63,14 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
         super.onViewCreated(view, savedInstanceState)
 
         val toolbar = binding?.customToolbarTambahUsulan
-        val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
-        val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
+        val txView = toolbar?.findViewById(R.id.tx_title_page) as TextView
+        val btnBack = toolbar.findViewById(R.id.btn_back_menu) as ImageView
         btnBack.setOnClickListener {
             it.findNavController().popBackStack()
         }
 
         txView.text = getString(R.string.tambah_usulan_permintaan_barang)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar.root)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
 
         binding?.viewModel = viewModel
         binding?.lifecycleOwner = this
@@ -142,9 +143,11 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
 
     override fun onInitiating() {
         Timber.d("Loading...")
+        isLoading(true)
     }
 
     override fun onSuccess(message: String, idPermintaan: Int?) {
+        isLoading(false)
         binding?.root?.snackbar(message)
         if (idPermintaan != null) {
             val action =
@@ -158,6 +161,7 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
     }
 
     override fun onFailure(message: String) {
+        isLoading(false)
         binding?.root?.snackbar(message)
     }
 
@@ -196,6 +200,16 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
 
     companion object {
         const val REQUEST_CODE_PICK_DOCUMENT = 100
+    }
+
+    private fun isLoading(status: Boolean) {
+        if (!status) {
+            binding?.progressBar?.visibility = View.GONE
+            binding?.backgroundDim?.visibility = View.GONE
+        }else{
+            binding?.progressBar?.visibility = View.VISIBLE
+            binding?.backgroundDim?.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroyView() {

@@ -133,5 +133,7 @@
 
     <string name="foto">Foto</string>
     <string name="ambil_gambar">Ambil Gambar</string>
+    <string name="line_type">Line Type</string>
+
 
 </resources>

@@ -12,27 +12,66 @@
             type="com.pjb.immaapp.handler.OnClickHandlerUpbCreate"/>
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/custom_toolbar_tambah_usulan"
-            layout="@layout/custom_toolbar"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/btn_back_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/btn_for_back"
+                    android:src="@drawable/ic_chevron_left"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tx_title_page"
+                    style="@style/TextTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nav_header_title"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="@drawable/bg_menu"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/custom_toolbar_tambah_usulan">
 
             <TextView
+                style="@style/TextSectionTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                style="@style/TextSectionTitle"
                 android:text="@string/tambah_usulan_permintaan_barang" />
 
             <TextView
@@ -48,11 +87,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:clickable="true"
                 android:drawableEnd="@drawable/ic_date"
+                android:focusable="false"
                 android:hint="@string/masukkan_tanggal_dibutuhkan"
                 android:inputType="none"
-                android:focusable="false"
-                android:clickable="true"
                 android:textColor="@color/black" />
 
             <TextView
@@ -66,12 +105,12 @@
             <EditText
                 android:id="@+id/edt_deskripsi_pekerjaan"
                 android:layout_width="match_parent"
-                android:text="@={viewModel.description}"
-                android:inputType="text"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:importantForAutofill="no"
+                android:inputType="text"
+                android:text="@={viewModel.description}"
                 tools:ignore="LabelFor" />
 
             <TextView
@@ -84,12 +123,12 @@
 
             <EditText
                 android:id="@+id/edt_catatan"
-                android:text="@={viewModel.notes}"
-                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginEnd="16dp"
+                android:inputType="text"
+                android:text="@={viewModel.notes}" />
 
             <TextView
                 android:id="@+id/tx_title_criticality"
@@ -107,16 +146,16 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:onClick="@{(v) -> viewModel.setCritical(1)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{(v) -> viewModel.setCritical(1)}"
                     android:text="@string/urgent" />
 
                 <RadioButton
-                    android:onClick="@{(v) -> viewModel.setCritical(0)}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:onClick="@{(v) -> viewModel.setCritical(0)}"
                     android:text="@string/normal" />
 
             </RadioGroup>
@@ -155,9 +194,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:background="@color/grey"
+                    android:backgroundTint="@null"
                     android:text="@string/pilih_file"
                     android:textAllCaps="false"
-                    android:backgroundTint="@null"
                     app:backgroundTint="@null" />
 
                 <TextView
@@ -175,15 +214,37 @@
 
         <Button
             android:id="@+id/btn_upload_file"
-            android:onClick="@{(v) -> handler.onClickUpload(v)}"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginStart="16dp"
             android:background="@drawable/bg_simpan_button"
+            android:onClick="@{(v) -> handler.onClickUpload(v)}"
             android:text="@string/simpan"
             android:textAllCaps="false"
-            app:backgroundTint="@null" />
+            android:layout_margin="16dp"
+            app:backgroundTint="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    </LinearLayout>
+        <View
+            android:id="@+id/background_dim"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:background="#4B131313" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/GenericProgressIndicator"
+            android:layout_width="100dp"
+            android:visibility="gone"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

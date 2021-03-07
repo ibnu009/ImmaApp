@@ -21,6 +21,7 @@ class RetrofitApp {
         const val API_KEY = 12345
         private const val BASE_URL = "http://09f02bafc978.ngrok.io"
         const val UPLOAD_URL = "$BASE_URL/api/fpb/create"
+        const val UPLOAD_MATERIAL_URL = "$BASE_URL/api/fpb/create-material"
 
 
         private val interceptor: HttpLoggingInterceptor =

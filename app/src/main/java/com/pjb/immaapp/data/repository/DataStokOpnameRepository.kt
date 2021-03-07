@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.pjb.immaapp.data.entity.stockopname.StockOpname
 import com.pjb.immaapp.data.remote.response.ResponseCreateStokOpname
 import com.pjb.immaapp.utils.NetworkState
+import com.pjb.immaapp.utils.global.ImmaEventHandler
 import com.pjb.immaapp.webservice.RetrofitApp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -13,7 +14,7 @@ import timber.log.Timber
 
 class DataStokOpnameRepository {
     private val apiService = RetrofitApp.getStockOpnameService()
-    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+    val networkState = ImmaEventHandler<NetworkState>()
     lateinit var message: String
 
     companion object {

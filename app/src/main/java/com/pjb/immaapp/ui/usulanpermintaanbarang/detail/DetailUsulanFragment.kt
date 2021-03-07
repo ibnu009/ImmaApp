@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
@@ -107,11 +108,15 @@ class DetailUsulanFragment : Fragment() {
 
         initiateDetail(token, idPermintaan!!)
         initiateItemUpb(token, idPermintaan!!)
+
+        binding?.fabTambahMaterial?.setOnClickListener {
+            navigateToTambahMaterial(idPermintaan!!)
+        }
     }
 
     private fun initiateDetail(token: String, idPermintaan: Int) {
         upbViewModel?.getDetailDataUpb("12345", token, idPermintaan)
-            ?.observe(viewLifecycleOwner,  {
+            ?.observe(viewLifecycleOwner, {
                 Timber.d("Check data $it")
 
                 binding?.txNamaPemohon?.text = it.pemohon
@@ -151,6 +156,11 @@ class DetailUsulanFragment : Fragment() {
                 binding?.shimmerViewContainerDetailUpbRv?.visibility = View.GONE
             }
         })
+    }
+
+    private fun navigateToTambahMaterial(idPermintaan: Int) {
+        val action = DetailUsulanFragmentDirections.actionDetailUsulanPermintaanBarangFragmentToTambahMaterialUpbFragment(idPermintaan)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

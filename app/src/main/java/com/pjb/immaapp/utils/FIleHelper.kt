@@ -2,11 +2,28 @@ package com.pjb.immaapp.utils
 
 import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import android.text.TextUtils
 import timber.log.Timber
 import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FIleHelper {
+    lateinit var currentPhotoPath: String
+
+    @Throws(IOException::class)
+    fun createImageFile(context: Context): File? {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            currentPhotoPath = absolutePath
+        }
+    }
 
     fun getFilePathFromURI(context: Context?, contentUri: Uri?): String? {
 //        Stream directori file mentah ke dir android

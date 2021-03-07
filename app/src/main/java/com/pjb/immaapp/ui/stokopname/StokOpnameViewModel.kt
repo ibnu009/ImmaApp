@@ -44,9 +44,7 @@ class StokOpnameViewModel(
         )
     }
 
-    val networkState by lazy {
-        dataStokOpnameRepository.networkState
-    }
+    val networkState = dataStokOpnameRepository.networkState
 
     override fun onCleared() {
         super.onCleared()

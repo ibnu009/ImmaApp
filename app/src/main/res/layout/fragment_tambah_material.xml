@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialViewModel" />
+
         <variable
             name="handler"
             type="com.pjb.immaapp.handler.UpbCreateMaterialHandler" />
@@ -15,10 +17,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/custom_toolbar_tambah_material"
-            layout="@layout/custom_toolbar_material"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -51,13 +49,13 @@
                         android:layout_margin="16dp"
                         android:text="@string/nama_material" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edt_nama_material"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:inputType="text"
+                        android:text="-"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -68,10 +66,11 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/current_balance" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edt_current_balance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="-"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp" />
 
@@ -87,10 +86,10 @@
                         android:id="@+id/edt_jumlah"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.catatan}"
-                        android:inputType="numberDecimal"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp" />
+                        android:layout_marginEnd="16dp"
+                        android:inputType="numberDecimal"
+                        android:text="@={viewModel.jumlah}" />
 
                     <TextView
                         android:id="@+id/tx_title_satuan"
@@ -100,8 +99,9 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/satuan" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edt_satuan"
+                        android:text="-"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -115,8 +115,9 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/spesifikasi" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edt_spesifikasi"
+                        android:text="-"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -128,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
-                        android:text="@string/spesifikasi" />
+                        android:text="@string/line_type" />
 
                     <Spinner
                         android:id="@+id/spinner_line_type"
@@ -149,7 +150,12 @@
                         android:layout_marginTop="4dp"
                         android:text="@string/foto" />
 
-                <!--         Includekan Foto viewer           -->
+                    <ImageView
+                        android:id="@+id/img_material_container"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal"
+                        tools:src="@drawable/ic_menu_camera" />
 
                     <ProgressBar
                         android:id="@+id/progress_create_upb"
@@ -164,39 +170,41 @@
                         tools:progress="20" />
 
                     <LinearLayout
-                        android:weightSum="2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="2">
 
                         <Button
                             android:id="@+id/btn_pilih_file"
-                            android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="40dp"
-                            android:background="@color/grey"
-                            android:textAllCaps="false"
                             android:layout_marginEnd="5dp"
-                            android:text="@string/pilih_file"
-                            android:textColor="@color/black"
+                            android:layout_weight="1"
+                            android:background="@color/grey"
                             android:drawableEnd="@drawable/ic_baseline_insert_photo_24"
+                            android:onClick="@{(v) -> handler.onClickOpenPhotoFile(v)}"
+                            android:text="@string/pilih_file"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
                             app:backgroundTint="@null" />
 
                         <Button
-                            android:layout_weight="1"
-                            android:layout_marginStart="5dp"
                             android:id="@+id/btn_open_camera"
                             android:layout_width="0dp"
                             android:layout_height="40dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="1"
                             android:background="@color/grey"
                             android:drawableEnd="@drawable/ic_menu_camera"
+                            android:onClick="@{(v) -> handler.onClickOpenCamera(v)}"
                             android:text="@string/ambil_gambar"
-                            android:textColor="@color/black"
                             android:textAllCaps="false"
+                            android:textColor="@color/black"
                             app:backgroundTint="@null" />
 
                     </LinearLayout>
@@ -212,16 +220,17 @@
                     <EditText
                         android:id="@+id/edt_catatan"
                         android:layout_width="match_parent"
-                        android:text="@={viewModel.catatan}"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp" />
+                        android:layout_marginEnd="16dp"
+                        android:text="@={viewModel.catatan}" />
 
                 </LinearLayout>
 
 
                 <Button
                     android:id="@+id/btn_upload_file"
+                    android:onClick="@{(v) -> handler.onClickuploadMaterial(v)}"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_margin="16dp"
@@ -233,6 +242,71 @@
             </LinearLayout>
 
         </ScrollView>
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/custom_toolbar_tambah_material"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/transparent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_marginEnd="16dp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/btn_back_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/ic_chevron_left"
+                    android:contentDescription="@string/btn_for_back" />
+
+                <TextView
+                    android:id="@+id/tx_title_page"
+                    android:text="@string/nav_header_title"
+                    android:textColor="@color/black"
+                    style="@style/TextTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/btn_search_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{(v) -> handler.onClickSearchItemNum(v)}"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:contentDescription="@string/btn_for_back"
+                    android:src="@drawable/ic_baseline_search_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:id="@+id/background_dim"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:background="#4B131313" />
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progress_bar"
+            style="@style/GenericProgressIndicator"
+            android:layout_centerInParent="true"
+            android:layout_height="fill_parent" />
 
     </RelativeLayout>
 

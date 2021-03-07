@@ -58,7 +58,6 @@ class StokOpnameFragment : Fragment() {
 
             mBuilder.dismiss()
         }
-
     }
 
 

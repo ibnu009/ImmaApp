@@ -84,7 +84,6 @@
             android:name="passIdPermintaan"
             android:defaultValue="1"
             app:argType="integer" />
-
         <action
             android:id="@+id/action_detailUsulanPermintaanBarangFragment_to_tambahMaterialUpbFragment"
             app:destination="@id/tambahMaterialUpbFragment" />
@@ -113,10 +112,15 @@
 
     </fragment>
 
-    <fragment
+     <fragment
         android:id="@+id/tambahMaterialUpbFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialUpbFragment"
-        android:label="TambahMaterialUpbFragment" />
+        android:label="TambahMaterialUpbFragment">
+        <argument
+            android:name="passIdPermintaan"
+            android:defaultValue="1"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/tambahUsulanFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.TambahUsulanFragment"

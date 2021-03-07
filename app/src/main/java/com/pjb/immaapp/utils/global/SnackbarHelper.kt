@@ -1,4 +1,4 @@
-package com.pjb.immaapp.utils
+package com.pjb.immaapp.utils.global
 
 import android.content.Context
 import android.view.View
