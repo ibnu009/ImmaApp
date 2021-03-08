@@ -85,7 +85,8 @@ class TambahMaterialViewModel(
         path: String
     ) {
         try {
-            Timber.d("Initiating upload")
+            Timber.d("Initiating upload with Params: token = $token, \n apiKey = $apiKey, \n itemNum = $itemNum,\n notes = $notes,\n qty = $qty, \nidPermintaan = $idPermintaan,\n linetype = $lineType")
+            Timber.d("Initiating upload with path = $path")
             MultipartUploadRequest(context, RetrofitApp.UPLOAD_MATERIAL_URL)
                 .setMethod("POST")
                 .addParameter("token", token)
@@ -96,7 +97,7 @@ class TambahMaterialViewModel(
                 .addParameter("id_permintaan", idPermintaan.toString())
                 .addParameter("linetype", lineType.toString())
                 .setMaxRetries(2)
-                .addFileToUpload(path, "img")
+                .addFileToUpload(path, "img", contentType = "image/*")
                 .subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object :
                     RequestObserverDelegate {
                     override fun onCompleted(context: Context, uploadInfo: UploadInfo) {
@@ -112,7 +113,7 @@ class TambahMaterialViewModel(
                         uploadInfo: UploadInfo,
                         exception: Throwable
                     ) {
-                        Timber.d("Material Error becauseof $exception")
+                        exception.stackTrace
                         upbCreateMaterialListener?.onFailure("Mohon maaf sedang ada trouble")
                     }
 
@@ -135,9 +136,6 @@ class TambahMaterialViewModel(
             upbCreateMaterialListener?.onFailure("Mohon maaf sedang ada trouble")
         }
     }
-
-
-
 
     override fun onCleared() {
         compositeDisposable.clear()

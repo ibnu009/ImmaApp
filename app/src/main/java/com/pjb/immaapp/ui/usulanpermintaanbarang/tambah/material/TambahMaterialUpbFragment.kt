@@ -21,6 +21,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.pjb.immaapp.BuildConfig
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentTambahMaterialBinding
@@ -68,6 +73,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
         super.onViewCreated(view, savedInstanceState)
 
         binding?.viewModel = viewModel
+        viewModel?.upbCreateMaterialListener = this
         binding?.lifecycleOwner = this
         binding?.handler = this
 
@@ -83,6 +89,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
 
         txView.text = getString(R.string.tambah_material)
         initiateKeys()
+        context?.let { initiatePermission(it) }
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
     }
@@ -92,31 +99,8 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
         _bindingTambahMaterialFragment = null
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (resultCode == Activity.RESULT_OK) {
-//            when (requestCode) {
-//                REQUEST_CODE_PICK_IMAGE -> {
-//                    selectedImageUri = data?.data
-//                    imagePath = FIleHelper().getFilePathFromURI(
-//                        this.context?.applicationContext,
-//                        selectedImageUri
-//                    )
-//                    binding?.imgMaterialContainer?.setImageURI(selectedImageUri)
-//                }
-//            }
-//        }
-//    }
-
     override fun onClickOpenPhotoFile(view: View) {
         Timber.d("onclickedOpenPhotoFile")
-//        Intent(Intent.ACTION_GET_CONTENT).also {
-//            it.type = "image/*"
-//            it.type = "image/*"
-//            val mimeTypes = arrayOf("image/jpeg", "image/png")
-//            it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-//            startActivityForResult(it, REQUEST_CODE_PICK_IMAGE)
-//        }
         pickFileImage.launch("image/*")
     }
 
@@ -126,7 +110,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
     }
 
     override fun onClickuploadMaterial(view: View) {
-        Timber.d("onClickUploadMaterial")
+        Timber.d("onClickUploadMaterial with result = $imagePath")
         val spinner = binding?.spinnerLineType?.selectedItemId.toString()
         var type = 0
         when (spinner) {
@@ -198,6 +182,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
                 )
                 takePictureRegistration.launch(takePictureImageUri)
             }
+            imagePath = FIleHelper().getFilePathFromURI(it, takePictureImageUri)
         }
     }
 
@@ -244,6 +229,31 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
             binding?.progressBar?.visibility = View.VISIBLE
             binding?.backgroundDim?.visibility = View.VISIBLE
         }
+    }
+
+    private fun initiatePermission(context: Context) {
+        Dexter.withContext(context)
+            .withPermissions(
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.CAMERA
+            ).withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
+                    if (p0?.areAllPermissionsGranted() == true) {
+                        binding?.root?.snackbar("All Permissions are granted")
+                    }
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    p0: MutableList<PermissionRequest>?,
+                    p1: PermissionToken?
+                ) {
+                    p1?.continuePermissionRequest()
+                }
+            }).withErrorListener {
+                binding?.root?.snackbar("Error!!!")
+            }.onSameThread()
+            .check()
     }
 
 }

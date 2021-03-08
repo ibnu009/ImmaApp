@@ -61,7 +61,7 @@ class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable) :
         idSdm: String
     ) {
         try {
-            Timber.d("Initiating upload")
+            Timber.d("Initiating upload with path = $path")
             MultipartUploadRequest(context, UPLOAD_URL)
                 .setMethod("POST")
                 .addParameter("token", token)
