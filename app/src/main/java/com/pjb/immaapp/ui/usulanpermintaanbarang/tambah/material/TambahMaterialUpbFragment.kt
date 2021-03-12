@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -106,11 +107,12 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
 
     override fun onClickOpenCamera(view: View) {
         Timber.d("onclickedOpenCamera")
-        takePicture.run()
+        takePictureRegistration.launch()
     }
 
     override fun onClickuploadMaterial(view: View) {
         Timber.d("onClickUploadMaterial with result = $imagePath")
+
         val spinner = binding?.spinnerLineType?.selectedItemId.toString()
         var type = 0
         when (spinner) {
@@ -172,34 +174,36 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
         }
     }
 
-    private val takePicture: Runnable = Runnable {
-        context?.applicationContext?.let {
-            FIleHelper().createImageFile(it)?.also { file ->
-                takePictureImageUri = FileProvider.getUriForFile(
-                    context?.applicationContext!!,
-                    BuildConfig.APPLICATION_ID + ".provider",
-                    file
-                )
-                takePictureRegistration.launch(takePictureImageUri)
-            }
-            imagePath = FIleHelper().getFilePathFromURI(it, takePictureImageUri)
-        }
-    }
+//    private val takePicture: Runnable = Runnable {
+//        context?.applicationContext?.let {
+//            FIleHelper().createImageFile(it)?.also { file ->
+//                takePictureImageUri = FileProvider.getUriForFile(
+//                    context?.applicationContext!!,
+//                    BuildConfig.APPLICATION_ID + ".provider",
+//                    file
+//                )
+//                takePictureRegistration.launch(takePictureImageUri)
+//            }
+//            imagePath = FIleHelper().getRealImagePathFromURI(it, takePictureImageUri)
+//        }
+//    }
 
     private val takePictureRegistration =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success) {
-                binding?.imgMaterialContainer?.setImageURI(takePictureImageUri)
-            }
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+//            if (success) {
+                val uri = FIleHelper().getImageUri(requireActivity(), bitmap)
+                imagePath = FIleHelper().getFilePathFromURI(requireActivity(), uri)
+                binding?.imgMaterialContainer?.setImageBitmap(bitmap)
+//            }
         }
 
     private val pickFileImage =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             selectedImageUri = uri
-            imagePath = FIleHelper().getFilePathFromURI(
-                this.context?.applicationContext,
-                selectedImageUri
-            )
+//            imagePath = FIleHelper().getFilePathFromURI(
+//                this.context?.applicationContext,
+//                selectedImageUri
+//            )
             binding?.imgMaterialContainer?.setImageURI(selectedImageUri)
         }
 
@@ -225,7 +229,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
         if (!status) {
             binding?.progressBar?.visibility = View.GONE
             binding?.backgroundDim?.visibility = View.GONE
-        }else{
+        } else {
             binding?.progressBar?.visibility = View.VISIBLE
             binding?.backgroundDim?.visibility = View.VISIBLE
         }
