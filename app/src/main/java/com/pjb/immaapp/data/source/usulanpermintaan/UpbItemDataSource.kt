@@ -30,7 +30,7 @@ class UpbItemDataSource(
     ) {
         networkState.postValue(NetworkState.LOADING)
         compositeDisposable.add(
-            apiService.requestDetailUpb(
+            apiService.requestListMaterial(
                 apiKey = apiKey,
                 token = token,
                 idPermintaan = idPermintaan
@@ -67,7 +67,7 @@ class UpbItemDataSource(
         networkState.postValue(NetworkState.LOADING)
 
         compositeDisposable.add(
-            apiService.requestDetailUpb(
+            apiService.requestListMaterial(
                 apiKey = apiKey,
                 token = token,
                 idPermintaan = idPermintaan
@@ -84,7 +84,7 @@ class UpbItemDataSource(
                         networkState.postValue(NetworkState.LOADED)
                     }
                 } , {
-                    Timber.e("Error : $it")
+                    Timber.e("Error : $it.data")
                     networkState.postValue(NetworkState.ERROR)
                 }
             )

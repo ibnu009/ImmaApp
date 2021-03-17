@@ -13,6 +13,7 @@ import com.pjb.immaapp.ui.login.LoginViewModel
 import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderViewModel
 import com.pjb.immaapp.ui.stokopname.StokOpnameViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
+import com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.CreateUpbViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -60,6 +61,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(CreateUpbViewModel::class.java) -> {
                 CreateUpbViewModel(compositeDisposable) as T
+            }
+            modelClass.isAssignableFrom(DetailMaterialViewModel::class.java) -> {
+                DetailMaterialViewModel(dataUpbRepository, compositeDisposable) as T
             }
             modelClass.isAssignableFrom(TambahMaterialViewModel::class.java) -> {
                 TambahMaterialViewModel(dataStokOpnameRepository, compositeDisposable) as T

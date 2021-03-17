@@ -87,6 +87,9 @@
         <action
             android:id="@+id/action_detailUsulanPermintaanBarangFragment_to_tambahMaterialUpbFragment"
             app:destination="@id/tambahMaterialUpbFragment" />
+        <action
+            android:id="@+id/action_detailUsulanPermintaanBarangFragment_to_detailMaterialFragment"
+            app:destination="@id/detailMaterialFragment" />
 
     </fragment>
 
@@ -135,5 +138,14 @@
         android:name="com.pjb.immaapp.ui.notification.NotificationFragment"
         tools:layout="@layout/fragment_notification"
         android:label="NotificationFragment" />
+    <fragment
+        android:id="@+id/detailMaterialFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialFragment"
+        android:label="DetailMaterialFragment" >
+        <argument
+            android:name="passIdDetail"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

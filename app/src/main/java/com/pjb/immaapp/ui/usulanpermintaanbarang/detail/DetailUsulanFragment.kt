@@ -17,9 +17,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailUsulanBinding
+import com.pjb.immaapp.handler.OnClickedActionDataPo
 import com.pjb.immaapp.main.MainViewModel
+import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderFragmentDirections
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataItemUpbPagedListAdapter
+import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.MaterialOnclick
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
@@ -44,6 +47,14 @@ class DetailUsulanFragment : Fragment() {
     private val upbViewModel by lazy {
         val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
         factory?.let { ViewModelProvider(this, it) }?.get(UsulanViewModel::class.java)
+    }
+
+    private val onItemClicked = object : MaterialOnclick {
+        override fun onClicked(idDetail: Int) {
+            val action =
+                DetailUsulanFragmentDirections.actionDetailUsulanPermintaanBarangFragmentToDetailMaterialFragment(idDetail)
+            findNavController().navigate(action)
+        }
     }
 
     private var _bindingFragmentDetailUsulan: FragmentDetailUsulanBinding? = null
@@ -83,7 +94,7 @@ class DetailUsulanFragment : Fragment() {
 
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar.root)
 
-        itemPagedListAdapter = DataItemUpbPagedListAdapter()
+        itemPagedListAdapter = DataItemUpbPagedListAdapter(onItemClicked)
         with(binding?.rvItemDataUpb) {
             this?.adapter = itemPagedListAdapter
             this?.layoutManager =
@@ -118,7 +129,6 @@ class DetailUsulanFragment : Fragment() {
         upbViewModel?.getDetailDataUpb("12345", token, idPermintaan)
             ?.observe(viewLifecycleOwner, {
                 Timber.d("Check data $it")
-
                 binding?.txNamaPemohon?.text = it.pemohon
                 binding?.txJudulPekerjaan?.text = it.jobTitle
                 binding?.txTanggalDibutuhkan?.text = it.tanggalDibutuhkan

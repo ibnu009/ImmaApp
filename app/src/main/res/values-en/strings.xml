@@ -134,6 +134,14 @@
     <string name="foto">Foto</string>
     <string name="ambil_gambar">Ambil Gambar</string>
     <string name="line_type">Line Type</string>
+    <string name="quantity">Quantity</string>
+    <string name="placeholderString">-</string>
+    <string name="last_po">Last PO</string>
+    <string name="rab">RAB</string>
+    <string name="average_cost">Average Cost</string>
+
+    <string name="detail_material">Detail Material</string>
+    <string name="selected">Selected</string>
 
 
 </resources>

@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.*
-import com.pjb.immaapp.data.entity.upb.HeaderUsulanPermintaanBarang
-import com.pjb.immaapp.data.entity.upb.ItemPermintaanBarang
-import com.pjb.immaapp.data.entity.upb.PermintaanBarang
+import com.pjb.immaapp.data.entity.upb.*
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSource
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSourceFactory
 import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSource
@@ -14,6 +12,7 @@ import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.ERROR
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
+import com.pjb.immaapp.utils.global.ImmaEventHandler
 import com.pjb.immaapp.webservice.RetrofitApp
 import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,8 +25,7 @@ class DataUpbRepository {
     private val apiService = RetrofitApp.getUpbService()
     private lateinit var upbDataSourceFactory: UpbDataSourceFactory
     private lateinit var upbItemDataSourceFactory: UpbItemDataSourceFactory
-    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
-    private var disposable: Disposable? = null
+    val networkState: ImmaEventHandler<NetworkState> = ImmaEventHandler()
 
     companion object {
         @Volatile
@@ -66,8 +64,8 @@ class DataUpbRepository {
         idPermintaan: Int
     ): LiveData<HeaderUsulanPermintaanBarang> {
         networkState.postValue(NetworkState.LOADING)
-
         val resultDetailUpb = MutableLiveData<HeaderUsulanPermintaanBarang>()
+
         compositeDisposable.add(apiService.requestDetailUpb(apiKey, token, idPermintaan)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -91,7 +89,7 @@ class DataUpbRepository {
         token: String,
         idPermintaan: Int
     ): LiveData<PagedList<ItemPermintaanBarang>> {
-        lateinit var resultItemUpb : LiveData<PagedList<ItemPermintaanBarang>>
+        lateinit var resultItemUpb: LiveData<PagedList<ItemPermintaanBarang>>
         upbItemDataSourceFactory =
             UpbItemDataSourceFactory(apiService, compositeDisposable, token, idPermintaan)
 
@@ -102,6 +100,55 @@ class DataUpbRepository {
 
         resultItemUpb = LivePagedListBuilder(upbItemDataSourceFactory, config).build()
         return resultItemUpb
+    }
+
+    fun requestMaterialDetail(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String,
+        idDetailMaterial: Int
+    ): LiveData<Material> {
+        networkState.postValue(NetworkState.LOADING)
+        val resultDetailMaterial = MutableLiveData<Material>()
+
+        compositeDisposable.add(apiService.requestDetailMaterial(apiKey, token, idDetailMaterial)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .map { it.header }
+            .subscribe(
+                {
+                    resultDetailMaterial.postValue(it)
+                    networkState.postValue(LOADED)
+                }, {
+                    networkState.postValue(ERROR)
+                    Timber.e(it)
+                }
+            ))
+        return resultDetailMaterial
+    }
+
+    //    Company list muncul pada bagian detail material
+    fun requestCompanyList(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String,
+        idDetailMaterial: Int
+    ): LiveData<List<Company>> {
+        val resultCompanyList = MutableLiveData<List<Company>>()
+        compositeDisposable.add(apiService.requestDetailMaterial(apiKey, token, idDetailMaterial)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .map { it.company }
+            .subscribe(
+                {
+                    resultCompanyList.postValue(it)
+                    networkState.postValue(LOADED)
+                }, {
+                    networkState.postValue(ERROR)
+                    Timber.e(it)
+                }
+            ))
+        return resultCompanyList
     }
 
     fun getNetworkState(): LiveData<NetworkState> {

@@ -14,12 +14,11 @@ import java.util.concurrent.TimeUnit
 
 
 class RetrofitApp {
-
     companion object {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
-        private const val BASE_URL = "https://bf855b24c06a.ngrok.io/"
+        private const val BASE_URL = "http://9dc32bc41249.ngrok.io/"
         const val UPLOAD_URL = "$BASE_URL/api/fpb/create"
         const val UPLOAD_MATERIAL_URL = BASE_URL+"api/fpb/create-material"
 

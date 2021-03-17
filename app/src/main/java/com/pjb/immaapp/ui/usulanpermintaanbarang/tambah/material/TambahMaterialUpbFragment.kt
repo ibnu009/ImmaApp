@@ -174,42 +174,18 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
         }
     }
 
-//    private val takePicture: Runnable = Runnable {
-//        context?.applicationContext?.let {
-//            FIleHelper().createImageFile(it)?.also { file ->
-//                takePictureImageUri = FileProvider.getUriForFile(
-//                    context?.applicationContext!!,
-//                    BuildConfig.APPLICATION_ID + ".provider",
-//                    file
-//                )
-//                takePictureRegistration.launch(takePictureImageUri)
-//            }
-//            imagePath = FIleHelper().getRealImagePathFromURI(it, takePictureImageUri)
-//        }
-//    }
-
     private val takePictureRegistration =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-//            if (success) {
                 val uri = FIleHelper().getImageUri(requireActivity(), bitmap)
                 imagePath = FIleHelper().getFilePathFromURI(requireActivity(), uri)
                 binding?.imgMaterialContainer?.setImageBitmap(bitmap)
-//            }
         }
 
     private val pickFileImage =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             selectedImageUri = uri
-//            imagePath = FIleHelper().getFilePathFromURI(
-//                this.context?.applicationContext,
-//                selectedImageUri
-//            )
             binding?.imgMaterialContainer?.setImageURI(selectedImageUri)
         }
-
-    companion object {
-        const val REQUEST_CODE_PICK_IMAGE = 101
-    }
 
     override fun onInitiating() {
         isLoading(true)
