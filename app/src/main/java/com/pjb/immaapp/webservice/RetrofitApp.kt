@@ -18,7 +18,7 @@ class RetrofitApp {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
-        private const val BASE_URL = "http://9dc32bc41249.ngrok.io/"
+        private const val BASE_URL = "http://5a9906d806dd.ngrok.io/"
         const val UPLOAD_URL = "$BASE_URL/api/fpb/create"
         const val UPLOAD_MATERIAL_URL = BASE_URL+"api/fpb/create-material"
 

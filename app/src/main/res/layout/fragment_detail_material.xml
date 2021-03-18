@@ -119,7 +119,7 @@
                     android:id="@+id/tx_title_daftar_material"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/daftar_material"
+                    android:text="@string/daftar_perusahaan"
                     android:layout_margin="16dp"
                     android:visibility="visible"
                     style="@style/TextSectionTitle"

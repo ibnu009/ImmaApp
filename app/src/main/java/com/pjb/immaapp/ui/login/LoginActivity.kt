@@ -16,6 +16,8 @@ import com.pjb.immaapp.databinding.ActivityLoginBinding
 import com.pjb.immaapp.utils.*
 import com.pjb.immaapp.utils.NetworkState.Companion.USERNOTFOUND
 import com.pjb.immaapp.utils.NetworkState
+import com.pjb.immaapp.utils.NetworkState.Companion.BAD_GATEAWAY
+import com.pjb.immaapp.utils.NetworkState.Companion.UNKNOWN
 import com.pjb.immaapp.utils.global.ViewModelFactory
 import com.pjb.immaapp.utils.global.snackbar
 import timber.log.Timber
@@ -96,11 +98,19 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
                     binding?.root?.snackbar("User Not Found")
                     isLoading(false)
                 }
+                BAD_GATEAWAY ->{
+                    binding?.root?.snackbar("Kesalahan Server")
+                    isLoading(false)
+                }
                 NetworkState.LOADED -> {
                     isLoading(false)
                 }
                 NetworkState.LOADING -> {
                     isLoading(true)
+                }
+                UNKNOWN -> {
+                    binding?.root?.snackbar("Unknown Error")
+                    isLoading(false)
                 }
                 else -> {
                     Timber.e("Unknown Error")

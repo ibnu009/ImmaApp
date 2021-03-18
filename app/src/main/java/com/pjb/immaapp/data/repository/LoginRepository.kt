@@ -6,6 +6,7 @@ import com.pjb.immaapp.data.entity.User
 import com.pjb.immaapp.data.entity.request.Credential
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.global.ImmaEventHandler
+import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import com.pjb.immaapp.webservice.RetrofitApp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -43,7 +44,8 @@ class LoginRepository {
                     networkStateRepo.postValue(NetworkState.LOADED)
                 }, {
                     Timber.e("ErrorLogin is $it")
-                    networkStateRepo.postValue(NetworkState.USERNOTFOUND)
+                    val error = GeneralErrorHandler().getError(it)
+                    networkStateRepo.postValue(error)
                 })
         )
         return resultUser
