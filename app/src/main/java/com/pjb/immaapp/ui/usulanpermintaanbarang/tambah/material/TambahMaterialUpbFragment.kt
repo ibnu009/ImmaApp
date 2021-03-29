@@ -47,7 +47,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
     private lateinit var token: String
     private lateinit var idSdm: String
     private lateinit var apiKey: String
-    private lateinit var itemNumString: String
+    private var itemNumString: String? = null
     private var idPermintaan: Int? = null
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -132,7 +132,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
             itemNum = itemNumString,
             idPermintaan = idPermintaan!!,
             lineType = type,
-            path = imagePath ?: "-"
+            path = imagePath
         )
     }
 
@@ -166,10 +166,16 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
             itemNumString = edtItemNum.text.toString()
             val itemNum = Integer.parseInt(itemNumString)
             viewModel?.getDataMaterial(apiKey, token, itemNum)?.observe(this, Observer {
+                Timber.d("checkStockOpname = $it")
                 binding?.edtSpesifikasi?.text = it.description
                 binding?.edtCurrentBalance?.text = it.curbal.toString()
                 binding?.edtSatuan?.text = it.satuan
             })
+
+            viewModel?.networkState?.observe(this, Observer {
+               Timber.e("CheckError network ${it.status}")
+            })
+
             mBuilder.dismiss()
         }
     }
@@ -220,7 +226,6 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
             ).withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
                     if (p0?.areAllPermissionsGranted() == true) {
-                        binding?.root?.snackbar("All Permissions are granted")
                     }
                 }
 

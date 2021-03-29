@@ -27,6 +27,9 @@ class GeneralErrorHandler : ErrorHandler {
                     // unavailable service
                     HttpURLConnection.HTTP_UNAVAILABLE -> NetworkState(Status.FAILED)
 
+                    // Expired Token
+                    HttpURLConnection.HTTP_CLIENT_TIMEOUT -> NetworkState(Status.EXPIRETOKEN)
+
                     // unknown error
                     else -> NetworkState(Status.UNKNOWN)
                 }

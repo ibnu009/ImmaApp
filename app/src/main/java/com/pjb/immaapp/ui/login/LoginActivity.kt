@@ -17,6 +17,8 @@ import com.pjb.immaapp.utils.*
 import com.pjb.immaapp.utils.NetworkState.Companion.USERNOTFOUND
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.BAD_GATEAWAY
+import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
+import com.pjb.immaapp.utils.NetworkState.Companion.LOADING
 import com.pjb.immaapp.utils.NetworkState.Companion.UNKNOWN
 import com.pjb.immaapp.utils.global.ViewModelFactory
 import com.pjb.immaapp.utils.global.snackbar
@@ -93,30 +95,42 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
 
         viewModel.checkState().observe(this, Observer { network ->
             Timber.d("check result : ${network.status}")
+
             when (network) {
-                USERNOTFOUND -> {
-                    binding?.root?.snackbar("User Not Found")
-                    isLoading(false)
-                }
-                BAD_GATEAWAY ->{
-                    binding?.root?.snackbar("Kesalahan Server")
-                    isLoading(false)
-                }
-                NetworkState.LOADED -> {
-                    isLoading(false)
-                }
-                NetworkState.LOADING -> {
+                LOADING -> {
                     isLoading(true)
                 }
-                UNKNOWN -> {
-                    binding?.root?.snackbar("Unknown Error")
+                LOADED -> {
                     isLoading(false)
                 }
                 else -> {
-                    Timber.e("Unknown Error")
+                    ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
                 }
             }
 
+//            when (network) {
+//                USERNOTFOUND -> {
+//                    binding?.root?.snackbar("User Not Found")
+//                    isLoading(false)
+//                }
+//                BAD_GATEAWAY ->{
+//                    binding?.root?.snackbar("Kesalahan Server")
+//                    isLoading(false)
+//                }
+//                NetworkState.LOADED -> {
+//                    isLoading(false)
+//                }
+//                NetworkState.LOADING -> {
+//                    isLoading(true)
+//                }
+//                UNKNOWN -> {
+//                    binding?.root?.snackbar("Unknown Error")
+//                    isLoading(false)
+//                }
+//                else -> {
+//                    Timber.e("Unknown Error")
+//                }
+//            }
         })
     }
 
@@ -124,7 +138,7 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
         if (!status) {
             binding?.progressLogin?.visibility = View.GONE
             binding?.backgroundDim?.visibility = View.GONE
-        }else{
+        } else {
             binding?.progressLogin?.visibility = View.VISIBLE
             binding?.backgroundDim?.visibility = View.VISIBLE
         }

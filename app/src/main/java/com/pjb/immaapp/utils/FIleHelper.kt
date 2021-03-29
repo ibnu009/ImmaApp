@@ -1,13 +1,16 @@
 package com.pjb.immaapp.utils
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.MediaStore.Images
 import android.text.TextUtils
+import androidx.annotation.RequiresApi
 import timber.log.Timber
 import java.io.*
 import java.text.SimpleDateFormat
@@ -37,42 +40,14 @@ class FIleHelper {
         return Uri.parse(path)
     }
 
-    fun getRealImagePathFromURI(context: Context, uri: Uri?): String? {
-        var path = ""
-        if (context.contentResolver != null) {
-            val cursor: Cursor? =
-                uri?.let { context.contentResolver.query(it, null, null, null, null) }
-            if (cursor != null) {
-                cursor.moveToFirst()
-                val idx = cursor.getColumnIndex(MediaStore.Images.Media._ID)
-                path = cursor.getString(idx)
-                cursor.close()
-            }
-        }
-        return path
-    }
-//
-//    fun getRealImagePathFromURI(
-//        context: Context, uri: Uri?
-//    ): String? {
-//        val contentResolver = context.contentResolver ?: return null
-//
-//        // Create file path inside app's data dir
-//        val filePath = (context.applicationInfo.dataDir + File.separator
-//                + System.currentTimeMillis())
-//        val file = File(filePath)
-//        try {
-//            val inputStream = contentResolver.openInputStream(uri!!) ?: return null
-//            val outputStream: OutputStream = FileOutputStream(file)
-//            val buf = ByteArray(1024)
-//            var len: Int
-//            while (inputStream.read(buf).also { len = it } > 0) outputStream.write(buf, 0, len)
-//            outputStream.close()
-//            inputStream.close()
-//        } catch (ignore: IOException) {
-//            return null
+//    @RequiresApi(Build.VERSION_CODES.Q)
+//    private fun getImageUriQ(context: Context, img: Bitmap): Uri {
+//        val values = ContentValues().apply {
+//            put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis().toString())
+//            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+//            put(MediaStore.MediaColumns.IS_PENDING, 1)
 //        }
-//        return file.absolutePath
+//        return values
 //    }
 
     fun getFilePathFromURI(context: Context?, contentUri: Uri?): String? {

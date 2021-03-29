@@ -1,5 +1,7 @@
 package com.pjb.immaapp.ui.usulanpermintaanbarang.material
 
+import com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialFragmentArgs
+import com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialViewModel
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailMaterialBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.CompanyListAdapter
+import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.global.ViewModelFactory
 
@@ -93,8 +96,13 @@ class DetailMaterialFragment : Fragment() {
             ?.observe(viewLifecycleOwner, Observer {
                 binding?.txNamaMaterial?.text = it.material
                 binding?.txQty?.text = it.qty.toString()
-                binding?.txAverageCost?.text = it.averageCost.toString()
-                binding?.txRab?.text = it.rab.toString()
+
+                val avgPrice = ConverterHelper().convertAnggaranFormat(it.averageCost)
+                binding?.txAverageCost?.text = this.getString(R.string.anggaran_po, avgPrice)
+
+                val rabPrice = ConverterHelper().convertAnggaranFormat(it.rab)
+
+                binding?.txRab?.text = this.getString(R.string.anggaran_po, rabPrice)
                 binding?.txLastPo?.text = it.lastPo
             })
     }

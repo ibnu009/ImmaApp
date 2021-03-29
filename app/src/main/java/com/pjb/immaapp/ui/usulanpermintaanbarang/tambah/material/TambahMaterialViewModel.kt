@@ -23,7 +23,6 @@ class TambahMaterialViewModel(
     ViewModel() {
     var jumlah: String? = null
     var catatan: String? = null
-    var lineType: Int = 0
 
     var upbCreateMaterialListener: UpbCreateMaterialListener? = null
 
@@ -40,10 +39,10 @@ class TambahMaterialViewModel(
         lifecycleOwner: LifecycleOwner,
         apiKey: String,
         token: String,
-        itemNum: String,
+        itemNum: String?,
         idPermintaan: Int,
         lineType: Int,
-        path: String
+        path: String?
     ) {
         Timber.d("check Result. jumlah = $jumlah, catatan = $catatan")
         when {
@@ -51,9 +50,11 @@ class TambahMaterialViewModel(
                 Timber.e("error jumlah, jumlah = $jumlah")
                 upbCreateMaterialListener?.onFailure("Invalid Input pada Jumlah")
             }
-            catatan.isNullOrEmpty() -> {
-                Timber.e("error catatan, catatan = $catatan")
-                upbCreateMaterialListener?.onFailure("Catatan tidak boleh kosong")
+            path.isNullOrEmpty() -> {
+                upbCreateMaterialListener?.onFailure("Wajib diberi foto")
+            }
+            itemNum.isNullOrEmpty() -> {
+                upbCreateMaterialListener?.onFailure("Masukkan material yang diperlukan")
             }
             else -> {
                 uploadMaterial(
@@ -135,6 +136,10 @@ class TambahMaterialViewModel(
             Timber.e("Errorkarena $e")
             upbCreateMaterialListener?.onFailure("Mohon maaf sedang ada trouble")
         }
+    }
+
+    val networkState by lazy {
+        dataStokOpnameRepository.networkState
     }
 
     override fun onCleared() {
