@@ -115,6 +115,7 @@
     <string name="rusak">Rusak</string>
     <string name="baik_tapi_tidak_bisa_dipakai">Baik tapi tidak bisa dipakai</string>
     <string name="rusak_dan_tidak_bisa_diperbaiki">Rusak dan tidak bisa diperbaiki</string>
+    <string name="tambah_supplier">Tambah Supplier</string>
 
     <string-array name="kondisi_barang">
         <item>@string/baik</item>
@@ -127,10 +128,14 @@
         <item>@string/services</item>
         <item>@string/items</item>
     </string-array>
+
+    <string-array name="supplier_name">
+        <item>Pilih supplier</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="_4_feb">4 Feb</string>
-    <string name="foto">Foto</string>
     <string name="ambil_gambar">Ambil Gambar</string>
     <string name="line_type">Line Type</string>
     <string name="quantity">Quantity</string>
@@ -142,4 +147,7 @@
 
     <string name="selected">Selected</string>
     <string name="daftar_perusahaan">Daftar Perusahaan</string>
+    <string name="nama_supplier">Nama Supplier</string>
+    <string name="harga">Harga</string>
+    <string name="foto">Foto</string>
 </resources>
