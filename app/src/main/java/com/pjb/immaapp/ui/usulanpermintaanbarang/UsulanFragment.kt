@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -22,7 +23,6 @@ import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.global.ViewModelFactory
 import timber.log.Timber
-
 
 class UsulanFragment : Fragment() {
 
@@ -105,11 +105,11 @@ class UsulanFragment : Fragment() {
 
     private fun showData(token: String, keywords: String?) {
         upbViewModel?.getListDataUpb(token, keywords)
-            ?.observe(viewLifecycleOwner, { dataUpb ->
+            ?.observe(viewLifecycleOwner, Observer { dataUpb ->
                     upbPagedListAdapter.submitList(dataUpb)
             })
 
-        upbViewModel?.networkState?.observe(viewLifecycleOwner, { network ->
+        upbViewModel?.networkState?.observe(viewLifecycleOwner, Observer { network ->
             when (network) {
                 NetworkState.LOADING -> {
                     binding?.shimmerViewContainer?.visibility = View.VISIBLE

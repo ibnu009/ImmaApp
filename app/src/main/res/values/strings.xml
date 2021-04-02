@@ -150,4 +150,6 @@
     <string name="nama_supplier">Nama Supplier</string>
     <string name="harga">Harga</string>
     <string name="foto">Foto</string>
+    <string name="pilih_supplier">Pilih Supplier</string>
+    <string name="masukkan_harga">Masukkan Harga</string>
 </resources>

@@ -61,6 +61,9 @@ class DetailMaterialFragment : Fragment() {
         btnBack.setOnClickListener {
             it.findNavController().popBackStack()
         }
+        binding?.fabTambahMaterial?.setOnClickListener {
+            it.findNavController().navigate(R.id.action_detailMaterialFragment_to_tambahsSupplierFragment)
+        }
         txView.text = context?.resources?.getText(R.string.detail_material)
 
         initiateRecyclerView()

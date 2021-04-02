@@ -127,7 +127,7 @@ class DetailUsulanFragment : Fragment() {
 
     private fun initiateDetail(token: String, idPermintaan: Int) {
         upbViewModel?.getDetailDataUpb("12345", token, idPermintaan)
-            ?.observe(viewLifecycleOwner, {
+            ?.observe(viewLifecycleOwner, Observer {
                 Timber.d("Check data $it")
                 binding?.txNamaPemohon?.text = it.pemohon
                 binding?.txJudulPekerjaan?.text = it.jobTitle

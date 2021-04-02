@@ -12,16 +12,15 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
 class RetrofitApp {
     companion object {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
-        private const val BASE_URL = "http://38d27a8cfadb.ngrok.io/"
+        private const val BASE_URL = "http://0350b7c0dd51.ngrok.io/"
         const val UPLOAD_URL = "$BASE_URL/api/fpb/create"
         const val UPLOAD_MATERIAL_URL = BASE_URL+"api/fpb/create-material"
-
+        const val UPLOAD_RAB_SUPPLIER = "$BASE_URL/api/rab/add-company"
 
         private val interceptor: HttpLoggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

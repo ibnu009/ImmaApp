@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.pjb.immaapp.R
@@ -168,7 +169,7 @@ class StokOpnameResultFragment : Fragment() {
         kondisi: String
     ) {
         stokOpnameViewModel?.addDataStokOpname("12345", token, itemNum, notes, stock, kondisi)
-            ?.observe(viewLifecycleOwner, {
+            ?.observe(viewLifecycleOwner, Observer {
                 Timber.d("New data created : ${it.message}")
                 Toast.makeText(
                     context?.applicationContext,
@@ -176,7 +177,7 @@ class StokOpnameResultFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             })
-        stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, {
+        stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, Observer {
             when (it) {
                 NetworkState.FAILEDTOADD -> {
                     Toast.makeText(context?.applicationContext, it.toString(), Toast.LENGTH_SHORT)
@@ -196,7 +197,7 @@ class StokOpnameResultFragment : Fragment() {
 
     private fun initiateDataStokOpname(token: String, itemNum: Int) {
         stokOpnameViewModel?.getDataStokOpname("12345", token, itemNum)
-            ?.observe(viewLifecycleOwner, {
+            ?.observe(viewLifecycleOwner, Observer {
                 Timber.d("Check data $it")
 
                 binding?.txNomorBarang?.text =
@@ -207,7 +208,7 @@ class StokOpnameResultFragment : Fragment() {
                     context?.applicationContext?.getString(R.string.satuan_item, it.satuan)
             })
 
-        stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, {
+        stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, Observer{
             when (it) {
                 NetworkState.LOADING -> {
                     Timber.d("Check Loading")

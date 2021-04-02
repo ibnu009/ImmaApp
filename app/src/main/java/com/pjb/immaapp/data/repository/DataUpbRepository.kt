@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.*
 import com.pjb.immaapp.data.entity.upb.*
-import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSource
-import com.pjb.immaapp.data.source.usulanpermintaan.UpbDataSourceFactory
-import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSource
-import com.pjb.immaapp.data.source.usulanpermintaan.UpbItemDataSourceFactory
+import com.pjb.immaapp.data.source.usulanpermintaan.*
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.ERROR
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
@@ -25,6 +22,8 @@ class DataUpbRepository {
     private val apiService = RetrofitApp.getUpbService()
     private lateinit var upbDataSourceFactory: UpbDataSourceFactory
     private lateinit var upbItemDataSourceFactory: UpbItemDataSourceFactory
+    private lateinit var supplierDataSourceFactory: SupplierDataSourceFactory
+
     val networkState: ImmaEventHandler<NetworkState> = ImmaEventHandler()
 
     companion object {
@@ -149,6 +148,23 @@ class DataUpbRepository {
                 }
             ))
         return resultCompanyList
+    }
+
+    fun requestListDataSupplier(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String
+    ): LiveData<PagedList<Supplier>> {
+        lateinit var resultDataSupplier: LiveData<PagedList<Supplier>>
+
+        supplierDataSourceFactory = SupplierDataSourceFactory(apiService, compositeDisposable, token)
+
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPageSize(ITEM_PER_PAGE)
+            .build()
+        resultDataSupplier = LivePagedListBuilder(supplierDataSourceFactory, config).build()
+        return resultDataSupplier
     }
 
     fun getNetworkState(): LiveData<NetworkState> {

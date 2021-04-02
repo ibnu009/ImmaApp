@@ -6,12 +6,13 @@ import androidx.paging.PagedList
 import com.pjb.immaapp.data.entity.upb.HeaderUsulanPermintaanBarang
 import com.pjb.immaapp.data.entity.upb.ItemPermintaanBarang
 import com.pjb.immaapp.data.entity.upb.PermintaanBarang
+import com.pjb.immaapp.data.entity.upb.Supplier
 import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.utils.NetworkState
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
-class UsulanViewModel(
+ class  UsulanViewModel(
     private val dataUpbRepository: DataUpbRepository,
     private val compositeDisposable: CompositeDisposable
 ) : ViewModel() {

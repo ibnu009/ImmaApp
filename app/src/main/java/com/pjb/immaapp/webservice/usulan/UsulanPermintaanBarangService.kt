@@ -41,4 +41,11 @@ interface UsulanPermintaanBarangService {
         @Field("id_permintaan_detail") idDetail: Int
     ): Observable<ResponseDetailMaterial>
 
+    @POST("api/data/companies")
+    @FormUrlEncoded
+    fun requestDataSupplier(
+        @Field("api_key") apiKey: String,
+        @Field("token") token: String
+    ): Observable<ResponseSupplier>
+
 }

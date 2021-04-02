@@ -146,6 +146,8 @@
     <string name="tambah_supplier">Add Supplier</string>
     <string name="nama_supplier">Supplier Name</string>
     <string name="harga">Price</string>
+    <string name="pilih_supplier">Select Supplier</string>
+    <string name="masukkan_harga">Input price</string>
 
 
 </resources>

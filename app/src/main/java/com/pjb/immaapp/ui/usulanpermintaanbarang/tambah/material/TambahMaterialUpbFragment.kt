@@ -1,9 +1,7 @@
 package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
@@ -17,7 +15,6 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,12 +24,10 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.pjb.immaapp.BuildConfig
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentTambahMaterialBinding
 import com.pjb.immaapp.handler.UpbCreateMaterialHandler
 import com.pjb.immaapp.handler.UpbCreateMaterialListener
-import com.pjb.immaapp.ui.stokopname.StokOpnameFragmentDirections
 import com.pjb.immaapp.utils.FIleHelper
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.global.ViewModelFactory
