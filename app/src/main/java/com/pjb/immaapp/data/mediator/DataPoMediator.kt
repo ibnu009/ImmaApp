@@ -7,7 +7,7 @@ import androidx.paging.rxjava2.RxRemoteMediator
 import com.pjb.immaapp.data.entity.local.po.PurchaseOrders
 import com.pjb.immaapp.data.local.db.ImmaDatabase
 import com.pjb.immaapp.utils.PoMapper
-import com.pjb.immaapp.webservice.po.PurchaseOrderService
+import com.pjb.immaapp.service.webservice.po.PurchaseOrderService
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber

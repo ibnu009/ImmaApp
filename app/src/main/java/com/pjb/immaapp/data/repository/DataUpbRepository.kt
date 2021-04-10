@@ -10,16 +10,17 @@ import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.ERROR
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
 import com.pjb.immaapp.utils.global.ImmaEventHandler
-import com.pjb.immaapp.webservice.RetrofitApp
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
+import com.pjb.immaapp.service.webservice.RetrofitApp
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import retrofit2.Retrofit
 import timber.log.Timber
 
 class DataUpbRepository {
     private val apiService = RetrofitApp.getUpbService()
+    private val uploadService = RetrofitApp.getUploadService()
     private lateinit var upbDataSourceFactory: UpbDataSourceFactory
     private lateinit var upbItemDataSourceFactory: UpbItemDataSourceFactory
     private lateinit var supplierDataSourceFactory: SupplierDataSourceFactory
@@ -34,6 +35,8 @@ class DataUpbRepository {
                 instance ?: DataUpbRepository()
             }
     }
+
+//    Module : Usulan Permintaan Barang
 
     fun requestDataListUpb(
         compositeDisposable: CompositeDisposable,
@@ -56,6 +59,7 @@ class DataUpbRepository {
         return resultDataUpb
     }
 
+//    Module Detail Usulan Permintaan Barang
     fun requestDataDetailDataUpb(
         compositeDisposable: CompositeDisposable,
         apiKey: String,
@@ -83,6 +87,7 @@ class DataUpbRepository {
         return resultDetailUpb
     }
 
+    //    Module Detail Usulan Permintaan Barang - bagian material
     fun requestItemInDetailDataUpb(
         compositeDisposable: CompositeDisposable,
         token: String,
@@ -165,6 +170,14 @@ class DataUpbRepository {
             .build()
         resultDataSupplier = LivePagedListBuilder(supplierDataSourceFactory, config).build()
         return resultDataSupplier
+    }
+
+    fun uploadUsulanPermintaanWithoutFile(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String
+    ) {
+
     }
 
     fun getNetworkState(): LiveData<NetworkState> {

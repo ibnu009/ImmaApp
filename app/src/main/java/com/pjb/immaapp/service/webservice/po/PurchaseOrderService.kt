@@ -1,4 +1,4 @@
-package com.pjb.immaapp.webservice.po
+package com.pjb.immaapp.service.webservice.po
 
 import com.pjb.immaapp.data.remote.response.ResponseDetailPo
 import com.pjb.immaapp.data.remote.response.ResponsePo

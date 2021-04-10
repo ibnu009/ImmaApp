@@ -6,7 +6,7 @@ import com.pjb.immaapp.data.entity.stockopname.StockOpname
 import com.pjb.immaapp.data.remote.response.ResponseCreateStokOpname
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.global.ImmaEventHandler
-import com.pjb.immaapp.webservice.RetrofitApp
+import com.pjb.immaapp.service.webservice.RetrofitApp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

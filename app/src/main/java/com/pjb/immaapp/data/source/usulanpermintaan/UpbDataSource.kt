@@ -2,13 +2,12 @@ package com.pjb.immaapp.data.source.usulanpermintaan
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.pjb.immaapp.data.entity.po.ItemPurchaseOrder
 import com.pjb.immaapp.data.entity.upb.PermintaanBarang
 import com.pjb.immaapp.utils.NetworkState
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.API_KEY
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.FIRST_PAGE
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
-import com.pjb.immaapp.webservice.usulan.UsulanPermintaanBarangService
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.API_KEY
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.FIRST_PAGE
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
+import com.pjb.immaapp.service.webservice.usulan.UsulanPermintaanBarangService
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber

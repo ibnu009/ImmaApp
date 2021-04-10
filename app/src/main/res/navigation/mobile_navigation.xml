@@ -154,6 +154,10 @@
         android:id="@+id/tambahSupplierFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.supplier.TambahSupplierFragment"
         android:label="TambahsSupplierFragment" >
+        <argument
+            android:name="passIdDetailToAddSupplier"
+            android:defaultValue="0"
+            app:argType="integer"/>
         <action
             android:id="@+id/action_tambahSupplierFragment_to_listSupplierFragment"
             app:destination="@id/listSupplierFragment" />

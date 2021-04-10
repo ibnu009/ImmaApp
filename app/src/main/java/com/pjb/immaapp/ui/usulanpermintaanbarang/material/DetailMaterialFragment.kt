@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailMaterialBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.CompanyListAdapter
+import com.pjb.immaapp.ui.usulanpermintaanbarang.handler.OnItemCompanyClick
 import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.global.ViewModelFactory
@@ -29,12 +30,19 @@ class DetailMaterialFragment : Fragment() {
     private lateinit var token: String
     private lateinit var apiKey: String
     private var idDetail: Int = 0
+    private var idCompany: Int? = null
 
     private lateinit var adapter: CompanyListAdapter
 
     private val viewModel by lazy {
         val factory = this.context?.applicationContext?.let { ViewModelFactory.getInstance(it) }
         factory?.let { ViewModelProvider(this, it).get(DetailMaterialViewModel::class.java) }
+    }
+
+    private val itemClick = object : OnItemCompanyClick {
+        override fun onCLicked(id: Int) {
+            idCompany = id
+        }
     }
 
     private var _bindingDetailMaterialFragment: FragmentDetailMaterialBinding? = null
@@ -62,7 +70,8 @@ class DetailMaterialFragment : Fragment() {
             it.findNavController().popBackStack()
         }
         binding?.fabTambahMaterial?.setOnClickListener {
-            it.findNavController().navigate(R.id.action_detailMaterialFragment_to_tambahsSupplierFragment)
+            val action = DetailMaterialFragmentDirections.actionDetailMaterialFragmentToTambahsSupplierFragment(idDetail)
+            it.findNavController().navigate(action)
         }
         txView.text = context?.resources?.getText(R.string.detail_material)
 
@@ -83,7 +92,7 @@ class DetailMaterialFragment : Fragment() {
     }
 
     private fun initiateRecyclerView() {
-        adapter = CompanyListAdapter()
+        adapter = CompanyListAdapter(itemClick)
         with(binding?.rvCompanies) {
             this?.adapter = adapter
             this?.layoutManager = LinearLayoutManager(

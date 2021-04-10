@@ -1,10 +1,13 @@
-package com.pjb.immaapp.webservice
+package com.pjb.immaapp.service.webservice
 
 import com.pjb.immaapp.utils.network.NetworkInterceptor
-import com.pjb.immaapp.webservice.login.LoginService
-import com.pjb.immaapp.webservice.po.PurchaseOrderService
-import com.pjb.immaapp.webservice.stockopname.StockOpnameService
-import com.pjb.immaapp.webservice.usulan.UsulanPermintaanBarangService
+import com.pjb.immaapp.service.webservice.login.LoginService
+import com.pjb.immaapp.service.webservice.notification.FirebaseNotificationService
+import com.pjb.immaapp.service.webservice.notification.NotificationService
+import com.pjb.immaapp.service.webservice.po.PurchaseOrderService
+import com.pjb.immaapp.service.webservice.stockopname.StockOpnameService
+import com.pjb.immaapp.service.webservice.upload.UploadService
+import com.pjb.immaapp.service.webservice.usulan.UsulanPermintaanBarangService
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,9 +20,9 @@ class RetrofitApp {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
-        private const val BASE_URL = "http://0350b7c0dd51.ngrok.io/"
+        private const val BASE_URL = "http://0ca439f1ea27.ngrok.io"
         const val UPLOAD_URL = "$BASE_URL/api/fpb/create"
-        const val UPLOAD_MATERIAL_URL = BASE_URL+"api/fpb/create-material"
+        const val UPLOAD_MATERIAL_URL = "$BASE_URL/api/fpb/create-material"
         const val UPLOAD_RAB_SUPPLIER = "$BASE_URL/api/rab/add-company"
 
         private val interceptor: HttpLoggingInterceptor =
@@ -39,6 +42,13 @@ class RetrofitApp {
             .client(client)
             .build()
 
+        private val notificationRetrofit = Retrofit.Builder()
+            .baseUrl("https://fcm.googleapis.com/fcm/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(client)
+            .build()
+
         fun getLoginService(): LoginService {
             return retrofit.create(LoginService::class.java)
         }
@@ -53,6 +63,16 @@ class RetrofitApp {
 
         fun getStockOpnameService(): StockOpnameService {
             return retrofit.create(StockOpnameService::class.java)
+        }
+
+        fun getUploadService(): UploadService = retrofit.create(UploadService::class.java)
+
+        fun getNotificationService(): NotificationService {
+            return retrofit.create(NotificationService::class.java)
+        }
+
+        fun getFirebaseNotificationService(): FirebaseNotificationService {
+            return notificationRetrofit.create(FirebaseNotificationService::class.java)
         }
 
     }

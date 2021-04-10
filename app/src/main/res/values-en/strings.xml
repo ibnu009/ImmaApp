@@ -7,6 +7,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="notif_message">New Request</string>
+
+
 
     <!--  Khusus untuk valued String  -->
     <string name="anggaran_po">Rp. %1$s</string>

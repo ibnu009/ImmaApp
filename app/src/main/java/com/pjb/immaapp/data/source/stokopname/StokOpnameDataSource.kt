@@ -1,9 +1,8 @@
 package com.pjb.immaapp.data.source.stokopname
 
-import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
 import com.pjb.immaapp.data.entity.stockopname.StockOpname
-import com.pjb.immaapp.webservice.stockopname.StockOpnameService
+import com.pjb.immaapp.service.webservice.stockopname.StockOpnameService
 import io.reactivex.disposables.CompositeDisposable
 
 class StokOpnameDataSource(

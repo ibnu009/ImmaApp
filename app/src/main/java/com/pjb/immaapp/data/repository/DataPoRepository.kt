@@ -18,8 +18,8 @@ import com.pjb.immaapp.data.source.po.PoItemDataSourceFactory
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.PoMapper
 import com.pjb.immaapp.utils.rq.SearchQuery
-import com.pjb.immaapp.webservice.RetrofitApp
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
+import com.pjb.immaapp.service.webservice.RetrofitApp
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

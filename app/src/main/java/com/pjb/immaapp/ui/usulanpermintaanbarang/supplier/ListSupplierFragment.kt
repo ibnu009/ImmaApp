@@ -16,6 +16,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.databinding.FragmentListSupplierBinding
 import com.pjb.immaapp.handler.OnClickedActionDataSupplier
+import com.pjb.immaapp.handler.RabAddSupplierListener
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.SupplierPagedListAdapter
 import com.pjb.immaapp.utils.SharedPreferencesKey
@@ -41,7 +42,6 @@ class ListSupplierFragment : Fragment() {
     private val onItemClicked = object : OnClickedActionDataSupplier {
         override fun onClicked(idSupplier: Int, namaSupplier: String) {
             setFragmentResult("requestKey", bundleOf("idSupplier" to idSupplier, "namaSupplier" to namaSupplier))
-            viewModel?.selectedItem(idSupplier)
             Timber.d("ID Supplier terpass : $idSupplier")
             view?.findNavController()?.popBackStack()
         }
@@ -60,15 +60,8 @@ class ListSupplierFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferences =
-            activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
-        token =
-            sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
-                ?: "Shared Prefences Not Found"
-        apiKey = sharedPreferences.getString(SharedPreferencesKey.KEY_API, "Not Found")
-            ?: "Shared Preferences Not Found"
-
         supplierAdapter = SupplierPagedListAdapter(onItemClicked)
+        initiateKeys()
         initiateRecyclerView()
         initiateData(apiKey, token)
     }
@@ -84,5 +77,13 @@ class ListSupplierFragment : Fragment() {
         })
     }
 
+    private fun initiateKeys() {
+        sharedPreferences =
+            activity?.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)!!
+        apiKey = sharedPreferences.getString(SharedPreferencesKey.KEY_API, "Not Found")
+            ?: "Shared Preference Not Found"
+        token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
+            ?: "Shared Preference Not Found"
+    }
 
 }

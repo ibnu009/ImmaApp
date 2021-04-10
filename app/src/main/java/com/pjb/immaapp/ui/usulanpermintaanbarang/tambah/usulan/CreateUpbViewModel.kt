@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.pjb.immaapp.handler.UpbFileUploadListener
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.UPLOAD_URL
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.UPLOAD_URL
 import io.reactivex.disposables.CompositeDisposable
 import net.gotev.uploadservice.data.UploadInfo
 import net.gotev.uploadservice.network.ServerResponse
@@ -26,7 +26,7 @@ class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable) :
         lifecycleOwner: LifecycleOwner,
         token: String,
         apiKey: String,
-        path: String,
+        path: String?,
         requiredDate: String?,
         idSdm: String
     ) {
@@ -46,7 +46,7 @@ class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable) :
                 upbFileUploadListener?.onFailure("Deskripsi pekerjaan minimal 10 huruf")
             }
             else -> {
-                uploadFile(context, lifecycleOwner, token, apiKey, path, requiredDate,idSdm)
+                uploadFile(context, lifecycleOwner, token, apiKey, path?:"", requiredDate,idSdm)
             }
         }
     }

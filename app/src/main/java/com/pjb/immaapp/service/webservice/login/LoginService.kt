@@ -1,4 +1,4 @@
-package com.pjb.immaapp.webservice.login
+package com.pjb.immaapp.service.webservice.login
 
 import com.pjb.immaapp.data.entity.request.Credential
 import com.pjb.immaapp.data.remote.response.ResponseUser

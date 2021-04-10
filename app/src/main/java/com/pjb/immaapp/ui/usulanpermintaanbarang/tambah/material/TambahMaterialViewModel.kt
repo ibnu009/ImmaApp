@@ -7,14 +7,13 @@ import androidx.lifecycle.ViewModel
 import com.pjb.immaapp.data.entity.stockopname.StockOpname
 import com.pjb.immaapp.data.repository.DataStokOpnameRepository
 import com.pjb.immaapp.handler.UpbCreateMaterialListener
-import com.pjb.immaapp.webservice.RetrofitApp
+import com.pjb.immaapp.service.webservice.RetrofitApp
 import io.reactivex.disposables.CompositeDisposable
 import net.gotev.uploadservice.data.UploadInfo
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
 import timber.log.Timber
-import java.io.File
 
 class TambahMaterialViewModel(
     private val dataStokOpnameRepository: DataStokOpnameRepository,
@@ -50,9 +49,6 @@ class TambahMaterialViewModel(
                 Timber.e("error jumlah, jumlah = $jumlah")
                 upbCreateMaterialListener?.onFailure("Invalid Input pada Jumlah")
             }
-            path.isNullOrEmpty() -> {
-                upbCreateMaterialListener?.onFailure("Wajib diberi foto")
-            }
             itemNum.isNullOrEmpty() -> {
                 upbCreateMaterialListener?.onFailure("Masukkan material yang diperlukan")
             }
@@ -67,7 +63,7 @@ class TambahMaterialViewModel(
                     jumlah,
                     idPermintaan,
                     lineType,
-                    path
+                    path ?: ""
                 )
             }
         }

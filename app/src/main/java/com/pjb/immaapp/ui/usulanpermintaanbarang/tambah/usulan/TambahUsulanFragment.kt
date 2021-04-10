@@ -138,7 +138,7 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
 
 
     override fun onClickUpload(view: View) {
-        this.context?.let { viewModel?.checkField(it, this, token, apiKey, path ?: "-", date, idSdm) }
+        this.context?.let { viewModel?.checkField(it, this, token, apiKey, path, date, idSdm) }
     }
 
     override fun onInitiating() {
@@ -163,6 +163,10 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
     override fun onFailure(message: String) {
         isLoading(false)
         binding?.root?.snackbar(message)
+    }
+
+    private fun uploadUsulanPermintaanWithoutFile() {
+
     }
 
     private fun initiatePermission(context: Context) {

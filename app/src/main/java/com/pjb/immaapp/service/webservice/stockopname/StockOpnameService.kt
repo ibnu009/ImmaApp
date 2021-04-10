@@ -1,4 +1,4 @@
-package com.pjb.immaapp.webservice.stockopname
+package com.pjb.immaapp.service.webservice.stockopname
 
 import com.pjb.immaapp.data.remote.response.ResponseCreateStokOpname
 import com.pjb.immaapp.data.remote.response.ResponseStockOpname
@@ -8,7 +8,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface StockOpnameService {
-    @POST("api/stock-opname/scanner")
+    @POST("/api/stock-opname/scanner")
     @FormUrlEncoded
     fun getStockOpnameResponse(
         @Field("api_key") apiKey: String,
@@ -16,7 +16,7 @@ interface StockOpnameService {
         @Field("barcode")barcode: Int
     ): Observable<ResponseStockOpname>
 
-    @POST("api/stock-opname/create")
+    @POST("/api/stock-opname/create")
     @FormUrlEncoded
     fun postStokOpname(
         @Field("api_key") apiKey: String,

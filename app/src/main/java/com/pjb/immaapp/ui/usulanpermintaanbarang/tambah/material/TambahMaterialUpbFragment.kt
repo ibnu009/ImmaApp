@@ -185,6 +185,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
     private val pickFileImage =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             selectedImageUri = uri
+            imagePath = FIleHelper().getFilePathFromURI(requireContext(), uri)
             binding?.imgMaterialContainer?.setImageURI(selectedImageUri)
         }
 
@@ -223,7 +224,6 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
                     if (p0?.areAllPermissionsGranted() == true) {
                     }
                 }
-
                 override fun onPermissionRationaleShouldBeShown(
                     p0: MutableList<PermissionRequest>?,
                     p1: PermissionToken?

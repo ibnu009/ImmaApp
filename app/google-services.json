@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1043974159496",
+    "project_id": "imma-app",
+    "storage_bucket": "imma-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043974159496:android:935d39b72c0929fd64333d",
+        "android_client_info": {
+          "package_name": "com.pjb.immaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043974159496-v9o05akm3fqnf1al8dch9popk5n85frt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pjb.immaapp",
+            "certificate_hash": "eb33a13cfad7bc04bfa8f21758a24270c38792db"
+          }
+        },
+        {
+          "client_id": "1043974159496-6ndngp4fd61p100ie6e500rlc3upsrrp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWLEzvqdr17CeKZU-U_vpj0Bkzo0eLkdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043974159496-6ndngp4fd61p100ie6e500rlc3upsrrp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

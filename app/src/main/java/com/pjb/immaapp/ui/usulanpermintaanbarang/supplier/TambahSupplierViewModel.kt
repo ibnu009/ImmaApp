@@ -8,12 +8,16 @@ import androidx.paging.PagedList
 import com.pjb.immaapp.data.entity.upb.Supplier
 import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.handler.RabAddSupplierListener
-import com.pjb.immaapp.webservice.RetrofitApp
+import com.pjb.immaapp.service.webservice.RetrofitApp
 import io.reactivex.disposables.CompositeDisposable
 import net.gotev.uploadservice.data.UploadInfo
 import net.gotev.uploadservice.network.ServerResponse
 import net.gotev.uploadservice.observer.request.RequestObserverDelegate
 import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 import java.lang.Exception
 
@@ -23,13 +27,7 @@ class TambahSupplierViewModel(
 ) : ViewModel() {
 
     var harga: String? = null
-    var id_Supplier: Int? = null
-
     var rabAddSupplierListener: RabAddSupplierListener? = null
-
-    fun selectedItem(idSupplier: Int) {
-        id_Supplier = idSupplier
-    }
 
     fun getListSupplier(
         apiKey: String,
@@ -42,35 +40,40 @@ class TambahSupplierViewModel(
         )
     }
 
-    private fun validateRabUpload(
+    fun validateRabUpload(
         context: Context,
         lifecycleOwner: LifecycleOwner,
         apiKey: String,
         token: String,
-        idDetail: Int,
+        idDetail: Int?,
+        idSupplier: Int?,
         path: String?
     ) {
-        Timber.d("Check result : harga : $harga, id_supplier = $id_Supplier")
+        Timber.d("Check result : harga : $harga, id_supplier = $idSupplier")
         when {
             harga.isNullOrEmpty() -> {
-                Timber.e("Error harga, harga : $harga, id")
-                rabAddSupplierListener?.onFailure("Harga tidak valid")
+                rabAddSupplierListener?.onFailure("Masukkan Harga")
             }
-            path.isNullOrEmpty() -> {
-                rabAddSupplierListener?.onFailure("File wajib di upload")
-            }
-            id_Supplier.toString().isNullOrEmpty() -> {
+            idSupplier == null -> {
                 rabAddSupplierListener?.onFailure("Pilih Supplier terlebih dahulu")
             }
+            idDetail == null -> {
+                rabAddSupplierListener?.onFailure("Terjadi Error")
+            }
+            path.isNullOrEmpty() -> {
+                uploadSupplier(
+                    context, lifecycleOwner, apiKey, token, idSupplier, idDetail, harga
+                )
+            }
             else -> {
-                uploadMaterial(
-                    context, lifecycleOwner, apiKey, token, id_Supplier, idDetail, harga, path
+                uploadSupplerWithImage(
+                    context, lifecycleOwner, apiKey, token, idSupplier, idDetail, harga, path?:""
                 )
             }
         }
     }
 
-    private fun uploadMaterial(
+    private fun uploadSupplerWithImage(
         context: Context,
         lifecycleOwner: LifecycleOwner,
         apiKey: String,
@@ -85,13 +88,13 @@ class TambahSupplierViewModel(
             Timber.d("Initiating upload with path : $path")
             MultipartUploadRequest(context, RetrofitApp.UPLOAD_RAB_SUPPLIER)
                 .setMethod("POST")
+                .addParameter("api_key", apiKey)
+                .addParameter("token", token)
                 .addParameter("vendor", vendor.toString())
                 .addParameter("id_detail", idDetail.toString())
                 .addParameter("harga", harga.toString())
-                .addParameter("api_key", apiKey)
-                .addParameter("token", token)
+                .addFileToUpload(path, "file")
                 .setMaxRetries(2)
-                .addFileToUpload(path, "docx", contentType = "doc/")
                 .subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object :
                     RequestObserverDelegate {
                     override fun onCompleted(context: Context, uploadInfo: UploadInfo) {
@@ -122,6 +125,67 @@ class TambahSupplierViewModel(
                         serverResponse: ServerResponse
                     ) {
                         Timber.d("RAB sudah terupload $uploadInfo, \n ${serverResponse.bodyString}")
+                        rabAddSupplierListener?.onSuccess("Upload Berhasil!")
+                    }
+
+                })
+        } catch (ex: Exception) {
+            Timber.d("Cause error : ${ex.message}")
+            rabAddSupplierListener?.onFailure("Mohon maaf sedang ada trouble")
+        }
+    }
+
+    private fun uploadSupplier(
+        context: Context,
+        lifecycleOwner: LifecycleOwner,
+        apiKey: String,
+        token: String,
+        vendor: Int?,
+        idDetail: Int,
+        harga: String?
+    ) {
+        try {
+            Timber.d("Initiating upload with param : token $token, apiKey : $apiKey, idSupplier: $vendor, idDetail : $idDetail, harga: $harga")
+            MultipartUploadRequest(context, RetrofitApp.UPLOAD_RAB_SUPPLIER)
+                .setMethod("POST")
+                .addParameter("api_key", apiKey)
+                .addParameter("token", token)
+                .addParameter("vendor", vendor.toString())
+                .addParameter("id_detail", idDetail.toString())
+                .addParameter("harga", harga.toString())
+                .setMaxRetries(2)
+                .addFileToUpload(" ","file","","")
+                .subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object :
+                    RequestObserverDelegate {
+                    override fun onCompleted(context: Context, uploadInfo: UploadInfo) {
+                        Timber.d("RAB Supplier sudah $uploadInfo")
+                    }
+
+                    override fun onCompletedWhileNotObserving() {
+                        Timber.d("RAB complete while not observing")
+                    }
+
+                    override fun onError(
+                        context: Context,
+                        uploadInfo: UploadInfo,
+                        exception: Throwable
+                    ) {
+                        exception.stackTrace
+                        rabAddSupplierListener?.onFailure("Mohon maaf sedang ada gangguan")
+                    }
+
+                    override fun onProgress(context: Context, uploadInfo: UploadInfo) {
+                        Timber.d("RAB Supplier sedang diupload")
+                        rabAddSupplierListener?.onInitiating()
+                    }
+
+                    override fun onSuccess(
+                        context: Context,
+                        uploadInfo: UploadInfo,
+                        serverResponse: ServerResponse
+                    ) {
+                        Timber.d("RAB sudah terupload $uploadInfo, \n ${serverResponse.bodyString}")
+                        rabAddSupplierListener?.onSuccess("Success!")
                     }
 
                 })

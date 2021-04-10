@@ -4,10 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.pjb.immaapp.data.entity.upb.ItemPermintaanBarang
 import com.pjb.immaapp.utils.NetworkState
-import com.pjb.immaapp.webservice.RetrofitApp
-import com.pjb.immaapp.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
-import com.pjb.immaapp.webservice.usulan.UsulanPermintaanBarangService
-import io.reactivex.Scheduler
+import com.pjb.immaapp.service.webservice.RetrofitApp
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
+import com.pjb.immaapp.service.webservice.usulan.UsulanPermintaanBarangService
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber

@@ -46,6 +46,7 @@ class BaseApplication : Application() {
             context = this,
             defaultNotificationChannel = notificationChannelID,
             debug = BuildConfig.DEBUG
+
         )
         UploadServiceConfig.httpStack = getOkHttpClient()?.let { OkHttpStack(it) }!!
 //        jika file yang upload terlalu besar maka besarkan menitnya
