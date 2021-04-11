@@ -8,6 +8,7 @@ import com.pjb.immaapp.data.entity.stockopname.StockOpname
 import com.pjb.immaapp.data.repository.DataStokOpnameRepository
 import com.pjb.immaapp.handler.UpbCreateMaterialListener
 import com.pjb.immaapp.service.webservice.RetrofitApp
+import com.pjb.immaapp.utils.UploadListener
 import io.reactivex.disposables.CompositeDisposable
 import net.gotev.uploadservice.data.UploadInfo
 import net.gotev.uploadservice.network.ServerResponse
@@ -30,7 +31,12 @@ class TambahMaterialViewModel(
         token: String,
         itemNum: Int
     ): LiveData<StockOpname> {
-        return dataStokOpnameRepository.requestGetDataStockOpname(compositeDisposable, apiKey, token, itemNum)
+        return dataStokOpnameRepository.requestGetDataStockOpname(
+            compositeDisposable,
+            apiKey,
+            token,
+            itemNum
+        )
     }
 
     fun validateMaterialUpload(
@@ -52,6 +58,27 @@ class TambahMaterialViewModel(
             itemNum.isNullOrEmpty() -> {
                 upbCreateMaterialListener?.onFailure("Masukkan material yang diperlukan")
             }
+            path.isNullOrEmpty() -> {
+                upbCreateMaterialListener?.onInitiating()
+                dataStokOpnameRepository.uploadMaterialWithoutImage(
+                    compositeDisposable,
+                    apiKey,
+                    token,
+                    itemNum,
+                    catatan ?: "-",
+                    jumlah ?: "0",
+                    idPermintaan.toString(),
+                    lineType.toString(),
+                    object : UploadListener{
+                        override fun onSuccess(message: String) {
+                            upbCreateMaterialListener?.onSuccess(message)
+                        }
+                        override fun onError(message: String) {
+                            upbCreateMaterialListener?.onFailure(message)
+                        }
+                    }
+                )
+            }
             else -> {
                 uploadMaterial(
                     context,
@@ -63,7 +90,7 @@ class TambahMaterialViewModel(
                     jumlah,
                     idPermintaan,
                     lineType,
-                    path ?: ""
+                    path
                 )
             }
         }

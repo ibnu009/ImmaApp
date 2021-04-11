@@ -7,13 +7,19 @@ import com.pjb.immaapp.data.remote.response.ResponseCreateStokOpname
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.global.ImmaEventHandler
 import com.pjb.immaapp.service.webservice.RetrofitApp
+import com.pjb.immaapp.utils.ConverterHelper
+import com.pjb.immaapp.utils.UploadListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 
 class DataStokOpnameRepository {
     private val apiService = RetrofitApp.getStockOpnameService()
+    private val uploadService = RetrofitApp.getUploadService()
     val networkState = ImmaEventHandler<NetworkState>()
     lateinit var message: String
 
@@ -43,8 +49,8 @@ class DataStokOpnameRepository {
                 }
                 .subscribe(
                     {
-                            resultData.postValue(it[0])
-                            networkState.postValue(NetworkState.LOADED)
+                        resultData.postValue(it[0])
+                        networkState.postValue(NetworkState.LOADED)
                     }, {
                         Timber.e(it)
                         networkState.postValue(NetworkState.ERROR)
@@ -85,6 +91,50 @@ class DataStokOpnameRepository {
                 )
         )
         return resultUser
+    }
+
+    fun uploadMaterialWithoutImage(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String,
+        itemNum: String,
+        notes: String,
+        qty: String,
+        idPermintaan: String,
+        lineType: String,
+        status: UploadListener
+    ) {
+
+        val mToken = token.toRequestBody(MultipartBody.FORM)
+        val mApiKey = apiKey.toRequestBody(MultipartBody.FORM)
+        val mItemNum = itemNum.toRequestBody(MultipartBody.FORM)
+        val mNotes = notes.toRequestBody(MultipartBody.FORM)
+        val mQuantity = qty.toRequestBody(MultipartBody.FORM)
+        val mIdPermintaan = idPermintaan.toRequestBody(MultipartBody.FORM)
+        val mLineType = lineType.toRequestBody(MultipartBody.FORM)
+
+        val fileBody = "".toRequestBody("image/png".toMediaTypeOrNull())
+        val mFile = MultipartBody.Part.createFormData("img", "", fileBody)
+
+        compositeDisposable.add(
+            uploadService.uploadMaterial(
+                token = mToken,
+                apiKey = mApiKey,
+                itemNum = mItemNum,
+                notes = mNotes,
+                qty = mQuantity,
+                idPermintaan = mIdPermintaan,
+                lineType = mLineType,
+                img = mFile)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                        status.onSuccess(it.message)
+                },{
+                    val message = ConverterHelper().convertExceptionToMessage(it)
+                    status.onError(message)
+                })
+        )
     }
 
 }

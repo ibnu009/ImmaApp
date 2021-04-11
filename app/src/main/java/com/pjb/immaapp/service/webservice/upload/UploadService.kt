@@ -1,6 +1,7 @@
 package com.pjb.immaapp.service.webservice.upload
 
 import com.pjb.immaapp.data.remote.response.ResponseUpload
+import com.pjb.immaapp.data.remote.response.ResponseUploadUsulan
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -20,8 +21,8 @@ interface UploadService {
         @Part("notes") notes: RequestBody,
         @Part("critical") critical: RequestBody,
         @Part("id_sdm") idSdm: RequestBody,
-        @Part("file") file: MultipartBody.Part
-    ): Observable<ResponseUpload>
+        @Part file: MultipartBody.Part
+    ): Observable<ResponseUploadUsulan>
 
     @Multipart
     @POST("/api/fpb/create-material")
@@ -33,7 +34,7 @@ interface UploadService {
         @Part("qty") qty: RequestBody,
         @Part("id_permintaan") idPermintaan: RequestBody,
         @Part("linetype") lineType: RequestBody,
-        @Part("img") path: MultipartBody.Part
+        @Part img: MultipartBody.Part
     ): Observable<ResponseUpload>
 
     @Multipart
@@ -44,7 +45,7 @@ interface UploadService {
         @Part("vendor") vendor: RequestBody,
         @Part("id_detail") idDetail: RequestBody,
         @Part("harga") harga: RequestBody,
-        @Part("file") file: MultipartBody.Part
+        @Part file: MultipartBody.Part
     ): Observable<ResponseUpload>
 
 }

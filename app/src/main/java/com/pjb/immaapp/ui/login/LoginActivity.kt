@@ -17,6 +17,7 @@ import com.pjb.immaapp.utils.*
 import com.pjb.immaapp.utils.NetworkState.Companion.USERNOTFOUND
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.BAD_GATEAWAY
+import com.pjb.immaapp.utils.NetworkState.Companion.EXPIRETOKEN
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADING
 import com.pjb.immaapp.utils.NetworkState.Companion.UNKNOWN
@@ -103,6 +104,7 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
                 LOADED -> {
                     isLoading(false)
                 }
+//                HTTP Error
                 else -> {
                     ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
                 }

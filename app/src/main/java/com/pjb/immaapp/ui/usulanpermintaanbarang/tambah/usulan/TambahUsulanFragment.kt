@@ -165,10 +165,6 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
         binding?.root?.snackbar(message)
     }
 
-    private fun uploadUsulanPermintaanWithoutFile() {
-
-    }
-
     private fun initiatePermission(context: Context) {
         Dexter.withContext(context)
             .withPermissions(

@@ -8,6 +8,7 @@ enum class Status {
     EXPIRETOKEN,
     FORBIDDEN,
     BAD_GATEAWAY,
+    CONFLICT,
     NOT_FOUND,
     UNKNOWN
 }
@@ -21,6 +22,7 @@ class NetworkState(val status: Status) {
         val USERNOTFOUND: NetworkState = NetworkState(Status.UNAUTHORISED)
         val FAILEDTOADD: NetworkState = NetworkState(Status.FAILED)
         val EMPTYDATA: NetworkState = NetworkState(Status.FAILED)
+        val CONFLICT: NetworkState = NetworkState(Status.CONFLICT)
         val EXPIRETOKEN: NetworkState = NetworkState(Status.EXPIRETOKEN)
         val FORBIDDEN: NetworkState = NetworkState(Status.FORBIDDEN)
         val UNKNOWN: NetworkState = NetworkState(Status.UNKNOWN)

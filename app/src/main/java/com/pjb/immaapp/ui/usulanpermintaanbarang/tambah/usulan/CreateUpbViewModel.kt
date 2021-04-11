@@ -3,8 +3,11 @@ package com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.handler.UpbFileUploadListener
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.UPLOAD_URL
+import com.pjb.immaapp.utils.UploadListener
+import com.pjb.immaapp.utils.UploadUsulanListener
 import io.reactivex.disposables.CompositeDisposable
 import net.gotev.uploadservice.data.UploadInfo
 import net.gotev.uploadservice.network.ServerResponse
@@ -14,7 +17,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
 
-class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable) : ViewModel() {
+class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable, private val dataUpbRepository: DataUpbRepository) : ViewModel() {
 
     var description: String? = null
     var notes: String? = null
@@ -45,8 +48,21 @@ class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable) :
             description?.length?:0 < 10 -> {
                 upbFileUploadListener?.onFailure("Deskripsi pekerjaan minimal 10 huruf")
             }
+            path.isNullOrEmpty() -> {
+                upbFileUploadListener?.onInitiating()
+                dataUpbRepository.uploadUsulanPermintaanWithoutFile(compositeDisposable, apiKey, token, requiredDate,
+                    description!!, notes?:"-", critical.toString(), idSdm, object : UploadUsulanListener {
+                        override fun onSuccess(message: String, idPermintaan: Int) {
+                            upbFileUploadListener?.onSuccess(message, idPermintaan)
+                            Timber.d("checking idpermintaan : $idPermintaan")
+                        }
+                        override fun onError(message: String) {
+                            upbFileUploadListener?.onFailure(message)
+                        }
+                    })
+            }
             else -> {
-                uploadFile(context, lifecycleOwner, token, apiKey, path?:"", requiredDate,idSdm)
+                uploadFile(context, lifecycleOwner, token, apiKey, path, requiredDate,idSdm)
             }
         }
     }

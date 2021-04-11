@@ -13,6 +13,8 @@ class GeneralErrorHandler : ErrorHandler {
         return when(throwable) {
 //           no Connection Error
             is IOException -> NetworkState.ERROR
+            
+//            HTTP Error
             is HttpException -> {
                 when(throwable.code()) {
                     // not found
@@ -20,6 +22,9 @@ class GeneralErrorHandler : ErrorHandler {
 
                     // access denied
                     HttpURLConnection.HTTP_FORBIDDEN -> NetworkState(Status.UNAUTHORISED)
+
+                    // HTTP Conflict
+                    HttpURLConnection.HTTP_CONFLICT -> NetworkState(Status.CONFLICT)
 
                     // wrong credential
                     HttpURLConnection.HTTP_UNAUTHORIZED -> NetworkState(Status.UNAUTHORISED)

@@ -61,7 +61,7 @@ class ViewModelFactory(
                 StokOpnameViewModel(dataStokOpnameRepository, compositeDisposable) as T
             }
             modelClass.isAssignableFrom(CreateUpbViewModel::class.java) -> {
-                CreateUpbViewModel(compositeDisposable) as T
+                CreateUpbViewModel(compositeDisposable, dataUpbRepository) as T
             }
             modelClass.isAssignableFrom(DetailMaterialViewModel::class.java) -> {
                 DetailMaterialViewModel(dataUpbRepository, compositeDisposable) as T

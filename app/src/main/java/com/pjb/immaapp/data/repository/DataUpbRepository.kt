@@ -1,22 +1,36 @@
 package com.pjb.immaapp.data.repository
 
+import android.content.ContentResolver
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.*
 import com.pjb.immaapp.data.entity.upb.*
 import com.pjb.immaapp.data.source.usulanpermintaan.*
+import com.pjb.immaapp.service.webservice.RetrofitApp
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
+import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.ERROR
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
+import com.pjb.immaapp.utils.UploadListener
+import com.pjb.immaapp.utils.UploadUsulanListener
 import com.pjb.immaapp.utils.global.ImmaEventHandler
-import com.pjb.immaapp.service.webservice.RetrofitApp
-import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
+import com.pjb.immaapp.utils.global.getFileName
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Retrofit
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.create
+import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
+import java.io.File
+
 
 class DataUpbRepository {
     private val apiService = RetrofitApp.getUpbService()
@@ -59,7 +73,7 @@ class DataUpbRepository {
         return resultDataUpb
     }
 
-//    Module Detail Usulan Permintaan Barang
+    //    Module Detail Usulan Permintaan Barang
     fun requestDataDetailDataUpb(
         compositeDisposable: CompositeDisposable,
         apiKey: String,
@@ -162,7 +176,11 @@ class DataUpbRepository {
     ): LiveData<PagedList<Supplier>> {
         lateinit var resultDataSupplier: LiveData<PagedList<Supplier>>
 
-        supplierDataSourceFactory = SupplierDataSourceFactory(apiService, compositeDisposable, token)
+        supplierDataSourceFactory = SupplierDataSourceFactory(
+            apiService,
+            compositeDisposable,
+            token
+        )
 
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -175,9 +193,84 @@ class DataUpbRepository {
     fun uploadUsulanPermintaanWithoutFile(
         compositeDisposable: CompositeDisposable,
         apiKey: String,
-        token: String
+        token: String,
+        requireDate: String,
+        description: String,
+        notes: String,
+        critical: String,
+        idSdm: String,
+        status: UploadUsulanListener
     ) {
 
+        val mToken = token.toRequestBody(MultipartBody.FORM)
+        val mApiKey = apiKey.toRequestBody(MultipartBody.FORM)
+        val mRequireDate = requireDate.toRequestBody(MultipartBody.FORM)
+        val mDescription = description.toRequestBody(MultipartBody.FORM)
+        val mNotes = notes.toRequestBody(MultipartBody.FORM)
+        val mCritical = critical.toRequestBody(MultipartBody.FORM)
+        val mIdSdm = idSdm.toRequestBody(MultipartBody.FORM)
+
+        val fileBody = "".toRequestBody("text/plain".toMediaTypeOrNull())
+        val mFile = MultipartBody.Part.createFormData("file", "", fileBody)
+
+        compositeDisposable.add(
+            uploadService.uploadUsulan(
+                token = mToken,
+                apiKey = mApiKey,
+                requiredDate = mRequireDate,
+                description = mDescription,
+                notes = mNotes,
+                critical = mCritical,
+                idSdm = mIdSdm,
+                file = mFile
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    Timber.d("test idPermintaan = ${it.data.idPermintaan}")
+                    status.onSuccess(it.message, it.data.idPermintaan)
+                }, {
+                    val message = ConverterHelper().convertExceptionToMessage(it)
+                    status.onError(message)
+                })
+        )
+    }
+
+    fun uploadMaterialWithoutFile(
+        compositeDisposable: CompositeDisposable,
+        apiKey: String,
+        token: String,
+        vendor: String,
+        idDetail: String,
+        harga: String,
+        status: UploadListener
+    ) {
+
+        val mToken = token.toRequestBody(MultipartBody.FORM)
+        val mApiKey = apiKey.toRequestBody(MultipartBody.FORM)
+        val mVendor = vendor.toRequestBody(MultipartBody.FORM)
+        val mIdDetail = idDetail.toRequestBody(MultipartBody.FORM)
+        val mHarga = harga.toRequestBody(MultipartBody.FORM)
+
+        val fileBody = "".toRequestBody("text/plain".toMediaTypeOrNull())
+        val mFile = MultipartBody.Part.createFormData("file", "", fileBody)
+
+        compositeDisposable.add(
+            uploadService.uploadSupplier(
+                token = mToken,
+                apiKey = mApiKey,
+                vendor = mVendor,
+                idDetail = mIdDetail,
+                harga = mHarga,
+                file = mFile
+            ).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe({
+                    status.onSuccess(it.message)
+                },{
+                    val message = ConverterHelper().convertExceptionToMessage(it)
+                    status.onError(message)
+                })
+        )
     }
 
     fun getNetworkState(): LiveData<NetworkState> {

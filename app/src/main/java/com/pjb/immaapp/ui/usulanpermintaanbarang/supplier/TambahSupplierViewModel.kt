@@ -9,6 +9,7 @@ import com.pjb.immaapp.data.entity.upb.Supplier
 import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.handler.RabAddSupplierListener
 import com.pjb.immaapp.service.webservice.RetrofitApp
+import com.pjb.immaapp.utils.UploadListener
 import io.reactivex.disposables.CompositeDisposable
 import net.gotev.uploadservice.data.UploadInfo
 import net.gotev.uploadservice.network.ServerResponse
@@ -61,13 +62,28 @@ class TambahSupplierViewModel(
                 rabAddSupplierListener?.onFailure("Terjadi Error")
             }
             path.isNullOrEmpty() -> {
-                uploadSupplier(
-                    context, lifecycleOwner, apiKey, token, idSupplier, idDetail, harga
-                )
+                rabAddSupplierListener?.onInitiating()
+                dataUpbRepository.uploadMaterialWithoutFile(
+                    compositeDisposable,
+                    apiKey,
+                    token,
+                    idSupplier.toString(),
+                    idDetail.toString(),
+                    harga ?: ")",
+                    object : UploadListener {
+                        override fun onSuccess(message: String) {
+                            rabAddSupplierListener?.onSuccess(message)
+                        }
+
+                        override fun onError(message: String) {
+                           rabAddSupplierListener?.onFailure(message)
+                        }
+
+                    })
             }
             else -> {
                 uploadSupplerWithImage(
-                    context, lifecycleOwner, apiKey, token, idSupplier, idDetail, harga, path?:""
+                    context, lifecycleOwner, apiKey, token, idSupplier, idDetail, harga, path ?: ""
                 )
             }
         }
@@ -154,7 +170,7 @@ class TambahSupplierViewModel(
                 .addParameter("id_detail", idDetail.toString())
                 .addParameter("harga", harga.toString())
                 .setMaxRetries(2)
-                .addFileToUpload(" ","file","","")
+                .addFileToUpload(" ", "file", "", "")
                 .subscribe(context = context, lifecycleOwner = lifecycleOwner, delegate = object :
                     RequestObserverDelegate {
                     override fun onCompleted(context: Context, uploadInfo: UploadInfo) {

@@ -24,10 +24,4 @@ open class ImmaEventHandler <T> : MutableLiveData<T>(){
         super.setValue(t)
     }
 
-    /**
-     * Util function for Void implementations.
-     */
-    fun call() {
-        value = null
-    }
 }
