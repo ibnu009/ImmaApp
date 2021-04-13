@@ -1,12 +1,10 @@
 package com.pjb.immaapp.data.repository
 
-import android.content.ContentResolver
-import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.*
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.pjb.immaapp.data.entity.upb.*
 import com.pjb.immaapp.data.source.usulanpermintaan.*
 import com.pjb.immaapp.service.webservice.RetrofitApp
@@ -18,18 +16,14 @@ import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
 import com.pjb.immaapp.utils.UploadListener
 import com.pjb.immaapp.utils.UploadUsulanListener
 import com.pjb.immaapp.utils.global.ImmaEventHandler
-import com.pjb.immaapp.utils.global.getFileName
+import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.create
 import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
-import java.io.File
 
 
 class DataUpbRepository {
@@ -73,7 +67,7 @@ class DataUpbRepository {
         return resultDataUpb
     }
 
-    //    Module Detail Usulan Permintaan Barang
+//    Module Detail Usulan Permintaan Barang
     fun requestDataDetailDataUpb(
         compositeDisposable: CompositeDisposable,
         apiKey: String,
@@ -95,7 +89,8 @@ class DataUpbRepository {
                     networkState.postValue(LOADED)
                 }, {
                     Timber.e(it)
-                    networkState.postValue(ERROR)
+                    val error = GeneralErrorHandler().getError(it)
+                    networkState.postValue(error)
                 }
             ))
         return resultDetailUpb
@@ -140,6 +135,8 @@ class DataUpbRepository {
                 }, {
                     networkState.postValue(ERROR)
                     Timber.e(it)
+                    val error = GeneralErrorHandler().getError(it)
+                    networkState.postValue(error)
                 }
             ))
         return resultDetailMaterial
@@ -162,8 +159,9 @@ class DataUpbRepository {
                     resultCompanyList.postValue(it)
                     networkState.postValue(LOADED)
                 }, {
-                    networkState.postValue(ERROR)
-                    Timber.e(it)
+                    Timber.e("Cek error : $it")
+                    val error = GeneralErrorHandler().getError(it)
+                    networkState.postValue(error)
                 }
             ))
         return resultCompanyList
@@ -270,6 +268,13 @@ class DataUpbRepository {
                     val message = ConverterHelper().convertExceptionToMessage(it)
                     status.onError(message)
                 })
+        )
+    }
+
+    fun getSupplierNetworkState(): LiveData<NetworkState> {
+        return Transformations.switchMap(
+            supplierDataSourceFactory.supplierLiveDataSource,
+            SupplierDataSource::networkState
         )
     }
 

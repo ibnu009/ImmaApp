@@ -23,7 +23,6 @@ class LoginViewModel(
         return singleEvent
     }
 
-
     var authListener: AuthListener? = null
 
     fun logInAndStoreResult() {

@@ -19,8 +19,10 @@ import com.pjb.immaapp.handler.OnClickedActionDataSupplier
 import com.pjb.immaapp.handler.RabAddSupplierListener
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.SupplierPagedListAdapter
+import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.global.ViewModelFactory
+import com.pjb.immaapp.utils.global.tokenExpired
 import timber.log.Timber
 
 class ListSupplierFragment : Fragment() {
@@ -75,6 +77,13 @@ class ListSupplierFragment : Fragment() {
         viewModel?.getListSupplier(apiKey, token)?.observe(viewLifecycleOwner, Observer {
             supplierAdapter.submitList(it)
         })
+        viewModel?.networkState?.observe(viewLifecycleOwner, Observer { network ->
+            when(network) {
+                NetworkState.LOADING -> isLoading(true)
+                NetworkState.LOADED -> isLoading(false)
+                NetworkState.EXPIRETOKEN -> context?.tokenExpired()?.show()
+            }
+        })
     }
 
     private fun initiateKeys() {
@@ -84,6 +93,16 @@ class ListSupplierFragment : Fragment() {
             ?: "Shared Preference Not Found"
         token = sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
             ?: "Shared Preference Not Found"
+    }
+
+    private fun isLoading(status: Boolean) {
+        if (!status) {
+            binding?.shimmerViewContainer?.visibility = View.GONE
+            binding?.shimmerViewContainer?.stopShimmer()
+        } else {
+            binding?.shimmerViewContainer?.visibility = View.VISIBLE
+            binding?.shimmerViewContainer?.startShimmer()
+        }
     }
 
 }

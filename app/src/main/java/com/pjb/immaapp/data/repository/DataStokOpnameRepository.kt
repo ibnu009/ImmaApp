@@ -9,6 +9,7 @@ import com.pjb.immaapp.utils.global.ImmaEventHandler
 import com.pjb.immaapp.service.webservice.RetrofitApp
 import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.UploadListener
+import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -53,7 +54,8 @@ class DataStokOpnameRepository {
                         networkState.postValue(NetworkState.LOADED)
                     }, {
                         Timber.e(it)
-                        networkState.postValue(NetworkState.ERROR)
+                        val error = GeneralErrorHandler().getError(it)
+                        networkState.postValue(error)
                     }
                 ))
         return resultData
@@ -87,6 +89,8 @@ class DataStokOpnameRepository {
                         }
                     }, {
                         Timber.e("$it")
+                        val error = GeneralErrorHandler().getError(it)
+                        networkState.postValue(error)
                     }
                 )
         )

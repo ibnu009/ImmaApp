@@ -20,6 +20,8 @@ import com.pjb.immaapp.utils.PoMapper
 import com.pjb.immaapp.utils.rq.SearchQuery
 import com.pjb.immaapp.service.webservice.RetrofitApp
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
+import com.pjb.immaapp.utils.global.ImmaEventHandler
+import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -33,7 +35,7 @@ class DataPoRepository(
     private lateinit var poDataSourceFactory: PoDataSourceFactory
     private lateinit var poItemDataSourceFactory: PoItemDataSourceFactory
 
-    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+    val networkState: ImmaEventHandler<NetworkState> = ImmaEventHandler()
 
     private lateinit var mediator: DataPoMediator
 
@@ -86,6 +88,8 @@ class DataPoRepository(
                     }
                 }, {
                     Timber.e("Error : $it")
+                    val error = GeneralErrorHandler().getError(it)
+                    networkState.postValue(error)
                 }
             ))
 

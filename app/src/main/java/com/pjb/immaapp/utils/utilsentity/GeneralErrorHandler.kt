@@ -6,7 +6,6 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.net.HttpURLConnection
 
-
 class GeneralErrorHandler : ErrorHandler {
 
     override fun getError(throwable: Throwable): NetworkState {

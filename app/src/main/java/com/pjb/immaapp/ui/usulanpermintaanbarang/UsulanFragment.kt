@@ -1,6 +1,8 @@
 package com.pjb.immaapp.ui.usulanpermintaanbarang
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,11 +19,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentUsulanBinding
 import com.pjb.immaapp.handler.OnClickedActionDataUpb
+import com.pjb.immaapp.ui.login.LoginActivity
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataUpbPagedListAdapter
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.global.ViewModelFactory
+import com.pjb.immaapp.utils.global.tokenExpired
 import timber.log.Timber
 
 class UsulanFragment : Fragment() {
@@ -110,6 +114,7 @@ class UsulanFragment : Fragment() {
             })
 
         upbViewModel?.networkState?.observe(viewLifecycleOwner, Observer { network ->
+            Timber.d("Check result : ${network.status}")
             when (network) {
                 NetworkState.LOADING -> {
                     binding?.shimmerViewContainer?.visibility = View.VISIBLE
@@ -118,6 +123,9 @@ class UsulanFragment : Fragment() {
                 NetworkState.LOADED -> {
                     binding?.shimmerViewContainer?.stopShimmer()
                     binding?.shimmerViewContainer?.visibility = View.GONE
+                }
+                NetworkState.EXPIRETOKEN-> {
+                    context?.tokenExpired()?.show()
                 }
                 else -> {
                     Timber.e("Unknown Error")

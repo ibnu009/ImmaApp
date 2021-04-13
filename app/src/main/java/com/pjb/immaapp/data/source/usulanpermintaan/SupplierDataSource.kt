@@ -8,6 +8,8 @@ import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.API_KEY
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.FIRST_PAGE
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import com.pjb.immaapp.service.webservice.usulan.UsulanPermintaanBarangService
+import com.pjb.immaapp.utils.global.ImmaEventHandler
+import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -22,7 +24,7 @@ class SupplierDataSource(
     private val page = FIRST_PAGE
     private val apiKey = API_KEY.toString()
 
-    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+    val networkState: ImmaEventHandler<NetworkState> = ImmaEventHandler()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -42,7 +44,8 @@ class SupplierDataSource(
                     }
                 } , {
                     Timber.e("Error $it")
-                    networkState.postValue(NetworkState.ERROR)
+                    val error = GeneralErrorHandler().getError(it)
+                    networkState.postValue(error)
                 }
             )
         )
@@ -68,7 +71,8 @@ class SupplierDataSource(
                     }
                 }, {
                     Timber.e("Error $it")
-                    networkState.postValue(NetworkState.ERROR)
+                    val error = GeneralErrorHandler().getError(it)
+                    networkState.postValue(error)
                 }
             )
         )

@@ -21,8 +21,10 @@ import com.pjb.immaapp.databinding.FragmentDetailMaterialBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.CompanyListAdapter
 import com.pjb.immaapp.ui.usulanpermintaanbarang.handler.OnItemCompanyClick
 import com.pjb.immaapp.utils.ConverterHelper
+import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.global.ViewModelFactory
+import com.pjb.immaapp.utils.global.tokenExpired
 
 class DetailMaterialFragment : Fragment() {
 
@@ -117,6 +119,13 @@ class DetailMaterialFragment : Fragment() {
                 binding?.txRab?.text = this.getString(R.string.anggaran_po, rabPrice)
                 binding?.txLastPo?.text = it.lastPo
             })
+        viewModel?.networkState?.observe(viewLifecycleOwner, Observer { network ->
+            when(network) {
+                NetworkState.EXPIRETOKEN -> {
+                    context?.tokenExpired()?.show()
+                }
+            }
+        })
     }
 
 

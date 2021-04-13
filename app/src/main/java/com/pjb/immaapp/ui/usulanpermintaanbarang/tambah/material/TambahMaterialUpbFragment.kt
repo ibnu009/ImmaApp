@@ -167,8 +167,8 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
                 binding?.edtSatuan?.text = it.satuan
             })
 
-            viewModel?.networkState?.observe(this, Observer {
-               Timber.e("CheckError network ${it.status}")
+            viewModel?.networkState?.observe(this, Observer {   network ->
+                Timber.e("CheckError network ${network.status}")
             })
 
             mBuilder.dismiss()
@@ -224,6 +224,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
                     if (p0?.areAllPermissionsGranted() == true) {
                     }
                 }
+
                 override fun onPermissionRationaleShouldBeShown(
                     p0: MutableList<PermissionRequest>?,
                     p1: PermissionToken?

@@ -27,6 +27,7 @@ import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
 import com.pjb.immaapp.utils.global.ViewModelFactory
+import com.pjb.immaapp.utils.global.tokenExpired
 import timber.log.Timber
 
 
@@ -136,13 +137,19 @@ class DetailUsulanFragment : Fragment() {
             })
 
         upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
-            if (it == NetworkState.LOADING) {
-                binding?.shimmerViewContainerDetailUpb?.startShimmer()
-            } else if (it == NetworkState.LOADED) {
-                binding?.shimmerViewContainerDetailUpb?.stopShimmer()
-                binding?.shimmerViewContainerDetailUpb?.visibility = View.GONE
-                binding?.layoutKeteranganUpb?.visibility = View.VISIBLE
-                binding?.txTitleDaftarMaterial?.visibility = View.VISIBLE
+            when (it) {
+                NetworkState.LOADING -> {
+                    binding?.shimmerViewContainerDetailUpb?.startShimmer()
+                }
+                NetworkState.LOADED -> {
+                    binding?.shimmerViewContainerDetailUpb?.stopShimmer()
+                    binding?.shimmerViewContainerDetailUpb?.visibility = View.GONE
+                    binding?.layoutKeteranganUpb?.visibility = View.VISIBLE
+                    binding?.txTitleDaftarMaterial?.visibility = View.VISIBLE
+                }
+                NetworkState.EXPIRETOKEN -> {
+                    context?.tokenExpired()?.show()
+                }
             }
         })
     }

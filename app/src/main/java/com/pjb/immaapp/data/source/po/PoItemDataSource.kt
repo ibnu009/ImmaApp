@@ -7,6 +7,8 @@ import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.service.webservice.RetrofitApp
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import com.pjb.immaapp.service.webservice.po.PurchaseOrderService
+import com.pjb.immaapp.utils.global.ImmaEventHandler
+import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -21,7 +23,7 @@ class   PoItemDataSource(
 
     private val apiKey = RetrofitApp.API_KEY.toString()
 
-    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+    val networkState: ImmaEventHandler<NetworkState> = ImmaEventHandler()
 
     override fun loadInitial(
         params: PageKeyedDataSource.LoadInitialParams<Int>,
@@ -46,7 +48,8 @@ class   PoItemDataSource(
                     }
                 }, {
                     Timber.e("Error $it")
-                    networkState.postValue(NetworkState.ERROR)
+                    val error = GeneralErrorHandler().getError(it)
+                    networkState.postValue(error)
                 }
             )
         )
@@ -86,7 +89,8 @@ class   PoItemDataSource(
                         }
                     }, {
                         Timber.e("Error $it")
-                        networkState.postValue(NetworkState.ERROR)
+                        val error = GeneralErrorHandler().getError(it)
+                        networkState.postValue(error)
                     }
                 )
         )

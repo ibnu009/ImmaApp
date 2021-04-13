@@ -9,6 +9,8 @@ import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.API_KEY
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.FIRST_PAGE
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
 import com.pjb.immaapp.service.webservice.po.PurchaseOrderService
+import com.pjb.immaapp.utils.global.ImmaEventHandler
+import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -19,12 +21,12 @@ class PoDataSource(
     private val compositeDisposable: CompositeDisposable,
     private val token: String,
     private val keyword: String?
-): PageKeyedDataSource<Int, PurchaseOrder>() {
+) : PageKeyedDataSource<Int, PurchaseOrder>() {
 
     private val page = FIRST_PAGE
     private val apiKey = API_KEY.toString()
 
-    val networkState: MutableLiveData<NetworkState> = MutableLiveData()
+    val networkState: ImmaEventHandler<NetworkState> = ImmaEventHandler()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -41,7 +43,7 @@ class PoDataSource(
                     if (it.data.size < RetrofitApp.ITEM_PER_PAGE) {
                         callback.onResult(it.data, null, null)
                         networkState.postValue(NetworkState.LOADED)
-                    }else{
+                    } else {
                         callback.onResult(it.data, null, page + 1)
                         networkState.postValue(NetworkState.LOADED)
                         Timber.d("Data Size adalah : ${it.data.size}")
@@ -49,7 +51,8 @@ class PoDataSource(
                     }
                 }, {
                     Timber.e("Error $it")
-                    networkState.postValue(NetworkState.ERROR)
+                    val error = GeneralErrorHandler().getError(it)
+                    networkState.postValue(error)
                 }
             )
         )
@@ -66,26 +69,29 @@ class PoDataSource(
             apiService.requestListPurchaseOrder(
                 apiKey = apiKey,
                 token = token,
-                keywords = keyword)
-                .subscribeOn(
-                Schedulers.io())
-                .subscribe(
-                {
-                    if (it.data.size < ITEM_PER_PAGE) {
-                        Timber.d("Data Size adalah : ${it.data.size}")
-                        callback.onResult(it.data, null)
-                        networkState.postValue(NetworkState.LOADED)
-                    } else{
-                        Timber.d("Data Size adalah : ${it.data.size}")
-                        val emptyList = Collections.emptyList<PurchaseOrder>()
-                        callback.onResult(emptyList, params.key + 1)
-                        networkState.postValue(NetworkState.LOADED)
-                    }
-                }, {
-                    Timber.e("Error $it")
-                    networkState.postValue(NetworkState.ERROR)
-                }
+                keywords = keyword
             )
+                .subscribeOn(
+                    Schedulers.io()
+                )
+                .subscribe(
+                    {
+                        if (it.data.size < ITEM_PER_PAGE) {
+                            Timber.d("Data Size adalah : ${it.data.size}")
+                            callback.onResult(it.data, null)
+                            networkState.postValue(NetworkState.LOADED)
+                        } else {
+                            Timber.d("Data Size adalah : ${it.data.size}")
+                            val emptyList = Collections.emptyList<PurchaseOrder>()
+                            callback.onResult(emptyList, params.key + 1)
+                            networkState.postValue(NetworkState.LOADED)
+                        }
+                    }, {
+                        Timber.e("Error $it")
+                        val error = GeneralErrorHandler().getError(it)
+                        networkState.postValue(error)
+                    }
+                )
         )
     }
 }

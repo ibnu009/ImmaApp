@@ -2,16 +2,57 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.usulanpermintaanbarang.supplier.ListSupplierFragment">
 
+        <include
+            layout="@layout/custom_toolbar"
+            android:id="@+id/custom_toolbar_list_supplier"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_supplier"
+            android:layout_below="@id/custom_toolbar_list_supplier"
             tools:listitem="@layout/supplier_list_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </LinearLayout>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_below="@id/custom_toolbar_list_supplier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include
+                    layout="@layout/shimmer_placeholder"/>
+
+                <include
+                    layout="@layout/shimmer_placeholder"/>
+
+                <include
+                    layout="@layout/shimmer_placeholder"/>
+
+                <include
+                    layout="@layout/shimmer_placeholder"/>
+
+                <include
+                    layout="@layout/shimmer_placeholder"/>
+
+                <include
+                    layout="@layout/shimmer_placeholder"/>
+
+                <include
+                    layout="@layout/shimmer_placeholder"/>
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+    </RelativeLayout>
 </layout>

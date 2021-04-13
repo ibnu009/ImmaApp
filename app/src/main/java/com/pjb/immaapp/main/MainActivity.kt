@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         initiateToken()
     }
 
-
-
     private fun initiateToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
