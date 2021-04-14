@@ -23,6 +23,7 @@ import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderFragmentDirections
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataItemUpbPagedListAdapter
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.MaterialOnclick
+import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
@@ -53,7 +54,9 @@ class DetailUsulanFragment : Fragment() {
     private val onItemClicked = object : MaterialOnclick {
         override fun onClicked(idDetail: Int) {
             val action =
-                DetailUsulanFragmentDirections.actionDetailUsulanPermintaanBarangFragmentToDetailMaterialFragment(idDetail)
+                DetailUsulanFragmentDirections.actionDetailUsulanPermintaanBarangFragmentToDetailMaterialFragment(
+                    idDetail
+                )
             findNavController().navigate(action)
         }
     }
@@ -136,8 +139,8 @@ class DetailUsulanFragment : Fragment() {
                 binding?.txTanggalPermohonan?.text = it.tanggalPermohonan
             })
 
-        upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer {
-            when (it) {
+        upbViewModel?.networkStateDetail?.observe(viewLifecycleOwner, Observer { network ->
+            when (network) {
                 NetworkState.LOADING -> {
                     binding?.shimmerViewContainerDetailUpb?.startShimmer()
                 }
@@ -149,6 +152,9 @@ class DetailUsulanFragment : Fragment() {
                 }
                 NetworkState.EXPIRETOKEN -> {
                     context?.tokenExpired()?.show()
+                }
+                else -> {
+                    ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
                 }
             }
         })
@@ -176,7 +182,10 @@ class DetailUsulanFragment : Fragment() {
     }
 
     private fun navigateToTambahMaterial(idPermintaan: Int) {
-        val action = DetailUsulanFragmentDirections.actionDetailUsulanPermintaanBarangFragmentToTambahMaterialUpbFragment(idPermintaan)
+        val action =
+            DetailUsulanFragmentDirections.actionDetailUsulanPermintaanBarangFragmentToTambahMaterialUpbFragment(
+                idPermintaan
+            )
         findNavController().navigate(action)
     }
 

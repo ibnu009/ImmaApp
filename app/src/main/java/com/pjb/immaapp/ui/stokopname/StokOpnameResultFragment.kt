@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentOpnameResultBinding
+import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
@@ -177,10 +178,10 @@ class StokOpnameResultFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             })
-        stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, Observer {
-            when (it) {
+        stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, Observer {network ->
+            when (network) {
                 NetworkState.FAILEDTOADD -> {
-                    Toast.makeText(context?.applicationContext, it.toString(), Toast.LENGTH_SHORT)
+                    Toast.makeText(context?.applicationContext, network.toString(), Toast.LENGTH_SHORT)
                         .show()
                     Timber.e("Error")
                 }
@@ -190,6 +191,9 @@ class StokOpnameResultFragment : Fragment() {
                 }
                 NetworkState.LOADING -> {
                     dialog?.show()
+                }
+                else -> {
+                    ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
                 }
             }
         })

@@ -212,7 +212,7 @@ class TambahSupplierViewModel(
     }
 
     val networkState by lazy {
-        dataUpbRepository.networkState
+        dataUpbRepository.getSupplierNetworkState()
     }
 
     override fun onCleared() {

@@ -68,9 +68,17 @@ class DetailMaterialFragment : Fragment() {
         val toolbar = binding?.customToolbarDetailMaterial
         val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
         val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
+        val txCreateRab = toolbar.root.findViewById(R.id.tx_create_rab) as TextView
+
+
         btnBack.setOnClickListener {
             it.findNavController().popBackStack()
         }
+
+        txCreateRab.setOnClickListener {
+            it.findNavController().navigate(R.id.action_detailMaterialFragment_to_approvalRabFragment)
+        }
+
         binding?.fabTambahMaterial?.setOnClickListener {
             val action = DetailMaterialFragmentDirections.actionDetailMaterialFragmentToTambahsSupplierFragment(idDetail)
             it.findNavController().navigate(action)

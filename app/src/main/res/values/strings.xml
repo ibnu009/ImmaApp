@@ -122,6 +122,7 @@
     <string name="baik_tapi_tidak_bisa_dipakai">Baik tapi tidak bisa dipakai</string>
     <string name="rusak_dan_tidak_bisa_diperbaiki">Rusak dan tidak bisa diperbaiki</string>
     <string name="tambah_supplier">Tambah Supplier</string>
+    <string name="approval_rab">Approval RAB</string>
 
     <string-array name="kondisi_barang">
         <item>@string/baik</item>
@@ -158,4 +159,7 @@
     <string name="foto">Foto</string>
     <string name="pilih_supplier">Pilih Supplier</string>
     <string name="masukkan_harga">Masukkan Harga</string>
+    <string name="create_rab">Create RAB</string>
+    <string name="batal">Batal</string>
+    <string name="masukkan_catatan">Masukkan Catatan</string>
 </resources>

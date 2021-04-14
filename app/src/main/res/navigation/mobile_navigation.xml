@@ -149,6 +149,9 @@
         <action
             android:id="@+id/action_detailMaterialFragment_to_tambahsSupplierFragment"
             app:destination="@id/tambahSupplierFragment" />
+        <action
+            android:id="@+id/action_detailMaterialFragment_to_approvalRabFragment"
+            app:destination="@id/approvalRabFragment" />
     </fragment>
     <fragment
         android:id="@+id/tambahSupplierFragment"
@@ -166,5 +169,9 @@
         android:id="@+id/listSupplierFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.supplier.ListSupplierFragment"
         android:label="ListSupplierFragment" />
+    <fragment
+        android:id="@+id/approvalRabFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.material.ApprovalRabFragment"
+        android:label="ApprovalRabFragment" />
 
 </navigation>

@@ -9,7 +9,7 @@
 
         <include
             android:id="@+id/custom_toolbar_detail_material"
-            layout="@layout/custom_toolbar"/>
+            layout="@layout/custom_toolbar_detail_material"/>
 
         <ScrollView
             android:layout_width="match_parent"

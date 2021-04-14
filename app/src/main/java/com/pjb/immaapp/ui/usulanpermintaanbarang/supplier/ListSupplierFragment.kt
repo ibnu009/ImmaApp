@@ -19,6 +19,7 @@ import com.pjb.immaapp.handler.OnClickedActionDataSupplier
 import com.pjb.immaapp.handler.RabAddSupplierListener
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.SupplierPagedListAdapter
+import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.global.ViewModelFactory
@@ -82,6 +83,7 @@ class ListSupplierFragment : Fragment() {
                 NetworkState.LOADING -> isLoading(true)
                 NetworkState.LOADED -> isLoading(false)
                 NetworkState.EXPIRETOKEN -> context?.tokenExpired()?.show()
+                else -> ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
             }
         })
     }

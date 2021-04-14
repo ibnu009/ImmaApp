@@ -21,6 +21,7 @@ import com.pjb.immaapp.databinding.FragmentUsulanBinding
 import com.pjb.immaapp.handler.OnClickedActionDataUpb
 import com.pjb.immaapp.ui.login.LoginActivity
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.DataUpbPagedListAdapter
+import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey.KEY_TOKEN
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
@@ -128,7 +129,7 @@ class UsulanFragment : Fragment() {
                     context?.tokenExpired()?.show()
                 }
                 else -> {
-                    Timber.e("Unknown Error")
+                    ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
                 }
             }
         })
