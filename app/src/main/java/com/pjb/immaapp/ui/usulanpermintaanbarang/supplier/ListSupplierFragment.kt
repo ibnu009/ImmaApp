@@ -7,25 +7,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pjb.immaapp.databinding.FragmentListSupplierBinding
 import com.pjb.immaapp.handler.OnClickedActionDataSupplier
-import com.pjb.immaapp.handler.RabAddSupplierListener
-import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.SupplierPagedListAdapter
-import com.pjb.immaapp.utils.ConverterHelper
-import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.global.ViewModelFactory
-import com.pjb.immaapp.utils.global.tokenExpired
 import timber.log.Timber
 
+@ExperimentalPagingApi
 class ListSupplierFragment : Fragment() {
 
     private var _fragmentListSupplierBinding: FragmentListSupplierBinding? = null
@@ -64,28 +60,25 @@ class ListSupplierFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         supplierAdapter = SupplierPagedListAdapter(onItemClicked)
-        initiateKeys()
-        initiateRecyclerView()
-        initiateData(apiKey, token)
-    }
-
-    private fun initiateRecyclerView() {
-        binding?.rvSupplier?.layoutManager = LinearLayoutManager(context?.applicationContext)
+        binding?.rvSupplier?.layoutManager = LinearLayoutManager(this.context?.applicationContext, LinearLayoutManager.VERTICAL, false)
         binding?.rvSupplier?.adapter = supplierAdapter
+        initiateKeys()
+        initiateData("12345", token)
     }
 
     private fun initiateData(apiKey: String, token: String) {
         viewModel?.getListSupplier(apiKey, token)?.observe(viewLifecycleOwner, Observer {
-            supplierAdapter.submitList(it)
+            Timber.d("Company list $it")
+            supplierAdapter.submitData(lifecycle, it)
         })
-        viewModel?.networkState?.observe(viewLifecycleOwner, Observer { network ->
-            when(network) {
-                NetworkState.LOADING -> isLoading(true)
-                NetworkState.LOADED -> isLoading(false)
-                NetworkState.EXPIRETOKEN -> context?.tokenExpired()?.show()
-                else -> ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
-            }
-        })
+//        viewModel?.networkState?.observe(viewLifecycleOwner, Observer { network ->
+//            when(network) {
+//                NetworkState.LOADING -> isLoading(true)
+//                NetworkState.LOADED -> isLoading(false)
+//                NetworkState.EXPIRETOKEN -> context?.tokenExpired()?.show()
+//                else -> ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
+//            }
+//        })
     }
 
     private fun initiateKeys() {

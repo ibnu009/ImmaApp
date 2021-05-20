@@ -7,11 +7,9 @@
         <variable
             name="viewModel"
             type="com.pjb.immaapp.ui.login.LoginViewModel" />
-
         <variable
             name="handler"
             type="com.pjb.immaapp.ui.login.LogInHandler" />
-
         <import type="android.text.TextUtils"/>
 
     </data>

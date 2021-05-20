@@ -2,6 +2,7 @@ package com.pjb.immaapp.service.webservice.usulan
 
 import com.pjb.immaapp.data.remote.response.*
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.*
 
 interface UsulanPermintaanBarangService {
@@ -44,5 +45,12 @@ interface UsulanPermintaanBarangService {
         @Field("api_key") apiKey: String,
         @Field("token") token: String
     ): Observable<ResponseSupplier>
+
+    @POST("/api/data/companies")
+    @FormUrlEncoded
+    fun requestDataSupplierSingle(
+        @Field("api_key") apiKey: String,
+        @Field("token") token: String
+    ): Single<ResponseSupplier>
 
 }

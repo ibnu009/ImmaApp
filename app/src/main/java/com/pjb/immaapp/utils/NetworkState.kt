@@ -9,7 +9,7 @@ enum class Status {
     FORBIDDEN,
     BAD_GATEAWAY,
     CONFLICT,
-    NOT_FOUND,
+    SERVER_NOT_FOUND,
     UNKNOWN
 }
 
@@ -27,7 +27,7 @@ class NetworkState(val status: Status) {
         val FORBIDDEN: NetworkState = NetworkState(Status.FORBIDDEN)
         val UNKNOWN: NetworkState = NetworkState(Status.UNKNOWN)
         val BAD_GATEAWAY: NetworkState = NetworkState(Status.BAD_GATEAWAY)
-        val NOT_FOUND: NetworkState = NetworkState(Status.NOT_FOUND)
+        val SERVER_NOT_FOUND: NetworkState = NetworkState(Status.SERVER_NOT_FOUND)
 
     }
 }

@@ -3,9 +3,12 @@ package com.pjb.immaapp.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.*
+import androidx.paging.rxjava2.flowable
+import com.pjb.immaapp.data.entity.local.supplier.Suppliers
 import com.pjb.immaapp.data.entity.upb.*
+import com.pjb.immaapp.data.local.db.ImmaDatabase
+import com.pjb.immaapp.data.mediator.SupplierMediator
 import com.pjb.immaapp.data.source.usulanpermintaan.*
 import com.pjb.immaapp.service.webservice.RetrofitApp
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
@@ -16,7 +19,10 @@ import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
 import com.pjb.immaapp.utils.UploadListener
 import com.pjb.immaapp.utils.UploadUsulanListener
 import com.pjb.immaapp.utils.global.ImmaEventHandler
+import com.pjb.immaapp.utils.mapper.SupplierMapper
+import com.pjb.immaapp.utils.rq.SearchQuery
 import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -26,21 +32,25 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 
 
-class DataUpbRepository {
+class DataUpbRepository(
+    private val database : ImmaDatabase
+) {
     private val apiService = RetrofitApp.getUpbService()
     private val uploadService = RetrofitApp.getUploadService()
     private lateinit var upbDataSourceFactory: UpbDataSourceFactory
     private lateinit var upbItemDataSourceFactory: UpbItemDataSourceFactory
     private lateinit var supplierDataSourceFactory: SupplierDataSourceFactory
 
+    private lateinit var mediator: SupplierMediator
+
     val networkState: ImmaEventHandler<NetworkState> = ImmaEventHandler()
 
     companion object {
         @Volatile
         private var instance: DataUpbRepository? = null
-        fun getInstance(): DataUpbRepository =
+        fun getInstance(database: ImmaDatabase): DataUpbRepository =
             instance ?: synchronized(this) {
-                instance ?: DataUpbRepository()
+                instance ?: DataUpbRepository(database = database)
             }
     }
 
@@ -167,25 +177,51 @@ class DataUpbRepository {
         return resultCompanyList
     }
 
+    @ExperimentalPagingApi
     fun requestListDataSupplier(
-        compositeDisposable: CompositeDisposable,
         apiKey: String,
         token: String
-    ): LiveData<PagedList<Supplier>> {
-        lateinit var resultDataSupplier: LiveData<PagedList<Supplier>>
+    ): Flowable<PagingData<Suppliers.SupplierEntity>> {
+//        lateinit var resultDataSupplier: LiveData<PagedList<Supplier>>
+        mediator = SupplierMediator(database, apiService, SupplierMapper(), apiKey, token)
+        Timber.d("mediator is $mediator")
 
-        supplierDataSourceFactory = SupplierDataSourceFactory(
-            apiService,
-            compositeDisposable,
-            token
-        )
+        return Pager(
+                config = PagingConfig(
+                    pageSize = 18,
+                    enablePlaceholders = true,
+                ),
+                remoteMediator = mediator,
+                pagingSourceFactory = {
+                    database.getSupplierDao().getAllSuppliers()
+                },
+            ).flowable
 
-        val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setPageSize(ITEM_PER_PAGE)
-            .build()
-        resultDataSupplier = LivePagedListBuilder(supplierDataSourceFactory, config).build()
-        return resultDataSupplier
+//        supplierDataSourceFactory = SupplierDataSourceFactory(
+//            apiService,
+//            compositeDisposable,
+//            token
+//        )
+//
+//        val config = PagedList.Config.Builder()
+//            .setEnablePlaceholders(false)
+//            .setPageSize(ITEM_PER_PAGE)
+//            .build()
+//        resultDataSupplier = LivePagedListBuilder(supplierDataSourceFactory, config).build()
+//        return resultDataSupplier
+
+
+    }
+
+    fun getSearchedSupplier(
+        token: String,
+        keywords: String?
+    ): Flowable<PagingData<Suppliers.SupplierEntity>>{
+        val query = keywords?.let { SearchQuery.getSearchQuerySupplier(it) }
+        return Pager(
+            config = PagingConfig(20, enablePlaceholders = true),
+            pagingSourceFactory = {database.getSupplierDao().getAllSuppliersQuery(query!!)}
+        ).flowable
     }
 
     fun uploadUsulanPermintaanWithoutFile(
@@ -271,12 +307,12 @@ class DataUpbRepository {
         )
     }
 
-    fun getSupplierNetworkState(): LiveData<NetworkState> {
-        return Transformations.switchMap(
-            supplierDataSourceFactory.supplierLiveDataSource,
-            SupplierDataSource::networkState
-        )
-    }
+//    fun getSupplierNetworkState(): LiveData<NetworkState> {
+//        return Transformations.switchMap(
+//            supplierDataSourceFactory.supplierLiveDataSource,
+//            SupplierDataSource::networkState
+//        )
+//    }
 
     fun getNetworkState(): LiveData<NetworkState> {
         return Transformations.switchMap(

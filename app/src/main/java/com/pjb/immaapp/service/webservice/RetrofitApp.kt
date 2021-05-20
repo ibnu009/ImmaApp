@@ -20,10 +20,13 @@ class RetrofitApp {
         const val FIRST_PAGE = 1
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
-        private const val BASE_URL = "http://3e051e066ac8.ngrok.io/"
+        private const val BASE_URL = "https://5c71eee8d25c.ngrok.io/"
         const val UPLOAD_URL = "$BASE_URL/api/fpb/create"
         const val UPLOAD_MATERIAL_URL = "$BASE_URL/api/fpb/create-material"
         const val UPLOAD_RAB_SUPPLIER = "$BASE_URL/api/rab/add-company"
+
+        private const val BASE_URL_FCM = "https://fcm.googleapis.com/"
+
 
         private val interceptor: HttpLoggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -43,7 +46,7 @@ class RetrofitApp {
             .build()
 
         private val notificationRetrofit = Retrofit.Builder()
-            .baseUrl("https://fcm.googleapis.com/fcm/")
+            .baseUrl(BASE_URL_FCM)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)

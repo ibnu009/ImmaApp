@@ -3,6 +3,7 @@ package com.pjb.immaapp.utils.utilsentity
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.Status
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 import java.net.HttpURLConnection
 
@@ -15,9 +16,10 @@ class GeneralErrorHandler : ErrorHandler {
             
 //            HTTP Error
             is HttpException -> {
+                Timber.d("Error code is ${throwable.code()}")
                 when(throwable.code()) {
                     // not found
-                    HttpURLConnection.HTTP_NOT_FOUND -> NetworkState(Status.NOT_FOUND)
+                    HttpURLConnection.HTTP_NOT_FOUND -> NetworkState(Status.SERVER_NOT_FOUND)
 
                     // access denied
                     HttpURLConnection.HTTP_FORBIDDEN -> NetworkState(Status.UNAUTHORISED)

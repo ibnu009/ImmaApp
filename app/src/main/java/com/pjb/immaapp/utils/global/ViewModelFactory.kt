@@ -8,6 +8,8 @@ import com.pjb.immaapp.data.repository.DataStokOpnameRepository
 import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.data.repository.LoginRepository
 import com.pjb.immaapp.di.Injection
+import com.pjb.immaapp.main.MainRepository
+import com.pjb.immaapp.main.MainViewModel
 import com.pjb.immaapp.ui.gudangpermintaanbarang.GudangViewModel
 import com.pjb.immaapp.ui.login.LoginViewModel
 import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderViewModel
@@ -18,8 +20,10 @@ import com.pjb.immaapp.ui.usulanpermintaanbarang.supplier.TambahSupplierViewMode
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.CreateUpbViewModel
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
 class ViewModelFactory(
+    private val mainRepository: MainRepository,
     private val loginRepository: LoginRepository,
     private val dataPoRepository: DataPoRepository,
     private val dataUpbRepository: DataUpbRepository,
@@ -33,9 +37,10 @@ class ViewModelFactory(
         fun getInstance(context: Context): ViewModelFactory =
             (instance ?: synchronized(this) {
                 instance ?: ViewModelFactory(
+                    Injection.provideMainRepository(),
                     Injection.provideLoginRepository(),
                     Injection.provideDataPoRepository(context),
-                    Injection.provideDataUpbRepository(),
+                    Injection.provideDataUpbRepository(context),
                     Injection.provideDataStokOpnameRepository(),
                     Injection.provideCompositeDisposable()
                 )
@@ -45,6 +50,9 @@ class ViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                MainViewModel(compositeDisposable, mainRepository) as T
+            }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(loginRepository, compositeDisposable) as T
             }

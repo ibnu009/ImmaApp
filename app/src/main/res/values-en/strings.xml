@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="notif_message">New Request</string>
+    <string name="notif_message">New RAB request from %1$s</string>
 
 
 
@@ -152,5 +152,8 @@
     <string name="pilih_supplier">Select Supplier</string>
     <string name="masukkan_harga">Input price</string>
 
-
+    <string name="approval_rab">Approval RAB</string>
+    <string name="create_rab">Create RAB</string>
+    <string name="batal">Cancel</string>
+    <string name="masukkan_catatan">Insert Note</string>
 </resources>

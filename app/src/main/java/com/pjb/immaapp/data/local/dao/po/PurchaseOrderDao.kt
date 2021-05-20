@@ -1,4 +1,4 @@
-package com.pjb.immaapp.data.local.dao
+package com.pjb.immaapp.data.local.dao.po
 
 import androidx.paging.PagingSource
 import androidx.room.*

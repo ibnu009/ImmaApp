@@ -27,6 +27,7 @@ class DataPoMediator(
         loadType: LoadType,
         state: PagingState<Int, PurchaseOrders.PurchaseOrderEntity>
     ): Single<MediatorResult> {
+        Timber.d("LoadType is $loadType with State is $state")
         return Single.just(loadType)
             .subscribeOn(Schedulers.io())
             .map {
@@ -41,7 +42,6 @@ class DataPoMediator(
 
                         remoteKeys.prevKey ?: -1
                     }
-
                     LoadType.APPEND -> {
                         val remoteKeys = getRemoteKeyForLastItem(state)
                             ?: throw InvalidObjectException("Data po is empty")
@@ -56,7 +56,9 @@ class DataPoMediator(
                     Single.just(MediatorResult.Success(endOfPaginationReached = true))
                 } else {
                     apiService.requestListPurchaseOrderSingle(apiKey, token, keywords)
-                        .map { mapper.transform(it) }
+                        .map {
+                            mapper.transform(it)
+                        }
                         .map {
                             Timber.d("CheckDatabase ${it.data}")
                             insertToDb(loadType, it)}

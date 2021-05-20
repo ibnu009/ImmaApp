@@ -12,4 +12,12 @@ object SearchQuery {
 
         return SimpleSQLiteQuery(simpleSQLiteQuery.toString())
     }
+
+    fun getSearchQuerySupplier(keyword: String): SimpleSQLiteQuery {
+        val simpleSQLiteQuery = StringBuilder().append("SELECT * FROM supplierentity ")
+        simpleSQLiteQuery.append("JOIN supplier_fts ON supplierentity.name = supplier_fts.name")
+        simpleSQLiteQuery.append(" WHERE supplier_fts MATCH $keyword")
+
+        return SimpleSQLiteQuery(simpleSQLiteQuery.toString())
+    }
 }

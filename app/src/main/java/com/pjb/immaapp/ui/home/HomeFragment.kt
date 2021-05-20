@@ -37,9 +37,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _bindingHomeFragment = FragmentHomeBinding.inflate(inflater, container, false)
-
         (activity as AppCompatActivity).supportActionBar?.hide()
-
         return _bindingHomeFragment?.root
     }
 

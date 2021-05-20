@@ -32,7 +32,12 @@ class FirebaseMessageService : FirebaseMessagingService() {
         }
 
         p0.notification.let {
-            Timber.d("Message notification : ${it?.body}")
+            Timber.d("Message notification body : ${it?.body}")
+            Timber.d("Message notification title : ${it?.title}")
+            val senderName = it?.title  ?: "unknown"
+            it?.body?.let {
+                    it1 -> sendNotification(it1, senderName)
+            }
         }
 
     }
@@ -42,7 +47,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
         Timber.d("FMS is $token")
     }
 
-    private fun sendNotification(messageBody: String) {
+    private fun sendNotification(messageBody: String, messageTitle: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -52,7 +57,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.logo_pjb)
-            .setContentTitle(getString(R.string.notif_message))
+            .setContentTitle(getString(R.string.notif_message, messageTitle))
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
@@ -60,7 +65,6 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId,
                 "Channel human readable title",

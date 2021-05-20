@@ -110,29 +110,6 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
                 }
             }
 
-//            when (network) {
-//                USERNOTFOUND -> {
-//                    binding?.root?.snackbar("User Not Found")
-//                    isLoading(false)
-//                }
-//                BAD_GATEAWAY ->{
-//                    binding?.root?.snackbar("Kesalahan Server")
-//                    isLoading(false)
-//                }
-//                NetworkState.LOADED -> {
-//                    isLoading(false)
-//                }
-//                NetworkState.LOADING -> {
-//                    isLoading(true)
-//                }
-//                UNKNOWN -> {
-//                    binding?.root?.snackbar("Unknown Error")
-//                    isLoading(false)
-//                }
-//                else -> {
-//                    Timber.e("Unknown Error")
-//                }
-//            }
         })
     }
 

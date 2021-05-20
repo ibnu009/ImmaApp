@@ -3,6 +3,7 @@ package com.pjb.immaapp.utils
 import android.view.View
 import com.pjb.immaapp.utils.global.snackbar
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.text.DecimalFormat
@@ -15,24 +16,24 @@ class ConverterHelper {
         val decimalFormat: DecimalFormat =
             NumberFormat.getInstance(Locale.getDefault()) as DecimalFormat
         decimalFormat.applyPattern("#,###,###,###")
-        val anggaranFix = decimalFormat.format(anggaran)
 
-        return anggaranFix
+        return decimalFormat.format(anggaran)
     }
 
     fun convertNetworkStateErrorToSnackbar(view: View?, network: NetworkState) {
-        when (network) {
-            NetworkState.USERNOTFOUND -> {
-                view?.snackbar("User Not Found")
+        Timber.d("Received network : ${network.status}")
+        when (network.status) {
+            Status.UNAUTHORISED -> {
+                view?.snackbar("User tidak ditemukan")
             }
-            NetworkState.BAD_GATEAWAY ->{
+            Status.BAD_GATEAWAY -> {
                 view?.snackbar("Kesalahan Server")
             }
-            NetworkState.CONFLICT -> {
-                view?.snackbar("Terjadi Konflik pada server")
+            Status.SERVER_NOT_FOUND -> {
+                view?.snackbar("Server tidak ditemukan")
             }
-            NetworkState.UNKNOWN -> {
-                view?.snackbar("Unknown Error")
+            Status.CONFLICT -> {
+                view?.snackbar("Terjadi kesalahan pada Server")
             }
             else -> {
                 view?.snackbar("Unknown Error")
