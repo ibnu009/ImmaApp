@@ -2,6 +2,8 @@ package com.pjb.immaapp.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonObject
+import com.pjb.immaapp.data.entity.notification.NotificationMessage
 import com.pjb.immaapp.data.entity.notification.NotificationModel
 import com.pjb.immaapp.data.remote.response.ResponseRegistrationToken
 import com.pjb.immaapp.service.webservice.RetrofitApp
@@ -15,6 +17,7 @@ import timber.log.Timber
 
 class MainRepository {
     private val apiService = RetrofitApp.getNotificationService()
+    private val apiServiceFirebase = RetrofitApp.getFirebaseNotificationService()
 
     companion object {
         @Volatile
@@ -66,5 +69,34 @@ class MainRepository {
             }, {})
         )
         return notificationModels
+    }
+
+    fun sendNotification(recipientToken: String, body: String, message: String, title: String): Single<String> {
+        val jsonObject = buildJsonObject(
+            to = recipientToken,
+            body = body,
+            message = message,
+            title = title
+        )
+       return apiServiceFirebase.sendMessage(jsonObject)
+           .observeOn(AndroidSchedulers.mainThread())
+           .subscribeOn(Schedulers.io())
+           .onErrorReturn {
+               it.message
+           }
+    }
+
+    private fun buildJsonObject(title: String, body: String, message: String, to: String): JsonObject {
+        val payload = JsonObject()
+        payload.addProperty("to", to)
+
+        val data = JsonObject()
+        data.addProperty("title", title)
+        data.addProperty("body", body)
+        data.addProperty("message", message)
+
+        payload.add("data", data)
+
+        return payload
     }
 }

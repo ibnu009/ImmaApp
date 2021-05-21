@@ -18,7 +18,6 @@ import timber.log.Timber
 class FirebaseMessageService : FirebaseMessagingService() {
     
     override fun onNewToken(p0: String) {
-        sendTokenToServer(p0)
         Timber.d("Token is is $p0")
     }
 
@@ -29,22 +28,10 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
         if (p0.data.isNotEmpty()) {
             Timber.d("Message data : ${p0.data}")
+            val senderName = p0.data["title"] ?: "unknown"
+            val message = p0.data["body"] ?: "ada permintaan barang dari $senderName"
+            sendNotification(messageBody = message, messageTitle = senderName)
         }
-
-        p0.notification.let {
-            Timber.d("Message notification body : ${it?.body}")
-            Timber.d("Message notification title : ${it?.title}")
-            val senderName = it?.title  ?: "unknown"
-            it?.body?.let {
-                    it1 -> sendNotification(it1, senderName)
-            }
-        }
-
-    }
-
-    private fun sendTokenToServer(token: String) {
-//        TODO: Implement send to server function
-        Timber.d("FMS is $token")
     }
 
     private fun sendNotification(messageBody: String, messageTitle: String) {

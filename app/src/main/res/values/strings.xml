@@ -13,7 +13,6 @@
     <string name="notif_message">Permintaan RAB baru dari %1$s</string>
 
 
-
     <!--  Khusus untuk valued String  -->
     <string name="anggaran_po">Rp. %1$s</string>
     <string name="num_item">Item Num: %1$s</string>
@@ -135,9 +134,34 @@
         <item>@string/items</item>
     </string-array>
 
+    <string-array name="approval_list">
+        <item>@string/abdul_karim</item>
+        <item>@string/ahmad_fachrisal</item>
+        <item>@string/aco_iwan</item>
+        <item>@string/adam_shofiyullah</item>
+        <item>@string/ade_rahmat_riyanto</item>
+        <item>@string/adi</item>
+        <item>@string/adi_herlambang</item>
+        <item>@string/adityamarwan</item>
+        <item>@string/agi_setia_putera</item>
+        <item>@string/wisnu_dwi_yanto</item>
+    </string-array>
+
     <string-array name="supplier_name">
         <item>Pilih supplier</item>
     </string-array>
+
+    <string name="abdul_karim" translatable="false">Abdul Karim</string>
+    <string name="ahmad_fachrisal" translatable="false">Ahmad Fachrisal</string>
+    <string name="aco_iwan" translatable="false">Aco Iwan</string>
+    <string name="adam_shofiyullah" translatable="false">Adam Shofiyullah</string>
+    <string name="ade_rahmat_riyanto" translatable="false">Ade Rahmat Riyanto</string>
+    <string name="adi" translatable="false">Adi</string>
+    <string name="adi_herlambang" translatable="false">Adi Herlambang</string>
+    <string name="adityamarwan" translatable="false">Adityamarwan</string>
+    <string name="agi_setia_putera" translatable="false">Agi Setia Putera</string>
+    <string name="wisnu_dwi_yanto" translatable="false">Wisnu Dwi Yanto</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

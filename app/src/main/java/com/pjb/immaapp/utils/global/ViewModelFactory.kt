@@ -16,6 +16,7 @@ import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderViewModel
 import com.pjb.immaapp.ui.stokopname.StokOpnameViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialViewModel
+import com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.supplier.TambahSupplierViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.CreateUpbViewModel
@@ -67,6 +68,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(StokOpnameViewModel::class.java) -> {
                 StokOpnameViewModel(dataStokOpnameRepository, compositeDisposable) as T
+            }
+            modelClass.isAssignableFrom(ApprovalRabViewModel::class.java) -> {
+                ApprovalRabViewModel(compositeDisposable, mainRepository) as T
             }
             modelClass.isAssignableFrom(CreateUpbViewModel::class.java) -> {
                 CreateUpbViewModel(compositeDisposable, dataUpbRepository) as T

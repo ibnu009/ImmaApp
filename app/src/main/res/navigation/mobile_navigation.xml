@@ -171,7 +171,7 @@
         android:label="ListSupplierFragment" />
     <fragment
         android:id="@+id/approvalRabFragment"
-        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.material.ApprovalRabFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabFragment"
         android:label="ApprovalRabFragment" />
 
 </navigation>

@@ -29,18 +29,22 @@ class MainActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(this.applicationContext)
         viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
-        sharedPreferences = this.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)
+        sharedPreferences =
+            this.getSharedPreferences(SharedPreferencesKey.PREFS_NAME, Context.MODE_PRIVATE)
         val token: String =
-            sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")?: "Shared Preference Not Found"
+            sharedPreferences.getString(SharedPreferencesKey.KEY_TOKEN, "Not Found")
+                ?: "Shared Preference Not Found"
         val name: String =
-            sharedPreferences.getString(SharedPreferencesKey.KEY_NAME, "Not Found")?: "Shared Preference Not Found"
+            sharedPreferences.getString(SharedPreferencesKey.KEY_NAME, "Not Found")
+                ?: "Shared Preference Not Found"
         val idUser: String =
-            sharedPreferences.getString(SharedPreferencesKey.KEY_ID_SDM, "Not Found")?: "Shared Preference Not Found"
+            sharedPreferences.getString(SharedPreferencesKey.KEY_ID_SDM, "Not Found")
+                ?: "Shared Preference Not Found"
 
         initiateToken(token, name, idUser)
     }
 
-    private fun initiateToken(token:String, name: String, idUser: String) {
+    private fun initiateToken(token: String, name: String, idUser: String) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Timber.e("Fetching FCM registration token failed, %s", task.exception)
@@ -53,19 +57,33 @@ class MainActivity : AppCompatActivity() {
             Timber.d("Token FCM adalah $tokenFcm")
 
             viewModel.getFcmTokenFromServer(apiKey, token).observe(this, Observer {
+
+                var block = 0
                 Timber.d("size is ${it.size}")
                 for (i in it.indices) {
                     if (it[i].idUser.toString() == idUser) {
-                        Timber.d("Token is already stored, not Storing data")
-                        break
+                        block++
                     }
-                    saveToken(apiKey, token, name, idUser, tokenFcm?:"-")
+                }
+
+                if (block < 1) {
+                    Timber.d("Token is Stored!")
+                    saveToken(apiKey, token, name, idUser, tokenFcm ?: "-")
+                } else {
+                    Timber.d("Token is already stored, not Storing data")
+                    Timber.d("Token Block is $block")
                 }
             })
         })
     }
 
-    private fun saveToken(apiKey: String, token: String, name: String, idUser: String, tokenFcm: String) {
+    private fun saveToken(
+        apiKey: String,
+        token: String,
+        name: String,
+        idUser: String,
+        tokenFcm: String
+    ) {
         Timber.d("Token $token")
         viewModel.storeFcmTokenToServer(apiKey, token, name, idUser, tokenFcm)
     }
