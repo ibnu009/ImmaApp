@@ -52,10 +52,10 @@ class DetailUsulanFragment : Fragment() {
     }
 
     private val onItemClicked = object : MaterialOnclick {
-        override fun onClicked(idDetail: Int) {
+        override fun onClicked(idDetail: Int, idPermintaan: Int) {
             val action =
                 DetailUsulanFragmentDirections.actionDetailUsulanPermintaanBarangFragmentToDetailMaterialFragment(
-                    idDetail
+                    idDetail, idPermintaan
                 )
             findNavController().navigate(action)
         }

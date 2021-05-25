@@ -5,10 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.*
 import androidx.paging.rxjava2.flowable
+import com.pjb.immaapp.data.entity.Karyawan
 import com.pjb.immaapp.data.entity.local.supplier.Suppliers
 import com.pjb.immaapp.data.entity.upb.*
 import com.pjb.immaapp.data.local.db.ImmaDatabase
 import com.pjb.immaapp.data.mediator.SupplierMediator
+import com.pjb.immaapp.data.remote.response.ResponseKaryawan
+import com.pjb.immaapp.data.remote.response.ResponseSaveRab
 import com.pjb.immaapp.data.source.usulanpermintaan.*
 import com.pjb.immaapp.service.webservice.RetrofitApp
 import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.ITEM_PER_PAGE
@@ -16,6 +19,7 @@ import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.NetworkState.Companion.ERROR
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
+import com.pjb.immaapp.utils.NetworkState.Companion.LOADING
 import com.pjb.immaapp.utils.UploadListener
 import com.pjb.immaapp.utils.UploadUsulanListener
 import com.pjb.immaapp.utils.global.ImmaEventHandler
@@ -23,17 +27,20 @@ import com.pjb.immaapp.utils.mapper.SupplierMapper
 import com.pjb.immaapp.utils.rq.SearchQuery
 import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import timber.log.Timber
 
 
 class DataUpbRepository(
-    private val database : ImmaDatabase
+    private val database: ImmaDatabase
 ) {
     private val apiService = RetrofitApp.getUpbService()
     private val uploadService = RetrofitApp.getUploadService()
@@ -77,7 +84,7 @@ class DataUpbRepository(
         return resultDataUpb
     }
 
-//    Module Detail Usulan Permintaan Barang
+    //    Module Detail Usulan Permintaan Barang
     fun requestDataDetailDataUpb(
         compositeDisposable: CompositeDisposable,
         apiKey: String,
@@ -187,15 +194,15 @@ class DataUpbRepository(
         Timber.d("mediator is $mediator")
 
         return Pager(
-                config = PagingConfig(
-                    pageSize = 18,
-                    enablePlaceholders = true,
-                ),
-                remoteMediator = mediator,
-                pagingSourceFactory = {
-                    database.getSupplierDao().getAllSuppliers()
-                },
-            ).flowable
+            config = PagingConfig(
+                pageSize = 18,
+                enablePlaceholders = true,
+            ),
+            remoteMediator = mediator,
+            pagingSourceFactory = {
+                database.getSupplierDao().getAllSuppliers()
+            },
+        ).flowable
 
 //        supplierDataSourceFactory = SupplierDataSourceFactory(
 //            apiService,
@@ -216,11 +223,11 @@ class DataUpbRepository(
     fun getSearchedSupplier(
         token: String,
         keywords: String?
-    ): Flowable<PagingData<Suppliers.SupplierEntity>>{
+    ): Flowable<PagingData<Suppliers.SupplierEntity>> {
         val query = keywords?.let { SearchQuery.getSearchQuerySupplier(it) }
         return Pager(
             config = PagingConfig(20, enablePlaceholders = true),
-            pagingSourceFactory = {database.getSupplierDao().getAllSuppliersQuery(query!!)}
+            pagingSourceFactory = { database.getSupplierDao().getAllSuppliersQuery(query!!) }
         ).flowable
     }
 
@@ -300,11 +307,36 @@ class DataUpbRepository(
             ).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                 .subscribe({
                     status.onSuccess(it.message)
-                },{
+                }, {
                     val message = ConverterHelper().convertExceptionToMessage(it)
                     status.onError(message)
                 })
         )
+    }
+
+    fun saveRab(
+        apiKey: String,
+        token: String,
+        idPermintaan: Int,
+        idSdmApproval: Int,
+        notes: String
+    ): Single<ResponseSaveRab> {
+        return apiService.saveRab(
+            apiKey = apiKey,
+            token = token,
+            idPermintaan = idPermintaan,
+            idSdmApproval = idSdmApproval,
+            note = notes
+        )
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+
+    }
+
+    fun getListKaryawan(apiKey: String, token: String): Observable<ResponseKaryawan> {
+        return apiService.getListKaryawan(apiKey, token)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
     }
 
 //    fun getSupplierNetworkState(): LiveData<NetworkState> {

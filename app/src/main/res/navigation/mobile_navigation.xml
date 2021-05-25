@@ -146,6 +146,10 @@
             android:name="passIdDetail"
             android:defaultValue="0"
             app:argType="integer" />
+        <argument
+            android:name="passIdPermintaan"
+            android:defaultValue="0"
+            app:argType="integer"/>
         <action
             android:id="@+id/action_detailMaterialFragment_to_tambahsSupplierFragment"
             app:destination="@id/tambahSupplierFragment" />
@@ -172,6 +176,12 @@
     <fragment
         android:id="@+id/approvalRabFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabFragment"
-        android:label="ApprovalRabFragment" />
+        android:label="ApprovalRabFragment" >
+        <argument
+            android:name="passIdPermintaan"
+            android:defaultValue="0"
+            app:argType="integer"
+            />
+    </fragment>
 
 </navigation>

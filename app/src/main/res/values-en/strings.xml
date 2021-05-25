@@ -156,4 +156,7 @@
     <string name="create_rab">Create RAB</string>
     <string name="batal">Cancel</string>
     <string name="masukkan_catatan">Insert Note</string>
+
+    <string name="note_empty_approval">New RAB request from %1$s</string>
+
 </resources>

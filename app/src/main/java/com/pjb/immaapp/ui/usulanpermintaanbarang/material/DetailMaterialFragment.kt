@@ -20,6 +20,7 @@ import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailMaterialBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.CompanyListAdapter
 import com.pjb.immaapp.ui.usulanpermintaanbarang.handler.OnItemCompanyClick
+import com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabFragment
 import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
@@ -32,6 +33,7 @@ class DetailMaterialFragment : Fragment() {
     private lateinit var token: String
     private lateinit var apiKey: String
     private var idDetail: Int = 0
+    private var idPermintaan: Int = 0
     private var idCompany: Int? = null
 
     private lateinit var adapter: CompanyListAdapter
@@ -64,6 +66,7 @@ class DetailMaterialFragment : Fragment() {
 
         val safeArgs = arguments?.let { DetailMaterialFragmentArgs.fromBundle(it) }
         idDetail = safeArgs?.passIdDetail!!
+        idPermintaan = safeArgs.passIdPermintaan
 
         val toolbar = binding?.customToolbarDetailMaterial
         val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
@@ -76,11 +79,18 @@ class DetailMaterialFragment : Fragment() {
         }
 
         txCreateRab.setOnClickListener {
-            it.findNavController().navigate(R.id.action_detailMaterialFragment_to_approvalRabFragment)
+            val action =
+                DetailMaterialFragmentDirections.actionDetailMaterialFragmentToApprovalRabFragment(
+                    passIdPermintaan = idPermintaan
+                )
+            it.findNavController().navigate(action)
         }
 
         binding?.fabTambahMaterial?.setOnClickListener {
-            val action = DetailMaterialFragmentDirections.actionDetailMaterialFragmentToTambahsSupplierFragment(idDetail)
+            val action =
+                DetailMaterialFragmentDirections.actionDetailMaterialFragmentToTambahsSupplierFragment(
+                    idDetail
+                )
             it.findNavController().navigate(action)
         }
         txView.text = context?.resources?.getText(R.string.detail_material)
@@ -128,7 +138,7 @@ class DetailMaterialFragment : Fragment() {
                 binding?.txLastPo?.text = it.lastPo
             })
         viewModel?.networkState?.observe(viewLifecycleOwner, Observer { network ->
-            when(network) {
+            when (network) {
                 NetworkState.EXPIRETOKEN -> {
                     context?.tokenExpired()?.show()
                 }

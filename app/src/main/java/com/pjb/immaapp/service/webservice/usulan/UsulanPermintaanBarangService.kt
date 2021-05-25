@@ -53,4 +53,21 @@ interface UsulanPermintaanBarangService {
         @Field("token") token: String
     ): Single<ResponseSupplier>
 
+    @POST("api/fpb/simpan")
+    @FormUrlEncoded
+    fun saveRab(
+        @Field("api_key") apiKey: String,
+        @Field("token") token: String,
+        @Field("id_permintaan") idPermintaan: Int,
+        @Field("id_sdm_approval") idSdmApproval: Int,
+        @Field("note") note: String
+    ): Single<ResponseSaveRab>
+
+    @POST("api/data/karyawan")
+    @FormUrlEncoded
+    fun getListKaryawan(
+        @Field("api_key") apiKey: String,
+        @Field("token") token: String
+    ): Observable<ResponseKaryawan>
+
 }

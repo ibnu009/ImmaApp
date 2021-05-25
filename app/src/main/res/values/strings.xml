@@ -187,4 +187,6 @@
     <string name="create_rab">Create RAB</string>
     <string name="batal">Batal</string>
     <string name="masukkan_catatan">Masukkan Catatan</string>
+
+    <string name="note_empty_approval">Permintaan RAB baru dari %1$s</string>
 </resources>

@@ -70,7 +70,7 @@ class ViewModelFactory(
                 StokOpnameViewModel(dataStokOpnameRepository, compositeDisposable) as T
             }
             modelClass.isAssignableFrom(ApprovalRabViewModel::class.java) -> {
-                ApprovalRabViewModel(compositeDisposable, mainRepository) as T
+                ApprovalRabViewModel(compositeDisposable, mainRepository, dataUpbRepository) as T
             }
             modelClass.isAssignableFrom(CreateUpbViewModel::class.java) -> {
                 CreateUpbViewModel(compositeDisposable, dataUpbRepository) as T
