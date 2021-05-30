@@ -16,7 +16,7 @@ object Injection {
     fun provideLoginRepository(): LoginRepository = LoginRepository.getInstance()
     fun provideDataPoRepository(context: Context): DataPoRepository = DataPoRepository.getInstance(provideDatabase(context))
     fun provideDataStokOpnameRepository() : DataStokOpnameRepository = DataStokOpnameRepository.getInstance()
-    fun provideMainRepository(): MainRepository = MainRepository.getInstance()
+    fun provideMainRepository(context: Context): MainRepository = MainRepository.getInstance(provideDatabase(context))
 
     fun provideDataUpbRepository(context: Context): DataUpbRepository = DataUpbRepository.getInstance(provideDatabase(context))
     fun provideCompositeDisposable(): CompositeDisposable = CompositeDisposable()

@@ -172,9 +172,7 @@ class TambahUsulanFragment : Fragment(), OnClickHandlerUpbCreate, UpbFileUploadL
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
             ).withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(p0: MultiplePermissionsReport?) {
-                    if (p0?.areAllPermissionsGranted() == true) {
-                        binding?.root?.snackbar("All Permissions are granted")
-                    }
+
                 }
 
                 override fun onPermissionRationaleShouldBeShown(

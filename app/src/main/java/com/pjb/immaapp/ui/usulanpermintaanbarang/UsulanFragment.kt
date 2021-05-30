@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -40,6 +41,13 @@ class UsulanFragment : Fragment() {
         factory?.let { ViewModelProvider(this, it).get(UsulanViewModel::class.java) }
     }
 
+    private val callBack = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            findNavController().popBackStack(R.id.nav_home, false)
+        }
+
+    }
+
     private val onItemClicked = object : OnClickedActionDataUpb {
         override fun onClicked(idPermintaan: Int) {
             val action =
@@ -52,6 +60,11 @@ class UsulanFragment : Fragment() {
 
     private var _bindingFragmentUpb: FragmentUsulanBinding? = null
     private val binding get() = _bindingFragmentUpb
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, callBack)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +80,7 @@ class UsulanFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         upbPagedListAdapter = DataUpbPagedListAdapter(onItemClicked)
         with(binding?.rvUsulan) {
             this?.adapter = upbPagedListAdapter

@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface UsulanPermintaanBarangService {
 
-    @POST("/api/fpb/list")
+    @POST("api/fpb/list")
     @FormUrlEncoded
     fun requestListUsulanPermintaanBarang(
         @Field("api_key") apiKey: String,
@@ -15,7 +15,7 @@ interface UsulanPermintaanBarangService {
         @Field("keywords") keywords: String?
     ): Observable<ResponseUsulanPermintaan>
 
-    @POST("/api/fpb/detail")
+    @POST("api/fpb/detail")
     @FormUrlEncoded
     fun requestDetailUpb(
         @Field("api_key") apiKey: String,
@@ -23,7 +23,7 @@ interface UsulanPermintaanBarangService {
         @Field("id_permintaan") idPermintaan: Int
     ): Observable<ResponseDetailUpb>
 
-    @POST("/api/fpb/list-material")
+    @POST("api/fpb/list-material")
     @FormUrlEncoded
     fun requestListMaterial(
         @Field("api_key") apiKey: String,
@@ -31,7 +31,7 @@ interface UsulanPermintaanBarangService {
         @Field("id_permintaan") idPermintaan: Int
     ): Observable<ResponseMaterial>
 
-    @POST("/api/material/detail")
+    @POST("api/material/detail")
     @FormUrlEncoded
     fun requestDetailMaterial(
         @Field("api_key") apiKey: String,
@@ -39,14 +39,14 @@ interface UsulanPermintaanBarangService {
         @Field("id_permintaan_detail") idDetail: Int
     ): Observable<ResponseDetailMaterial>
 
-    @POST("/api/data/companies")
+    @POST("api/data/companies")
     @FormUrlEncoded
     fun requestDataSupplier(
         @Field("api_key") apiKey: String,
         @Field("token") token: String
     ): Observable<ResponseSupplier>
 
-    @POST("/api/data/companies")
+    @POST("api/data/companies")
     @FormUrlEncoded
     fun requestDataSupplierSingle(
         @Field("api_key") apiKey: String,

@@ -1,4 +1,4 @@
-package com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval
+package com.pjb.immaapp.ui.usulanpermintaanbarang.approval
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -6,13 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pjb.immaapp.R
 import com.pjb.immaapp.data.entity.Karyawan
-import com.pjb.immaapp.data.entity.notification.NotificationMessage
 import com.pjb.immaapp.data.entity.notification.NotificationModel
 import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.main.MainRepository
 import com.pjb.immaapp.utils.ConverterHelper
-import com.pjb.immaapp.utils.NetworkState
-import com.pjb.immaapp.utils.utilsentity.GeneralErrorHandler
 import io.reactivex.disposables.CompositeDisposable
 
 class ApprovalRabViewModel(
@@ -24,9 +21,9 @@ class ApprovalRabViewModel(
     var notes: String? = null
     var approvalRabListener: ApprovalRabListener? = null
 
-    fun sendMessage(recipientToken: String, body: String?, message: String, title: String, context: Context) {
+    fun sendMessage(recipientToken: String, body: String?, message: String, title: String, type: String, context: Context) {
         val newBody = context.getString(R.string.note_empty_approval, title)
-        val disposable = mainRepository.sendNotification(recipientToken, body ?: newBody, message, title)
+        val disposable = mainRepository.sendNotification(recipientToken, body ?: newBody, message, title, type)
             .subscribe()
         compositeDisposable.add(disposable)
     }

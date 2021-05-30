@@ -13,7 +13,7 @@ import com.pjb.immaapp.handler.OnClickedActionDataSupplier
 import timber.log.Timber
 
 class SupplierPagedListAdapter(private val onClickedActionDataSupplier: OnClickedActionDataSupplier) :
-    PagingDataAdapter<Suppliers.SupplierEntity, SupplierPagedListAdapter.DataSupplierViewHolder>(DIFF_CALLBACK) {
+    PagedListAdapter<Supplier, SupplierPagedListAdapter.DataSupplierViewHolder>(DIFF_CALLBACK) {
 
     override fun onBindViewHolder(holder: DataSupplierViewHolder, position: Int) {
         getItem(position)?.let { supplier ->
@@ -32,8 +32,7 @@ class SupplierPagedListAdapter(private val onClickedActionDataSupplier: OnClicke
 
     inner class DataSupplierViewHolder(private val binding: SupplierListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(supplier: Suppliers.SupplierEntity) {
-            Timber.d("check data ${supplier.id_supplier}")
+        fun bind(supplier: Supplier) {
             with(binding) {
                 binding.txNamaSupplier.text = supplier.nama
             }
@@ -41,13 +40,13 @@ class SupplierPagedListAdapter(private val onClickedActionDataSupplier: OnClicke
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<Suppliers.SupplierEntity> =
-            object : DiffUtil.ItemCallback<Suppliers.SupplierEntity>() {
-                override fun areItemsTheSame(oldItem: Suppliers.SupplierEntity, newItem: Suppliers.SupplierEntity): Boolean {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<Supplier> =
+            object : DiffUtil.ItemCallback<Supplier>() {
+                override fun areItemsTheSame(oldItem: Supplier, newItem: Supplier): Boolean {
                     return oldItem.id == newItem.id && oldItem.id == newItem.id
                 }
 
-                override fun areContentsTheSame(oldItem: Suppliers.SupplierEntity, newItem: Suppliers.SupplierEntity): Boolean {
+                override fun areContentsTheSame(oldItem: Supplier, newItem: Supplier): Boolean {
                     return oldItem == newItem
                 }
 

@@ -133,6 +133,10 @@ dependencies {
 //    Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+//    Lottie
+    def lottieVersion = "3.7.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

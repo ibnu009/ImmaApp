@@ -189,4 +189,7 @@
     <string name="masukkan_catatan">Masukkan Catatan</string>
 
     <string name="note_empty_approval">Permintaan RAB baru dari %1$s</string>
+    <string name="success">Sukses!</string>
+    <string name="rab_telah_dibuat">Permintaan RAB anda telah dibuat! \n Permintaan anda akan segera diproses oleh yang berwewenang!</string>
+    <string name="material_telah_dibuat">Tambah material berhasil dilakukan!</string>
 </resources>

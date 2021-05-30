@@ -21,9 +21,9 @@ class RetrofitApp {
         const val ITEM_PER_PAGE = 10
         const val API_KEY = 12345
         private const val BASE_URL = "http://991654b466d6.ngrok.io/"
-        const val UPLOAD_URL = "$BASE_URL/api/fpb/create"
-        const val UPLOAD_MATERIAL_URL = "$BASE_URL/api/fpb/create-material"
-        const val UPLOAD_RAB_SUPPLIER = "$BASE_URL/api/rab/add-company"
+        const val UPLOAD_URL_NEW = "${BASE_URL}api/fpb/create"
+        const val UPLOAD_MATERIAL_URL = BASE_URL + "api/fpb/create-material"
+        const val UPLOAD_RAB_SUPPLIER = BASE_URL + "api/rab/add-company"
 
         private const val BASE_URL_FCM = "https://fcm.googleapis.com/"
 

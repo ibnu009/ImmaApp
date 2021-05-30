@@ -8,7 +8,7 @@ import retrofit2.http.POST
 
 interface LoginService {
 
-    @POST("/api/auth/login")
+    @POST("api/auth/login")
     fun loginRequest(
         @Body request: Credential
     ): Observable<ResponseUser>

@@ -6,11 +6,11 @@
     <data>
         <variable
             name="viewModel"
-            type="com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabViewModel" />
+            type="com.pjb.immaapp.ui.usulanpermintaanbarang.approval.ApprovalRabViewModel" />
 
         <variable
             name="handler"
-            type="com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabHandler" />
+            type="com.pjb.immaapp.ui.usulanpermintaanbarang.approval.ApprovalRabHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,15 +117,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#4B131313"
-            android:visibility="gone" />
+            android:translationZ="19dp"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
             style="@style/GenericProgressIndicator"
+            android:translationZ="20dp"
             android:layout_width="100dp"
+            android:visibility="gone"
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

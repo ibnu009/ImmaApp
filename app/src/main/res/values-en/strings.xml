@@ -158,5 +158,8 @@
     <string name="masukkan_catatan">Insert Note</string>
 
     <string name="note_empty_approval">New RAB request from %1$s</string>
+    <string name="success">Success!</string>
+    <string name="rab_telah_dibuat">Your request have been created! \n Your request will be processed by the authorities!</string>
+    <string name="material_telah_dibuat">Create material is succeeded!</string>
 
 </resources>

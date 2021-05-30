@@ -12,7 +12,7 @@ import retrofit2.http.Part
 interface UploadService {
 
     @Multipart
-    @POST("/api/fpb/create")
+    @POST("api/fpb/create")
     fun uploadUsulan(
         @Part("token") token: RequestBody,
         @Part("api_key") apiKey: RequestBody,
@@ -25,7 +25,7 @@ interface UploadService {
     ): Observable<ResponseUploadUsulan>
 
     @Multipart
-    @POST("/api/fpb/create-material")
+    @POST("api/fpb/create-material")
     fun uploadMaterial(
         @Part("token") token: RequestBody,
         @Part("api_key") apiKey: RequestBody,
@@ -38,7 +38,7 @@ interface UploadService {
     ): Observable<ResponseUpload>
 
     @Multipart
-    @POST("/api/rab/add-company")
+    @POST("api/rab/add-company")
     fun uploadSupplier(
         @Part("token") token: RequestBody,
         @Part("api_key") apiKey: RequestBody,

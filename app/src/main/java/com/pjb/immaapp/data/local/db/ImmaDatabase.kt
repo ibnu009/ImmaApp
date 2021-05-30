@@ -6,9 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pjb.immaapp.data.entity.local.fts.SupplierFTS
+import com.pjb.immaapp.data.entity.local.notification.NotificationEntity
 import com.pjb.immaapp.data.entity.local.po.PurchaseOrders
 import com.pjb.immaapp.data.entity.local.supplier.Suppliers
 import com.pjb.immaapp.data.entity.po.fts.DataPoFTS
+import com.pjb.immaapp.data.local.dao.notification.NotificationDao
 import com.pjb.immaapp.data.local.dao.po.PurchaseOrderDao
 import com.pjb.immaapp.data.local.dao.po.PurchaseOrderRemoteKeys
 import com.pjb.immaapp.data.local.dao.supplier.SupplierDao
@@ -21,8 +23,9 @@ import com.pjb.immaapp.data.local.dao.supplier.SupplierRemoteKeys
         DataPoFTS::class,
         Suppliers.SupplierEntity::class,
         Suppliers.SupplierKey::class,
-        SupplierFTS::class],
-    version = 6,
+        SupplierFTS::class,
+        NotificationEntity::class],
+    version = 7,
     exportSchema = false
 )
 abstract class ImmaDatabase : RoomDatabase() {
@@ -32,6 +35,8 @@ abstract class ImmaDatabase : RoomDatabase() {
 
     abstract fun getSupplierDao(): SupplierDao
     abstract fun getRemoteKeySupplier(): SupplierRemoteKeys
+
+    abstract fun getNotificationDao(): NotificationDao
 
     companion object {
         @Volatile

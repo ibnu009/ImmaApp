@@ -1,7 +1,6 @@
-package com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval
+package com.pjb.immaapp.ui.usulanpermintaanbarang.approval
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,14 +14,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.pjb.immaapp.R
-import com.pjb.immaapp.data.entity.notification.NotificationMessage
 import com.pjb.immaapp.databinding.FragmentApprovalRabBinding
-import com.pjb.immaapp.ui.login.LoginActivity
-import com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialFragmentArgs
 import com.pjb.immaapp.utils.SharedPreferencesKey
+import com.pjb.immaapp.utils.global.ConstVal
 import com.pjb.immaapp.utils.global.ViewModelFactory
 import com.pjb.immaapp.utils.global.snackbar
-import com.pjb.immaapp.utils.global.tokenExpired
 import timber.log.Timber
 
 class ApprovalRabFragment : Fragment(), ApprovalRabListener, ApprovalRabHandler {
@@ -63,11 +59,11 @@ class ApprovalRabFragment : Fragment(), ApprovalRabListener, ApprovalRabHandler 
 
         viewModel?.approvalRabListener = this
         binding?.handler = this
+        binding?.viewModel = viewModel
 
         txView.text = getString(R.string.approval_rab)
         initiateKey()
 
-        approvalName = binding?.spinnerNeedApproval?.selectedItem.toString()
     }
 
     private fun saveRab(approvalName: String) {
@@ -77,17 +73,30 @@ class ApprovalRabFragment : Fragment(), ApprovalRabListener, ApprovalRabHandler 
             ?.observe(viewLifecycleOwner, Observer {
                 for (i in it.indices) {
                     if (approvalName.equals(it[i].nama, ignoreCase = true)) {
+                        Timber.d("Check approvalNameData : ${it[i].nama}")
+                        Timber.d("Check approvalId : ${it[i].idSdm}")
                         idSdmApproval = it[i].idSdm
                     }
                 }
+
+
+                viewModel?.saveRab(
+                    apiKey = "12345",
+                    token = token,
+                    idPermintaan = idPermintaan,
+                    idSdmApproval = idSdmApproval
+                )
+
+                if (idSdmApproval != 0) {
+                    sendMessage(approvalName)
+                }
+
+                Timber.d("Check idSdmApproval : $idSdmApproval")
+                Timber.d("Check approvalName : $approvalName")
             })
 
-        viewModel?.saveRab(
-            apiKey = "12345",
-            token = token,
-            idPermintaan = idPermintaan,
-            idSdmApproval = idSdmApproval
-        )
+
+
     }
 
     private fun sendMessage(approvalName: String) {
@@ -105,6 +114,7 @@ class ApprovalRabFragment : Fragment(), ApprovalRabListener, ApprovalRabHandler 
                             body = note,
                             title = name,
                             message = "message",
+                            type = "rab_request",
                             context = requireContext(),
                         )
                         blocker++
@@ -131,7 +141,10 @@ class ApprovalRabFragment : Fragment(), ApprovalRabListener, ApprovalRabHandler 
 
     override fun onSuccess(message: String) {
         isLoading(false)
-        binding?.root?.snackbar(message)
+        val action = ApprovalRabFragmentDirections.actionApprovalRabFragmentToSuccessFragment(
+            ConstVal.RAB_TYPE
+        )
+        view?.findNavController()?.navigate(action)
     }
 
     override fun onFailure(message: String) {
@@ -150,12 +163,26 @@ class ApprovalRabFragment : Fragment(), ApprovalRabListener, ApprovalRabHandler 
     }
 
     override fun onSaveClick(view: View) {
-        sendMessage(approvalName)
-        saveRab(approvalName)
+        approvalName = binding?.spinnerNeedApproval?.selectedItem.toString()
+
+        Timber.d("Check idPermintaan : $idPermintaan")
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Konfirmasi Create RAB")
+            setMessage("Apakah Anda yakin membuat RAB dengan approval dari $approvalName?")
+            setPositiveButton(
+                "Ya"
+            ) { p0, _ ->
+                saveRab(approvalName)
+                p0.dismiss()
+            }
+            setNegativeButton("Tidak") { p0, _ ->
+                p0.dismiss()
+            }
+        }.create().show()
     }
 
     override fun onCancelClick(view: View) {
-        AlertDialog.Builder(requireContext().applicationContext).apply {
+        AlertDialog.Builder(requireContext()).apply {
             setTitle("Imma Alert")
             setMessage("Apakah anda yakin untuk membatalkan create RAB?")
             setPositiveButton(
@@ -167,6 +194,6 @@ class ApprovalRabFragment : Fragment(), ApprovalRabListener, ApprovalRabHandler 
             setNegativeButton("Tidak") { p0, _ ->
                 p0.dismiss()
             }
-        }.create()
+        }.create().show()
     }
 }

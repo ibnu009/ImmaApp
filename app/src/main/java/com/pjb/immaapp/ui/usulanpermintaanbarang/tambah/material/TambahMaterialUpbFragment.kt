@@ -30,6 +30,7 @@ import com.pjb.immaapp.handler.UpbCreateMaterialHandler
 import com.pjb.immaapp.handler.UpbCreateMaterialListener
 import com.pjb.immaapp.utils.FIleHelper
 import com.pjb.immaapp.utils.SharedPreferencesKey
+import com.pjb.immaapp.utils.global.ConstVal
 import com.pjb.immaapp.utils.global.ViewModelFactory
 import com.pjb.immaapp.utils.global.snackbar
 import timber.log.Timber
@@ -167,7 +168,7 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
                 binding?.edtSatuan?.text = it.satuan
             })
 
-            viewModel?.networkState?.observe(this, Observer {   network ->
+            viewModel?.networkState?.observe(this, Observer { network ->
                 Timber.e("CheckError network ${network.status}")
             })
 
@@ -177,9 +178,9 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
 
     private val takePictureRegistration =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-                val uri = FIleHelper().getImageUri(requireActivity(), bitmap)
-                imagePath = FIleHelper().getFilePathFromURI(requireActivity(), uri)
-                binding?.imgMaterialContainer?.setImageBitmap(bitmap)
+            val uri = FIleHelper().getImageUri(requireActivity(), bitmap)
+            imagePath = FIleHelper().getFilePathFromURI(requireActivity(), uri)
+            binding?.imgMaterialContainer?.setImageBitmap(bitmap)
         }
 
     private val pickFileImage =
@@ -195,7 +196,12 @@ class TambahMaterialUpbFragment : Fragment(), UpbCreateMaterialHandler, UpbCreat
 
     override fun onSuccess(message: String) {
         isLoading(false)
-        binding?.root?.snackbar(message)
+        val action =
+            TambahMaterialUpbFragmentDirections.actionTambahMaterialUpbFragmentToSuccessFragment(
+                passType = ConstVal.MATERIAL_CREATE_TYPE,
+                passIdPermintaan = idPermintaan ?: 0
+            )
+        view?.findNavController()?.navigate(action)
     }
 
     override fun onFailure(message: String) {

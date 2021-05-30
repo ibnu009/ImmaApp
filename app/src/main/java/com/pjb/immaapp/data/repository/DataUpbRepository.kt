@@ -48,7 +48,7 @@ class DataUpbRepository(
     private lateinit var upbItemDataSourceFactory: UpbItemDataSourceFactory
     private lateinit var supplierDataSourceFactory: SupplierDataSourceFactory
 
-    private lateinit var mediator: SupplierMediator
+//    private lateinit var mediator: SupplierMediator
 
     val networkState: ImmaEventHandler<NetworkState> = ImmaEventHandler()
 
@@ -184,38 +184,38 @@ class DataUpbRepository(
         return resultCompanyList
     }
 
-    @ExperimentalPagingApi
+//    @ExperimentalPagingApi
     fun requestListDataSupplier(
+        compositeDisposable: CompositeDisposable,
         apiKey: String,
         token: String
-    ): Flowable<PagingData<Suppliers.SupplierEntity>> {
-//        lateinit var resultDataSupplier: LiveData<PagedList<Supplier>>
-        mediator = SupplierMediator(database, apiService, SupplierMapper(), apiKey, token)
-        Timber.d("mediator is $mediator")
+    ): LiveData<PagedList<Supplier>> {
+        lateinit var resultDataSupplier: LiveData<PagedList<Supplier>>
+//        mediator = SupplierMediator(database, apiService, SupplierMapper(), apiKey, token)
 
-        return Pager(
-            config = PagingConfig(
-                pageSize = 18,
-                enablePlaceholders = true,
-            ),
-            remoteMediator = mediator,
-            pagingSourceFactory = {
-                database.getSupplierDao().getAllSuppliers()
-            },
-        ).flowable
+//        return Pager(
+//            config = PagingConfig(
+//                pageSize = 18,
+//            ),
+//            1,
+//            remoteMediator = mediator,
+//            pagingSourceFactory = {
+//                database.getSupplierDao().getAllSuppliers()
+//            },
+//        ).flowable
 
-//        supplierDataSourceFactory = SupplierDataSourceFactory(
-//            apiService,
-//            compositeDisposable,
-//            token
-//        )
-//
-//        val config = PagedList.Config.Builder()
-//            .setEnablePlaceholders(false)
-//            .setPageSize(ITEM_PER_PAGE)
-//            .build()
-//        resultDataSupplier = LivePagedListBuilder(supplierDataSourceFactory, config).build()
-//        return resultDataSupplier
+        supplierDataSourceFactory = SupplierDataSourceFactory(
+            apiService,
+            compositeDisposable,
+            token
+        )
+
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPageSize(ITEM_PER_PAGE)
+            .build()
+        resultDataSupplier = LivePagedListBuilder(supplierDataSourceFactory, config).build()
+        return resultDataSupplier
 
 
     }

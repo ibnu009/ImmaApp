@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
@@ -14,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentListSupplierBinding
 import com.pjb.immaapp.handler.OnClickedActionDataSupplier
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.SupplierPagedListAdapter
@@ -59,26 +63,34 @@ class ListSupplierFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         supplierAdapter = SupplierPagedListAdapter(onItemClicked)
         binding?.rvSupplier?.layoutManager = LinearLayoutManager(this.context?.applicationContext, LinearLayoutManager.VERTICAL, false)
         binding?.rvSupplier?.adapter = supplierAdapter
+        initToolbar("List Supplier")
         initiateKeys()
         initiateData("12345", token)
+    }
+
+    private fun initToolbar(title: String) {
+        val toolbar = binding?.customToolbarListSupplier?.root
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+
+        val txTitle = toolbar?.findViewById(R.id.tx_title_page) as TextView
+        txTitle.text = title
+
+        val btnBack = toolbar.findViewById(R.id.btn_back_menu) as ImageView
+        btnBack.setOnClickListener {
+            it.findNavController().popBackStack()
+        }
     }
 
     private fun initiateData(apiKey: String, token: String) {
         viewModel?.getListSupplier(apiKey, token)?.observe(viewLifecycleOwner, Observer {
             Timber.d("Company list $it")
-            supplierAdapter.submitData(lifecycle, it)
+            supplierAdapter.submitList(it)
         })
-//        viewModel?.networkState?.observe(viewLifecycleOwner, Observer { network ->
-//            when(network) {
-//                NetworkState.LOADING -> isLoading(true)
-//                NetworkState.LOADED -> isLoading(false)
-//                NetworkState.EXPIRETOKEN -> context?.tokenExpired()?.show()
-//                else -> ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
-//            }
-//        })
     }
 
     private fun initiateKeys() {

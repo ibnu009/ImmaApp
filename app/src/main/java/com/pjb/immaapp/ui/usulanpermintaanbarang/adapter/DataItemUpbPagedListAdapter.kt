@@ -12,7 +12,9 @@ import com.pjb.immaapp.data.entity.upb.ItemPermintaanBarang
 import com.pjb.immaapp.databinding.DetailItemBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.MaterialOnclick
 
-class DataItemUpbPagedListAdapter(private val onClickedAction: MaterialOnclick) :
+class DataItemUpbPagedListAdapter(
+    private val onClickedAction: MaterialOnclick,
+) :
     PagedListAdapter<ItemPermintaanBarang, DataItemUpbPagedListAdapter.DataItemUpbViewHolder>(
         DIFF_CALLBACK
     ) {

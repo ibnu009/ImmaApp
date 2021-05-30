@@ -123,7 +123,11 @@
             android:name="passIdPermintaan"
             android:defaultValue="1"
             app:argType="integer" />
-    </fragment>
+         <action
+             android:id="@+id/action_tambahMaterialUpbFragment_to_successFragment"
+             app:destination="@id/successFragment"
+             app:enterAnim="@anim/slide_left_in"/>
+     </fragment>
     <fragment
         android:id="@+id/tambahUsulanFragment"
         android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.TambahUsulanFragment"
@@ -175,13 +179,38 @@
         android:label="ListSupplierFragment" />
     <fragment
         android:id="@+id/approvalRabFragment"
-        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabFragment"
+        android:name="com.pjb.immaapp.ui.usulanpermintaanbarang.approval.ApprovalRabFragment"
         android:label="ApprovalRabFragment" >
         <argument
             android:name="passIdPermintaan"
             android:defaultValue="0"
             app:argType="integer"
             />
+        <action
+            android:id="@+id/action_approvalRabFragment_to_successFragment"
+            app:destination="@id/successFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/successFragment"
+        android:name="com.pjb.immaapp.ui.extra.SuccessFragment"
+        android:label="SuccessFragment" >
+        <argument
+            android:name="passType"
+            android:defaultValue="0"
+            app:argType="integer"/>
+        <argument
+            android:name="passIdPermintaan"
+            android:defaultValue="0"
+            app:argType="integer"
+            />
+        <action
+            android:id="@+id/action_successFragment_to_detailUsulanPermintaanBarangFragment"
+            app:destination="@id/detailUsulanPermintaanBarangFragment"
+            app:popUpTo="@id/detailUsulanPermintaanBarangFragment" />
+        <action
+            android:id="@+id/action_successFragment_to_nav_usulan"
+            app:destination="@id/nav_usulan"
+            app:popUpTo="@id/nav_usulan"/>
     </fragment>
 
 </navigation>

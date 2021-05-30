@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,11 +35,6 @@ import timber.log.Timber
 
 class DetailUsulanFragment : Fragment() {
 
-    companion object {
-        const val EXTRA_ID_PERMINTAAN = "EXTRA_ID_UPB"
-        private const val TITLE = "Detail Usulan Permintaan"
-    }
-
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var itemPagedListAdapter: DataItemUpbPagedListAdapter
     private lateinit var token: String
@@ -52,12 +48,19 @@ class DetailUsulanFragment : Fragment() {
     }
 
     private val onItemClicked = object : MaterialOnclick {
-        override fun onClicked(idDetail: Int, idPermintaan: Int) {
+        override fun onClicked(idDetail: Int) {
             val action =
                 DetailUsulanFragmentDirections.actionDetailUsulanPermintaanBarangFragmentToDetailMaterialFragment(
-                    idDetail, idPermintaan
+                    idDetail, idPermintaan ?: 0
                 )
             findNavController().navigate(action)
+        }
+    }
+
+    private val onBackCallBack = object: OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            findNavController().popBackStack(R.id.nav_usulan, false)
+            Timber.d("back is called ")
         }
     }
 
@@ -69,9 +72,10 @@ class DetailUsulanFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackCallBack)
+
         _bindingFragmentDetailUsulan =
             FragmentDetailUsulanBinding.inflate(inflater, container, false)
-
         return _bindingFragmentDetailUsulan?.root
     }
 
@@ -84,8 +88,11 @@ class DetailUsulanFragment : Fragment() {
         viewModel.updateActionBarTitle("Detail Usulan Fragment")
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         val toolbar = binding?.customToolbarDetailUsulan
         val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
@@ -115,6 +122,8 @@ class DetailUsulanFragment : Fragment() {
 
         val safeArgs = arguments?.let { DetailUsulanFragmentArgs.fromBundle(it) }
         idPermintaan = safeArgs?.passIdPermintaan
+
+        Timber.d("Check idPermintaan : $idPermintaan")
 
         sharedPreferences =
             activity?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)!!

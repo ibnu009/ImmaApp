@@ -35,17 +35,11 @@ class FirebaseMessageService : FirebaseMessagingService() {
             val senderName = p0.data["title"] ?: "unknown"
             val message = p0.data["body"] ?: "ada permintaan barang dari $senderName"
             val type = p0.data["type"] ?: "unknown"
-            val price = p0.data["price"] ?: "unknown"
-            val companyName = p0.data["company_name"] ?: "unknown"
-            val materialName = p0.data["material_name"] ?: "unknown"
 
             sendNotification(
                 messageBody = message,
                 messageTitle = senderName,
                 type = type,
-                price = price,
-                companyName = companyName,
-                materialName
             )
         }
     }
@@ -54,24 +48,17 @@ class FirebaseMessageService : FirebaseMessagingService() {
         messageBody: String,
         messageTitle: String,
         type: String,
-        price: String,
-        companyName: String,
-        materialName: String
     ) {
         var intent: Intent? = null
         if (type == "rab_request") {
             intent = Intent(this, MainActivity::class.java)
-            immaDatabase =
-                Room.databaseBuilder(applicationContext, ImmaDatabase::class.java, "db_imma")
-                    .build()
+            immaDatabase = ImmaDatabase.getDataBase(applicationContext)
             Thread {
                 val notificationEntity = NotificationEntity(
                     sender = messageTitle,
                     message = messageBody,
-                    price = price,
-                    companyName = companyName,
-                    materialName = materialName
                 )
+                immaDatabase.getNotificationDao().insertNotification(notificationEntity)
             }.start()
         } else {
             intent = Intent(this, MainActivity::class.java)

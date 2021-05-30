@@ -5,8 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.pjb.immaapp.data.repository.DataUpbRepository
 import com.pjb.immaapp.handler.UpbFileUploadListener
-import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.UPLOAD_URL
-import com.pjb.immaapp.utils.UploadListener
+import com.pjb.immaapp.service.webservice.RetrofitApp.Companion.UPLOAD_URL_NEW
 import com.pjb.immaapp.utils.UploadUsulanListener
 import io.reactivex.disposables.CompositeDisposable
 import net.gotev.uploadservice.data.UploadInfo
@@ -78,7 +77,7 @@ class CreateUpbViewModel(private val compositeDisposable: CompositeDisposable, p
     ) {
         try {
             Timber.d("Initiating upload with path = $path")
-            MultipartUploadRequest(context, UPLOAD_URL)
+            MultipartUploadRequest(context, UPLOAD_URL_NEW)
                 .setMethod("POST")
                 .addParameter("token", token)
                 .addParameter("api_key", apiKey)

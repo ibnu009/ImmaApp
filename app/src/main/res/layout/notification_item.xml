@@ -28,7 +28,7 @@
         app:layout_constraintStart_toEndOf="@id/icon_notification"/>
 
     <TextView
-        android:id="@+id/tx_job_title"
+        android:id="@+id/tx_sender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dummy_judul_pekerjaan"

@@ -1,7 +1,5 @@
 package com.pjb.immaapp.ui.usulanpermintaanbarang.material
 
-import com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialFragmentArgs
-import com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialViewModel
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -10,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,12 +17,12 @@ import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentDetailMaterialBinding
 import com.pjb.immaapp.ui.usulanpermintaanbarang.adapter.CompanyListAdapter
 import com.pjb.immaapp.ui.usulanpermintaanbarang.handler.OnItemCompanyClick
-import com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabFragment
 import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.global.ViewModelFactory
 import com.pjb.immaapp.utils.global.tokenExpired
+import timber.log.Timber
 
 class DetailMaterialFragment : Fragment() {
 
@@ -33,7 +30,7 @@ class DetailMaterialFragment : Fragment() {
     private lateinit var token: String
     private lateinit var apiKey: String
     private var idDetail: Int = 0
-    private var idPermintaan: Int = 0
+    private var idPermintaan: Int? = null
     private var idCompany: Int? = null
 
     private lateinit var adapter: CompanyListAdapter
@@ -68,6 +65,8 @@ class DetailMaterialFragment : Fragment() {
         idDetail = safeArgs?.passIdDetail!!
         idPermintaan = safeArgs.passIdPermintaan
 
+        Timber.d("Check idPermintaan : $idPermintaan")
+
         val toolbar = binding?.customToolbarDetailMaterial
         val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
         val btnBack = toolbar.root.findViewById(R.id.btn_back_menu) as ImageView
@@ -81,7 +80,7 @@ class DetailMaterialFragment : Fragment() {
         txCreateRab.setOnClickListener {
             val action =
                 DetailMaterialFragmentDirections.actionDetailMaterialFragmentToApprovalRabFragment(
-                    passIdPermintaan = idPermintaan
+                    passIdPermintaan = idPermintaan!!
                 )
             it.findNavController().navigate(action)
         }

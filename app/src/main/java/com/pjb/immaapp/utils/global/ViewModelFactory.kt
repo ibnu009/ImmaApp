@@ -12,16 +12,16 @@ import com.pjb.immaapp.main.MainRepository
 import com.pjb.immaapp.main.MainViewModel
 import com.pjb.immaapp.ui.gudangpermintaanbarang.GudangViewModel
 import com.pjb.immaapp.ui.login.LoginViewModel
+import com.pjb.immaapp.ui.notification.NotificationViewModel
 import com.pjb.immaapp.ui.purchaseorder.PurchaseOrderViewModel
 import com.pjb.immaapp.ui.stokopname.StokOpnameViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.UsulanViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.material.DetailMaterialViewModel
-import com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval.ApprovalRabViewModel
+import com.pjb.immaapp.ui.usulanpermintaanbarang.approval.ApprovalRabViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.supplier.TambahSupplierViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.material.TambahMaterialViewModel
 import com.pjb.immaapp.ui.usulanpermintaanbarang.tambah.usulan.CreateUpbViewModel
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
 
 class ViewModelFactory(
     private val mainRepository: MainRepository,
@@ -38,7 +38,7 @@ class ViewModelFactory(
         fun getInstance(context: Context): ViewModelFactory =
             (instance ?: synchronized(this) {
                 instance ?: ViewModelFactory(
-                    Injection.provideMainRepository(),
+                    Injection.provideMainRepository(context),
                     Injection.provideLoginRepository(),
                     Injection.provideDataPoRepository(context),
                     Injection.provideDataUpbRepository(context),
@@ -83,6 +83,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(TambahSupplierViewModel::class.java) -> {
                 TambahSupplierViewModel(dataUpbRepository, compositeDisposable) as T
+            }
+            modelClass.isAssignableFrom(NotificationViewModel::class.java) -> {
+                NotificationViewModel(mainRepository, compositeDisposable) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

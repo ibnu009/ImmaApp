@@ -41,6 +41,7 @@ class CompanyListAdapter(private val onItemCompanyClick: OnItemCompanyClick) : R
                 company.id
             )
         }
+
     }
 
     override fun getItemCount(): Int = listCompany.size

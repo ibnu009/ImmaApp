@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface PurchaseOrderService {
 
-    @POST("/api/po/list")
+    @POST("api/po/list")
     @FormUrlEncoded
     fun requestListPurchaseOrder(
         @Field("api_key") apiKey: String,
@@ -18,7 +18,7 @@ interface PurchaseOrderService {
         @Field("keywords") keywords: String?
     ): Observable<ResponsePo>
 
-    @POST("/api/po/list")
+    @POST("api/po/list")
     @FormUrlEncoded
     fun requestListPurchaseOrderSingle(
         @Field("api_key") apiKey: String,
@@ -26,7 +26,7 @@ interface PurchaseOrderService {
         @Field("keywords") keywords: String?
     ): Single<ResponsePo>
 
-    @POST("/api/po/detail")
+    @POST("api/po/detail")
     @FormUrlEncoded
     fun requestDetailPurchaseOrder(
         @Field("api_key") apiKey: String,

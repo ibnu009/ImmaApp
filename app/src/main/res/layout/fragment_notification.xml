@@ -10,6 +10,32 @@
             android:id="@+id/custom_toolbar_notification"
             layout="@layout/custom_toolbar" />
 
+        <LinearLayout
+            android:id="@+id/layout_empty_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_empty_permintaangudang" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/data_tidak_ditemukan"
+                android:layout_gravity="center"
+                android:textColor="@color/dark_blue"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
         <ScrollView
             android:layout_below="@id/custom_toolbar_notification"
             android:layout_width="match_parent"
@@ -22,11 +48,11 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_notification"
                     tools:listitem="@layout/notification_item"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 

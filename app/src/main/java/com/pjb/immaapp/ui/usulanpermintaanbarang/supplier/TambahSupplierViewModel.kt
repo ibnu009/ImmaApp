@@ -34,26 +34,22 @@ class TambahSupplierViewModel(
     var harga: String? = null
     var rabAddSupplierListener: RabAddSupplierListener? = null
 
-    @ExperimentalPagingApi
+//    @ExperimentalPagingApi
     fun getListSupplier(
         apiKey: String,
         token: String,
-    ): LiveData<PagingData<Suppliers.SupplierEntity>> {
-        val resultSupplier = MutableLiveData<PagingData<Suppliers.SupplierEntity>>()
-        try {
-            compositeDisposable.add(
-                dataUpbRepository.requestListDataSupplier(apiKey = apiKey, token = token)
-                    .subscribe({
-                        resultSupplier.postValue(it)
-                        Timber.d("ReceivedVM $it")
-                    },{
-                        Timber.e("error is ${it.cause}")
-                    })
-            )
-        } catch (e: Exception) {
-            Timber.e("error is ${e.cause}")
-        }
-        return resultSupplier
+    ): LiveData<PagedList<Supplier>> {
+//        val resultSupplier = MutableLiveData<PagingData<Suppliers.SupplierEntity>>()
+//            compositeDisposable.add(
+//                dataUpbRepository.requestListDataSupplier(apiKey = apiKey, token = token)
+//                    .subscribe({
+//                        resultSupplier.postValue(it)
+//                        Timber.d("ReceivedVM $it")
+//                    },{
+//                        Timber.e("error is ${it.cause}")
+//                    })
+//            )
+        return dataUpbRepository.requestListDataSupplier(compositeDisposable, apiKey, token)
     }
 
     fun validateRabUpload(

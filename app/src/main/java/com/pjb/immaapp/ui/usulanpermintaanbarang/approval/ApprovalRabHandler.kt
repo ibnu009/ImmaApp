@@ -1,4 +1,4 @@
-package com.pjb.immaapp.ui.usulanpermintaanbarang.material.approval
+package com.pjb.immaapp.ui.usulanpermintaanbarang.approval
 
 import android.view.View
 
