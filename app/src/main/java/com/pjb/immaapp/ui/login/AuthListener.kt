@@ -8,5 +8,5 @@ import com.pjb.immaapp.data.remote.response.ResponseUser
 interface AuthListener {
     fun onAuthenticating()
     fun onSuccess(credential: Credential,responseSuccess: LiveData<User>)
-    fun onFailure(message: String)
+    fun onFailure(message: String, type: Int)
 }

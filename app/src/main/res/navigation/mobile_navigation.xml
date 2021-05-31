@@ -112,6 +112,9 @@
             android:name="passItemNum"
             android:defaultValue="1"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_stokOpnameResultFragment_to_successFragment"
+            app:destination="@id/successFragment" />
 
     </fragment>
 
@@ -211,6 +214,10 @@
             android:id="@+id/action_successFragment_to_nav_usulan"
             app:destination="@id/nav_usulan"
             app:popUpTo="@id/nav_usulan"/>
+        <action
+            android:id="@+id/action_successFragment_to_nav_opname"
+            app:destination="@id/nav_opname"
+            app:popUpTo="@id/nav_opname"/>
     </fragment>
 
 </navigation>

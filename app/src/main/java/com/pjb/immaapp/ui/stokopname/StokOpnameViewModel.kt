@@ -12,6 +12,8 @@ class StokOpnameViewModel(
     private val compositeDisposable: CompositeDisposable
 ) : ViewModel() {
 
+    var listener: StockOpnameListener? = null
+
     fun getDataStokOpname(
         apiKey: String,
         token: String,
@@ -32,15 +34,25 @@ class StokOpnameViewModel(
         notes: String,
         stock: Int,
         kondisi: String
-    ): LiveData<ResponseCreateStokOpname> {
-        return dataStokOpnameRepository.createStokOpname(
+    ) {
+        dataStokOpnameRepository.createStokOpname(
             compositeDisposable,
             apiKey,
             token,
             itemNum,
             notes,
             stock,
-            kondisi
+            kondisi,
+            status = object : CreateStockListener {
+                override fun onSuccess() {
+                    listener?.onSuccess()
+                }
+
+                override fun onFailure(message: String) {
+                    listener?.onFailure(message)
+                }
+
+            }
         )
     }
 

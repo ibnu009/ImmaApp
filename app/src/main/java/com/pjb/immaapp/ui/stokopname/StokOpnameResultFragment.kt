@@ -13,17 +13,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.pjb.immaapp.R
 import com.pjb.immaapp.databinding.FragmentOpnameResultBinding
 import com.pjb.immaapp.utils.ConverterHelper
 import com.pjb.immaapp.utils.NetworkState
 import com.pjb.immaapp.utils.SharedPreferencesKey
 import com.pjb.immaapp.utils.SharedPreferencesKey.PREFS_NAME
+import com.pjb.immaapp.utils.global.ConstVal
 import com.pjb.immaapp.utils.global.ViewModelFactory
+import com.pjb.immaapp.utils.global.snackbar
 import timber.log.Timber
 
 
-class StokOpnameResultFragment : Fragment() {
+class StokOpnameResultFragment : Fragment(), StockOpnameListener {
 
     private var _bindingFragmentOpnameResult: FragmentOpnameResultBinding? = null
     private val binding get() = _bindingFragmentOpnameResult
@@ -51,6 +54,8 @@ class StokOpnameResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        stokOpnameViewModel?.listener = this
         
         val toolbar = binding?.customToolbarDetailOpname
         val txView = toolbar?.root?.findViewById(R.id.tx_title_page) as TextView
@@ -102,10 +107,10 @@ class StokOpnameResultFragment : Fragment() {
         binding?.btnSimpanData?.setOnClickListener {
             val notes = binding?.edtKeterangan?.text.toString().trim()
             val raw = binding?.edtStokNyata?.text.toString()
-            val raw_kondisi = binding?.spinnerKondisiBarang?.selectedItem.toString()
+            val rawKondisi = binding?.spinnerKondisiBarang?.selectedItem.toString()
             val kondisi: String
 
-            when(raw_kondisi){
+            when(rawKondisi){
                 getString(R.string.baik) -> {
                     kondisi = "B"
                 }
@@ -126,19 +131,11 @@ class StokOpnameResultFragment : Fragment() {
                     kondisi = "invalid"
                 }
             }
-
             if(checkIsEmpty(notes, raw)){
                 val stock = Integer.parseInt(raw)
-                addDataStokOpname(token, itemNum, notes, stock, kondisi)
+                stokOpnameViewModel?.addDataStokOpname("12345", token, itemNum, notes, stock, kondisi)
             }
         }
-    }
-
-    private fun clearInput() {
-        binding?.edtKeterangan?.text?.clear()
-        binding?.edtStokNyata?.text?.clear()
-
-        binding?.edtStokNyata?.requestFocus()
     }
 
     private fun checkIsEmpty(keterangan: String, stok: String): Boolean {
@@ -159,44 +156,6 @@ class StokOpnameResultFragment : Fragment() {
             }
             return true
         }
-
-    }
-
-    private fun addDataStokOpname(
-        token: String,
-        itemNum: Int,
-        notes: String,
-        stock: Int,
-        kondisi: String
-    ) {
-        stokOpnameViewModel?.addDataStokOpname("12345", token, itemNum, notes, stock, kondisi)
-            ?.observe(viewLifecycleOwner, Observer {
-                Timber.d("New data created : ${it.message}")
-                Toast.makeText(
-                    context?.applicationContext,
-                    "Data berhasil ditambah",
-                    Toast.LENGTH_SHORT
-                ).show()
-            })
-        stokOpnameViewModel?.networkState?.observe(viewLifecycleOwner, Observer {network ->
-            when (network) {
-                NetworkState.FAILEDTOADD -> {
-                    Toast.makeText(context?.applicationContext, network.toString(), Toast.LENGTH_SHORT)
-                        .show()
-                    Timber.e("Error")
-                }
-                NetworkState.LOADED -> {
-                    clearInput()
-                    dialog?.dismiss()
-                }
-                NetworkState.LOADING -> {
-                    dialog?.show()
-                }
-                else -> {
-                    ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
-                }
-            }
-        })
     }
 
     private fun initiateDataStokOpname(token: String, itemNum: Int) {
@@ -240,6 +199,19 @@ class StokOpnameResultFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onSuccess() {
+        Timber.d("success!!!!")
+        val action = StokOpnameResultFragmentDirections.actionStokOpnameResultFragmentToSuccessFragment(
+            passType = ConstVal.STOCK_OPNAME_CREATE_TYPE,
+            passIdPermintaan = 0,
+        )
+        findNavController().navigate(action)
+    }
+
+    override fun onFailure(message: String) {
+        view?.snackbar(message)
     }
 
     private fun setProgressDialog(context: Context, message: String): AlertDialog {

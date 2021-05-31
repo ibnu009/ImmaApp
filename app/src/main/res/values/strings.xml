@@ -192,4 +192,6 @@
     <string name="success">Sukses!</string>
     <string name="rab_telah_dibuat">Permintaan RAB anda telah dibuat! \n Permintaan anda akan segera diproses oleh yang berwewenang!</string>
     <string name="material_telah_dibuat">Tambah material berhasil dilakukan!</string>
+    <string name="stock_opname_telah_dibuat">Stock opname berhasil disimpan!</string>
+
 </resources>

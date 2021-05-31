@@ -32,6 +32,13 @@ class SuccessFragment : Fragment() {
                     }
                     action?.let { it1 -> view?.findNavController()?.navigate(it1) }
                 }
+                ConstVal.STOCK_OPNAME_CREATE_TYPE -> {
+                    view?.findNavController()?.navigate(R.id.action_successFragment_to_nav_opname)
+                }
+
+                else -> {
+                    Timber.d("I dunno")
+                }
             }
         }
     }
@@ -90,6 +97,15 @@ class SuccessFragment : Fragment() {
                         )
                     }
                     action?.let { it1 -> view?.findNavController()?.navigate(it1) }
+                }
+            }
+            ConstVal.STOCK_OPNAME_CREATE_TYPE -> {
+                binding?.txSuccessKeterangan?.text = context.getString(R.string.stock_opname_telah_dibuat)
+                binding?.btnBack?.setOnClickListener {
+                    view?.findNavController()?.navigate(R.id.action_successFragment_to_nav_opname)
+                }
+                binding?.customSuccessToolbar?.btnBackMenu?.setOnClickListener {
+                    view?.findNavController()?.navigate(R.id.action_successFragment_to_nav_opname)
                 }
             }
             else -> {

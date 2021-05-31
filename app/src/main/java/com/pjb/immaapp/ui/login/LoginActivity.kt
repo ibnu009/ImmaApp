@@ -21,6 +21,7 @@ import com.pjb.immaapp.utils.NetworkState.Companion.EXPIRETOKEN
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADED
 import com.pjb.immaapp.utils.NetworkState.Companion.LOADING
 import com.pjb.immaapp.utils.NetworkState.Companion.UNKNOWN
+import com.pjb.immaapp.utils.global.ConstVal
 import com.pjb.immaapp.utils.global.ViewModelFactory
 import com.pjb.immaapp.utils.global.snackbar
 import timber.log.Timber
@@ -86,8 +87,15 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
         _activityLoginBinding = null
     }
 
-    override fun onFailure(message: String) {
-        binding?.root?.snackbar(message)
+    override fun onFailure(message: String, type: Int) {
+        when (type) {
+            ConstVal.ERROR_USERNAME_EMPTY -> {
+                binding?.edtUsername?.error = "Username tidak boleh kosong"
+            }
+            ConstVal.ERROR_PASSWORD_EMPTY -> {
+                binding?.edtPassword?.error = "Password tidak boleh kosong"
+            }
+        }
     }
 
     override fun onLogInClicked(view: View) {
@@ -96,7 +104,6 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
 
         viewModel.checkState().observe(this, Observer { network ->
             Timber.d("check result : ${network.status}")
-
             when (network) {
                 LOADING -> {
                     isLoading(true)
@@ -107,19 +114,24 @@ class LoginActivity : AppCompatActivity(), AuthListener, LogInHandler {
 //                HTTP Error
                 else -> {
                     ConverterHelper().convertNetworkStateErrorToSnackbar(binding?.root, network)
+                    isLoading(false)
                 }
             }
-
         })
     }
 
     private fun isLoading(status: Boolean) {
+
         if (!status) {
             binding?.progressLogin?.visibility = View.GONE
             binding?.backgroundDim?.visibility = View.GONE
+            binding?.edtUsername?.isEnabled = true
+            binding?.edtPassword?.isEnabled = true
         } else {
             binding?.progressLogin?.visibility = View.VISIBLE
             binding?.backgroundDim?.visibility = View.VISIBLE
+            binding?.edtUsername?.isEnabled = false
+            binding?.edtPassword?.isEnabled = false
         }
     }
 }

@@ -161,5 +161,6 @@
     <string name="success">Success!</string>
     <string name="rab_telah_dibuat">Your request have been created! \n Your request will be processed by the authorities!</string>
     <string name="material_telah_dibuat">Create material is succeeded!</string>
+    <string name="stock_opname_telah_dibuat">Stock Opname is saved!</string>
 
 </resources>
